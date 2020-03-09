@@ -7,7 +7,7 @@
 
     <activity
         android:id="@+id/mainActivity"
-        android:name="com.pes.pockles.MainActivity"
+        android:name="com.pes.pockles.view.ui.MainActivity"
         android:label="activity_main"
         tools:layout="@layout/activity_main" />
 </navigation>

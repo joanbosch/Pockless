@@ -1,7 +1,8 @@
-package com.pes.pockles
+package com.pes.pockles.view.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.pes.pockles.R
 
 class MainActivity : AppCompatActivity() {
 
