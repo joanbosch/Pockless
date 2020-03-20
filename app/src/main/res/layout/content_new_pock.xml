@@ -55,7 +55,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="match_constraint"
         android:layout_marginTop="24dp"
 
         android:orientation="vertical"
@@ -90,8 +90,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:hint="Pockeate algo Julián"
-            app:boxBackgroundColor="#b2ebf2"
-            app:errorEnabled="true">
+            app:errorEnabled="true"
+            app:boxBackgroundColor="#b2ebf2">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
