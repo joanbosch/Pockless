@@ -3,7 +3,7 @@ package com.pes.pockles
 import android.app.Application
 import timber.log.Timber
 
-class PocklesApplication : Application() {
+class PocklesApplication : Application(){
 
     override fun onCreate() {
         super.onCreate()

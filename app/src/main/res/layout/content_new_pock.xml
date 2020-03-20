@@ -52,10 +52,10 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+<!--cambiado un momento el match_constraint de layout_height xq petaba, si ves este comment es que se me ha olvidado /Dani-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_constraint"
+        android:layout_height="match_parent"
         android:layout_marginTop="24dp"
 
         android:orientation="vertical"
