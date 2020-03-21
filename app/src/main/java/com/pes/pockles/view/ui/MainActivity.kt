@@ -1,5 +1,6 @@
 package com.pes.pockles.view.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
@@ -22,5 +23,8 @@ class MainActivity : AppCompatActivity() {
         var navController = findNavController(R.id.navigationHostFragment)
         NavigationUI.setupWithNavController(binding.bottomNavigation, navController)
 
+        binding.fab.setOnClickListener {
+            startActivity(Intent(this, NewPockActivity::class.java))
+        }
     }
 }
