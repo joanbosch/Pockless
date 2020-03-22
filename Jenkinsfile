@@ -12,11 +12,11 @@ pipeline {
     }
 
     stages {
-        stage("Prepare") {
-            steps {
-                sh 'chmod +x ./gradlew'
-            }
-        }
+//        stage("Prepare") {
+//            steps {
+//                sh 'chmod +x ./gradlew'
+//            }
+//        }
 
 //        stage('Test') {
 //            steps {
