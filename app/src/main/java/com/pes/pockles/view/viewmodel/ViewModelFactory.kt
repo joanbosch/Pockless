@@ -1,4 +1,4 @@
-package com.pes.pockles.view.ui.newpock
+package com.pes.pockles.view.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
