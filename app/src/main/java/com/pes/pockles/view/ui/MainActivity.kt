@@ -8,6 +8,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.pes.pockles.R
 import com.pes.pockles.databinding.ActivityMainBinding
+import com.pes.pockles.view.ui.newpock.NewPockActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

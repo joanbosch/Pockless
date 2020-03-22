@@ -1,12 +1,16 @@
 package com.pes.pockles.data.api
 
 import com.pes.pockles.BuildConfig
+import com.pes.pockles.model.Pock
+import io.reactivex.Single
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
+import retrofit2.http.POST
 import java.util.concurrent.TimeUnit
 
 
@@ -29,6 +33,8 @@ interface ApiService {
 
      */
 
+    @POST("pock")
+    fun newPock(@Body pock: Pock): Single<Pock>
 
     companion object {
         /**
