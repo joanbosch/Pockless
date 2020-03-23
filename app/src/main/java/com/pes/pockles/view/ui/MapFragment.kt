@@ -29,10 +29,10 @@ import com.pes.pockles.R
  * A [Fragment] subclass for map view.
  */
 class MapFragment : Fragment() , OnMapReadyCallback {
-   @Nullable private var mMap: GoogleMap?=null
+    @Nullable
+    private var mMap: GoogleMap? = null
     private lateinit var lastLocation: Location
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-
 
 
     /*   override fun onCreateView(
@@ -56,76 +56,83 @@ class MapFragment : Fragment() , OnMapReadyCallback {
         mapFragment!!.getMapAsync(this)
         return rootView
     }
-/*
-    private fun initMap(){
-        if(mMap==null) {
-            val mapFragment: SupportMapFragment? =
-                childFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment?
-            mapFragment?.getMapAsync(this)
-        }
-    }*/
+
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        /* I will leave this commented just in case i need this later
+      *    val loctest = LatLng(-30.0, 151.0)
+      *    mMap!!.addMarker(MarkerOptions().position(loctest).title("test"))
+      *    mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 12.0f))
+      *
+      */
+        setUpMap()
+        mMap!!.isMyLocationEnabled = true
+        getLastLocation(mMap!!)
 
-        // Add a marker in Sydney and move the camera
-        val loctest = LatLng(-30.0, 151.0)
-        mMap!!.addMarker(MarkerOptions().position(loctest).title("test"))
-      //  mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 12.0f))
-       setUpMap(mMap!!)
     }
 
-/* Permission and location management **/
+    /* This fun calls the pockles api and gets the pocks nearby, then displays then in, for the moment, default markers */
+    private fun updatePocks(googleMap: GoogleMap){
+        getLastLocation(googleMap);
 
-    companion object {
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
     }
 
 
-
-    private fun setUpMap( googleMap: GoogleMap) {
-        mMap = googleMap
-            if (context?.let {
-                    ActivityCompat.checkSelfPermission(
-                        it,
-                        android.Manifest.permission.ACCESS_FINE_LOCATION)
-                } != PackageManager.PERMISSION_GRANTED &&
-                context?.let {
-                    ActivityCompat.checkSelfPermission(
-                        it,
-                        android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                } != PackageManager.PERMISSION_GRANTED) {
-                this.activity?.let {
-                    ActivityCompat.requestPermissions(
-                        it,
-                        arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
-                }; // return
-                mMap!!.isMyLocationEnabled = true
-
-
-                getLastLocation()
-
-                        val currentLatLng = LatLng(lastLocation.latitude, lastLocation.longitude)
-                        mMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
-                    }
-                }
-    private fun getLastLocation() {
+    private fun getLastLocation(googleMap: GoogleMap) {
         val locationClient = LocationServices.getFusedLocationProviderClient(activity!!)
-        try
-        {
+        mMap = googleMap;
+        try {
             locationClient.lastLocation
                 .addOnSuccessListener { location -> // GPS location can be null if GPS is switched off
                     if (location != null) {
                         if (mMap != null) {
-                            mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 15f))
+                            mMap!!.moveCamera(
+                                CameraUpdateFactory.newLatLngZoom(
+                                    LatLng(
+                                        location.latitude,
+                                        location.longitude
+                                    ), 15f
+                                )
+                            )
                         }
                     }
                 }
                 .addOnFailureListener { e ->
                     e.printStackTrace()
                 }
-        }
-        catch (e:SecurityException) {
+        } catch (e: SecurityException) {
             e.printStackTrace()
+        }
+    }
+
+
+    /* Permission management **/
+/* THIS NEEDS A REWORK IN THE FOLLOWING SPRINTS */
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+    }
+
+    private fun setUpMap() {
+
+        if (context?.let {
+                ActivityCompat.checkSelfPermission(
+                    it,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            } != PackageManager.PERMISSION_GRANTED &&
+            context?.let {
+                ActivityCompat.checkSelfPermission(
+                    it,
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            } != PackageManager.PERMISSION_GRANTED) {
+            this.activity?.let {
+                ActivityCompat.requestPermissions(
+                    it,
+                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                    LOCATION_PERMISSION_REQUEST_CODE
+                )
+            }; return
         }
     }
 }
