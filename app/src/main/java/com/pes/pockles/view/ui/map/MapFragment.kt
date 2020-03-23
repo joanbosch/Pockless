@@ -1,14 +1,11 @@
-package com.pes.pockles.view.ui
+package com.pes.pockles.view.ui.map
 
 
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -19,10 +16,8 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
 import com.pes.pockles.R
+import com.pes.pockles.model.Location
 
 
 /**
@@ -70,13 +65,6 @@ class MapFragment : Fragment() , OnMapReadyCallback {
         getLastLocation(mMap!!)
 
     }
-
-    /* This fun calls the pockles api and gets the pocks nearby, then displays then in, for the moment, default markers */
-    private fun updatePocks(googleMap: GoogleMap){
-        getLastLocation(googleMap);
-
-    }
-
 
     private fun getLastLocation(googleMap: GoogleMap) {
         val locationClient = LocationServices.getFusedLocationProviderClient(activity!!)

@@ -6,7 +6,7 @@
     android:id="@+id/map"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.ui.MapFragment">
+    tools:context=".view.ui.map.MapFragment">
 
 <!--If android:name is changed to MapFragment, it will break the app-->
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
