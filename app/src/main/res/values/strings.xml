@@ -4,10 +4,22 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_new_pock">NewPockActivity</string>
+    <string name="pock_something_hint">Pockea algo</string>
+    <string name="category_hint">Categoría</string>
+    <string name="chat_switch_hint">Chat</string>
+    <string name="pockear_button">Pockear</string>
+    <string name="pock_content_error">¿Un pock sin contenido?</string>
+    <string name="added_pock_message">Se ha publicado tu nuevo pock</string>
 
     <string-array name="categories">
+        <item>Anuncios</item>
+        <item>Compra y Venta</item>
+        <item>Deportes</item>
+        <item>Entretenimiento</item>
+        <item>Mascotas</item>
+        <item>Salud</item>
+        <item>Tecnología</item>
+        <item>Turismo</item>
         <item>+18</item>
-        <item>a</item>
-        <item>b</item>
     </string-array>
 </resources>

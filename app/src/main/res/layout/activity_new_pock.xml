@@ -6,6 +6,11 @@
 
     <data>
 
+        <import type="com.pes.pockles.data.Resource" />
+
+        <import type="android.view.View" />
+
+
         <variable
             name="newPockViewModel"
             type="com.pes.pockles.view.ui.newpock.NewPockViewModel" />
@@ -21,6 +26,7 @@
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -30,21 +36,20 @@
                 style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="32dp"
                 android:onClick="@{() -> newPockViewModel.insertPock()}"
-                android:text="Pockear"
-                android:textColor="#0C0000"
+                android:text="@string/pockear_button"
+                android:textColor="@android:color/white"
                 app:backgroundTint="@color/colorAccent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <FrameLayout
                 android:id="@+id/share_button"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+
                 android:background="?selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
@@ -76,37 +81,16 @@
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/pockTitleField"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:hint="Título del pock"
-                app:errorEnabled="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@={newPockViewModel.pockTitle}" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/pockContentField"
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:hint="Pockeate algo Julián"
-                app:boxBackgroundColor="#e5e5e5"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:hint="@string/pock_something_hint"
                 app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/pockContentField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="top|left"
@@ -120,12 +104,12 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:hint="Categoría">
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:hint="@string/category_hint">
 
                 <AutoCompleteTextView
                     android:id="@+id/categoriesDropdown"
@@ -139,13 +123,22 @@
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="16dp"
-                android:checked="@={newPockViewModel.chatEnabled}"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginVertical="16dp"
+                android:checked="true"
+                android:hint="@string/chat_switch_hint"
+                android:textColorHint="#5C5C5C" />
 
-                android:text="Chat"
-                app:switchTextAppearance="@style/TextAppearance.AppCompat.Body1" />
+            <ProgressBar
+                android:id="@+id/newPockProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="64dp"
+                android:minWidth="50dp"
+                android:minHeight="50dp"
+                android:visibility="@{newPockViewModel.loading? View.VISIBLE : View.GONE }" />
 
         </LinearLayout>
 
