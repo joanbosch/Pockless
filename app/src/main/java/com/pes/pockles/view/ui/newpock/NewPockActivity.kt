@@ -18,6 +18,7 @@ import com.pes.pockles.view.viewmodel.ViewModelFactory
 class NewPockActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNewPockBinding
+    private var apiError: Boolean = false
     private val viewModel: NewPockViewModel by lazy {
         ViewModelProviders.of(this, ViewModelFactory()).get(NewPockViewModel::class.java)
     }
@@ -34,7 +35,8 @@ class NewPockActivity : AppCompatActivity() {
         spinner?.setAdapter(
             ArrayAdapter(
                 this,
-                android.R.layout.simple_spinner_dropdown_item, resources.getStringArray(R.array.categories)
+                android.R.layout.simple_spinner_dropdown_item,
+                resources.getStringArray(R.array.categories)
             )
         )
     }
@@ -46,11 +48,18 @@ class NewPockActivity : AppCompatActivity() {
     }
 
     private fun handleError() {
-        if (binding.pockContentField.text?.isEmpty()!!)
+        if (apiError)
+            Toast.makeText(
+                this,
+                resources.getString(R.string.api_error_message),
+                Toast.LENGTH_SHORT
+            )
+                .show()
+        else
             binding.pockContentField.error = resources.getString(R.string.pock_content_error)
     }
 
-    private fun initializeObservers(){
+    private fun initializeObservers() {
         //It will handle the behavior of the app when we try to insert a pock into DB
         viewModel.networkCallback.observe(
             this,
@@ -58,7 +67,10 @@ class NewPockActivity : AppCompatActivity() {
                 value?.let {
                     when (value) {
                         is Resource.Success<*> -> handleSuccess()
-                        is Resource.Error -> handleError()
+                        is Resource.Error -> {
+                            apiError = true
+                            handleError()
+                        }
                     }
                 }
             })
