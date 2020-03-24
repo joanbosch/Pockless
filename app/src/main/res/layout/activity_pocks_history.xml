@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.pes.pockles.data.Resource" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="pocksHistoryViewModel"
+            type="com.pes.pockles.view.ui.pockshistory.PocksHistoryViewModel" />
+    </data>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="HISTORY POCKS" />
+
+</layout>
