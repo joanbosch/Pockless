@@ -18,7 +18,6 @@ import com.pes.pockles.view.viewmodel.ViewModelFactory
 class NewPockActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNewPockBinding
-    private var apiError: Boolean = false
     private val viewModel: NewPockViewModel by lazy {
         ViewModelProviders.of(this, ViewModelFactory()).get(NewPockViewModel::class.java)
     }
@@ -47,7 +46,7 @@ class NewPockActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun handleError() {
+    private fun handleError(apiError : Boolean) {
         if (apiError)
             Toast.makeText(
                 this,
@@ -68,8 +67,7 @@ class NewPockActivity : AppCompatActivity() {
                     when (value) {
                         is Resource.Success<*> -> handleSuccess()
                         is Resource.Error -> {
-                            apiError = true
-                            handleError()
+                            handleError(true)
                         }
                     }
                 }
@@ -98,7 +96,7 @@ class NewPockActivity : AppCompatActivity() {
             Observer { value: Boolean ->
                 value?.let {
                     if (value)
-                        handleError()
+                        handleError(false)
                 }
             })
     }
