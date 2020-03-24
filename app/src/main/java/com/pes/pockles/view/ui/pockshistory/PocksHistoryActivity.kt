@@ -31,13 +31,13 @@ class PocksHistoryActivity : AppCompatActivity(){
             this,
             Observer { value: Array<Pock>? ->
                 value?.let {
-                    fillAllPocks(value)
+                    //fillAllPocks(value)
                 }
             }
         )
     }
 
     private fun fillAllPocks(value: Array<Pock>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
