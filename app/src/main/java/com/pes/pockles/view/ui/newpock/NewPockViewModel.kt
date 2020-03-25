@@ -17,7 +17,7 @@ class NewPockViewModel : ViewModel() {
     }
 
     private val _pockToInsert = MutableLiveData<Pock?>()
-    val networkCallback: LiveData<Resource<Pock>?>
+    val networkCallback: LiveData<Resource<Pock>>?
         get() = Transformations.switchMap(_pockToInsert) { value: Pock? ->
             if (value != null) useCase.execute(value) else AbsentLiveData.create()
         }

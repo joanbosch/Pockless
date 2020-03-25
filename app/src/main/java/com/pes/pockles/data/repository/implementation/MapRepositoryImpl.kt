@@ -6,10 +6,14 @@ import com.pes.pockles.data.repository.BaseRepository
 import com.pes.pockles.domain.repositories.MapRepository
 import com.pes.pockles.model.Location
 import com.pes.pockles.model.Pock
+import io.reactivex.functions.Function
 
-class MapRepositoryImpl :BaseRepository() ,MapRepository {
+class MapRepositoryImpl : BaseRepository(), MapRepository {
 
-    override fun getPocks(loc: Location): LiveData<Resource<Pock>> {
-        return callApi(Function{ apiService -> apiService.getNearPocks(loc)})
+    override fun getPocks(loc: Location): LiveData<Resource<List<Pock>>> {
+        var latitude: Float = loc.latitude
+        var longitude: Float = loc.longitude
+        return callApi(Function { apiService -> apiService.getNearPocks(latitude, longitude) })
+
     }
 }

@@ -27,7 +27,7 @@ class NewPockActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.newPockViewModel = viewModel
 
-        viewModel.networkCallback.observe(
+        viewModel.networkCallback?.observe(
             this,
             Observer { value: Resource<Pock>? ->
                 value?.let {

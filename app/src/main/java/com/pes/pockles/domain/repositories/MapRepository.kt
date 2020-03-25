@@ -6,5 +6,5 @@ import com.pes.pockles.model.Location
 import com.pes.pockles.model.Pock
 
 interface MapRepository {
-    fun getPocks(loc:Location): LiveData<Resource<Pock>>
+    fun getPocks(loc:Location): LiveData<Resource<List<Pock>>>
 }
