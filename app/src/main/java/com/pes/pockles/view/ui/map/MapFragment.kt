@@ -29,6 +29,8 @@ import com.pes.pockles.R
 import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.FragmentMapBinding
 import com.pes.pockles.model.Pock
+import com.pes.pockles.util.LastLocationListener
+import com.pes.pockles.util.LocationUtils
 import com.pes.pockles.view.viewmodel.ViewModelFactory
 import kotlin.math.cos
 import kotlin.math.ln
@@ -94,9 +96,9 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
         googleMap!!.isMyLocationEnabled = true
         googleMap!!.cameraPosition
 
-        getLastLocation(object : Location {
+        LocationUtils.getLatLocation(activity!!, object : LastLocationListener {
             override fun onLocationReady(location: android.location.Location) {
-                val latLng: LatLng = LatLng(location.latitude, location.longitude)
+                val latLng = LatLng(location.latitude, location.longitude)
                 val center: CameraPosition = CameraPosition.Builder()
                     .target(latLng)
                     .zoom(getZoomForMetersWide(latLng, 500))
@@ -127,23 +129,6 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
         val latitudinalAdjustment: Double = cos(Math.PI * latLngPoint.latitude / 180.0)
         val arg: Double = 40075004 * mapWidth * latitudinalAdjustment / (desiredMeters * 256.0)
         return (ln(arg) / ln(2.0)).toFloat()
-    }
-
-    private interface Location {
-        fun onLocationReady(location: android.location.Location)
-        fun onLocationError(error: Throwable?)
-    }
-
-    private fun getLastLocation(listener: Location) {
-        val locationClient = LocationServices.getFusedLocationProviderClient(activity!!)
-
-        locationClient.lastLocation.addOnSuccessListener { location ->
-            if (location != null) listener.onLocationReady(location) else listener.onLocationError(
-                null
-            )
-        }.addOnFailureListener { e ->
-            listener.onLocationError(e)
-        }
     }
 
     private val mLocationCallback = object : LocationCallback() {
