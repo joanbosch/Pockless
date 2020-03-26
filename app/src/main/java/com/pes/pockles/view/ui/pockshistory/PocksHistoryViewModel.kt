@@ -12,27 +12,11 @@ import com.pes.pockles.model.Pock
 
 
 class PocksHistoryViewModel : ViewModel() {
-    //private val _errorHandler = MutableLiveData<Boolean>()
-    private val _pocksHistory = MutableLiveData<List<Pock>>()
+    val pocksHistory: LiveData<Resource<List<Pock>>>
+        get() = useCase.execute()
+
     private val useCase: PocksHistoryUseCase by lazy {
         PocksHistoryUseCase()
     }
-    init {
-        getPocksHistory()
-    }
-
-    /*val errorHandlerCallback: LiveData<Boolean>
-        get() = Transformations.map(_errorHandler) { value: Boolean ->
-            value
-        }*/
-
-    val  pocksHistory : LiveData<List<Pock>?>
-        get() = Transformations.map(_pocksHistory) { value: List<Pock>? ->
-            value
-        }
-
-    private fun getPocksHistory() {
-        useCase.execute()
-        //This function must call to PocksHistoryUseCase
-    }
 }
+
