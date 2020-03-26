@@ -36,7 +36,7 @@ class NewPockViewModel : ViewModel() {
             message = pockContent.value!!,
             category = pockCategory.value!!,
             chatAccess = chatEnabled.value!!,
-            location = Location(0f, 0f) // obtain current location
+            location = Location(0.0, 0.0) // obtain current location
         )
     }
 

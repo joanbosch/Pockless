@@ -15,15 +15,19 @@ class MapViewModel : ViewModel() {
     private val useCase: GetNearestPocksUseCase by lazy {
         GetNearestPocksUseCase()
     }
-    private val currentLocation = MutableLiveData<Location?>()
-    fun updateLocation(loc: Location) {
-        currentLocation.value = loc
+
+    private val _currentLocation = MutableLiveData<Location?>()
+
+    init {
+        _currentLocation.value = Location(0.0, 0.0)
     }
 
-
-    val networkCallback: LiveData<Resource<List<Pock>>>
-        get() = Transformations.switchMap(currentLocation) { value: Location? ->
-            if (value != null) useCase.execute(value) else AbsentLiveData.create() /*TODO*/
+    val pocks: LiveData<Resource<List<Pock>>?>
+        get() = Transformations.switchMap(_currentLocation) { value: Location? ->
+            if (value != null) useCase.execute(value) else AbsentLiveData.create()
         }
 
+    fun updateLocation(loc: android.location.Location) {
+        _currentLocation.value = Location(longitude = loc.longitude, latitude = loc.latitude)
+    }
 }

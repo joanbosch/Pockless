@@ -1,7 +1,6 @@
 package com.pes.pockles.data.api
 
 import com.pes.pockles.BuildConfig
-import com.pes.pockles.model.Location
 import com.pes.pockles.model.Pock
 import io.reactivex.Single
 import okhttp3.Interceptor
@@ -10,7 +9,10 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
 
@@ -38,8 +40,8 @@ interface ApiService {
 
     @GET("pock")
     fun getNearPocks(
-        @Query("latitude") latitude: Float,
-        @Query("longitude") longitude: Float
+        @Query("latitude") latitude: Double,
+        @Query("longitude") longitude: Double
     ): Single<List<Pock>>
 
     companion object {
