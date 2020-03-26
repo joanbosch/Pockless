@@ -13,6 +13,7 @@
             android:layout_gravity="bottom"
             android:background="@android:color/transparent"
             android:clickable="false"
+            app:elevation="0.1dp"
             app:menu="@menu/main_menu" />
 
         <com.google.android.material.bottomappbar.BottomAppBar

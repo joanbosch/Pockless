@@ -30,6 +30,10 @@ class NewPockActivity : AppCompatActivity() {
 
         initializeObservers()
 
+        binding.closeButton.setOnClickListener {
+            finish()
+        }
+
         val spinner = binding.categoriesDropdown
         spinner?.setAdapter(
             ArrayAdapter(
@@ -46,7 +50,7 @@ class NewPockActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun handleError(apiError : Boolean) {
+    private fun handleError(apiError: Boolean) {
         if (apiError)
             Toast.makeText(
                 this,
