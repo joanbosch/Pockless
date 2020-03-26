@@ -7,9 +7,9 @@ import com.pes.pockles.domain.repositories.MapRepository
 import com.pes.pockles.model.Location
 import com.pes.pockles.model.Pock
 
-class GetPocksForMapUseCase(private val MapRepository: MapRepository = MapRepositoryImpl()) {
+class GetNearestPocksUseCase(private val mapRepository: MapRepository = MapRepositoryImpl()) {
 
     fun execute(value: Location): LiveData<Resource<List<Pock>>> {
-        return MapRepository.getPocks(value)
+        return mapRepository.getPocks(value)
     }
 }

@@ -11,9 +11,7 @@ import io.reactivex.functions.Function
 class MapRepositoryImpl : BaseRepository(), MapRepository {
 
     override fun getPocks(loc: Location): LiveData<Resource<List<Pock>>> {
-        var latitude: Float = loc.latitude
-        var longitude: Float = loc.longitude
-        return callApi(Function { apiService -> apiService.getNearPocks(latitude, longitude) })
+        return callApi(Function { apiService -> apiService.getNearPocks(loc.latitude, loc.longitude) })
 
     }
 }

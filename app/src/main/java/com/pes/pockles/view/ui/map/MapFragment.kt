@@ -13,6 +13,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.afollestad.assent.Permission
+import com.afollestad.assent.askForPermissions
+import com.afollestad.assent.isAllGranted
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -37,62 +40,52 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var pocklesLocation: Location
     private lateinit var locationCallback: LocationCallback
     private var mFusedLocationProviderClient: FusedLocationProviderClient? = null
-    private val INTERVAL: Long = 2000
-    private val FASTEST_INTERVAL: Long = 1000
+    private val INTERVAL: Long = 2000 //interval for updates the loc
+    private val FASTEST_INTERVAL: Long = 1000 //this is when it need higher precision
     private lateinit var mLocationRequest: LocationRequest
     private val REQUEST_PERMISSION_LOCATION = 10
+    private lateinit var pocklist: List<Pock>
     private lateinit var binding: FragmentMapBinding
     private val viewModel: MapViewModel by lazy {
         ViewModelProviders.of(this, ViewModelFactory()).get(MapViewModel::class.java)
     }
-
-    /*   override fun onCreateView(
-           inflater: LayoutInflater, container: ViewGroup?,
-           savedInstanceState: Bundle?
-       ): View? {
-           initMap()
-
-           return inflater.inflate(R.layout.fragment_map, container, false)
-       }*/
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView: View =
-            inflater.inflate(R.layout.fragment_map, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_map, container, false
+        )
+        val view: View = binding.getRoot()
+        binding.lifecycleOwner = this
+        binding.mapViewModel = viewModel
 
-
-        // binding = DataBindingUtil.inflate(    //CRASH
-        //      inflater, R.layout.fragment_map, container, false
-        //  );
-        //   binding.lifecycleOwner = this
-        //  binding.MapViewModel = viewModel
-        /* TODO
-        viewModel.networkCallback?.observe(
+        viewModel.networkCallback.observe(
             this,
-            Observer { value: Resource<Pock>? ->
+            Observer { value: Resource<List<Pock>>? ->
                 value?.let {
                     when (value) {
                         is Resource.Success<*> -> handleSuccess()
-                        is Resource.Error -> handleError(value.exception)
+                        //   is Resource.Error -> handleError(value.exception)
                     }
                 }
-            }) */
-        //init map
+            })
+
+
         val mapFragment =
             childFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment?
         mapFragment!!.getMapAsync(this)
         mLocationRequest = LocationRequest.create()
 
-        //gps deactivated message
+        return view
+    }
+    //gps deactivated message
 /*  val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             buildAlertMessageNoGps()
         }*/
-        return rootView
-    }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
@@ -102,6 +95,7 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
       *    mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 12.0f))
       *
       */
+        pocklesLocation = Location(longitude = 0.0f, latitude = 0.0f)
         setUpMap()
         mMap!!.isMyLocationEnabled = true
         getLastLocation(mMap!!)
@@ -148,20 +142,12 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    fun onLocationChanged(location: android.location.Location) {
-        lastLocation = location
-        if (lastLocation != null) {
-            // updateLoc(location)  //CRASH
-            // viewModel.updateLocation(pocklesLocation) //CRASH
-            mMap!!.moveCamera(
-                CameraUpdateFactory.newLatLngZoom(
-                    LatLng(
-                        location.latitude,
-                        location.longitude
-                    ), 18f
-                )
-            )
+    fun onLocationChanged(location: android.location.Location?) {
 
+        location?.let {
+            lastLocation = location
+            updateLoc(lastLocation)
+            viewModel.updateLocation(pocklesLocation)
         }
 
     }
@@ -192,11 +178,11 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     /* I need android.location for later but also need our own type of location*/
-    /*THIS CRASHES ATM*/
     private fun updateLoc(location: android.location.Location) {
         lastLocation = location
         pocklesLocation.latitude = lastLocation.latitude.toFloat()
         pocklesLocation.longitude = lastLocation.longitude.toFloat()
+
     }
 
     /*You have the gps off function*//*
@@ -246,5 +232,10 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
                 )
             }; return
         }
+    }
+
+    private fun handleSuccess() {
+
+
     }
 }
