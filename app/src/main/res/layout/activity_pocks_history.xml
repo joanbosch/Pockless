@@ -15,9 +15,13 @@
             type="com.pes.pockles.view.ui.pockshistory.PocksHistoryViewModel" />
     </data>
 
-    <TextView
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="HISTORY POCKS" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </layout>

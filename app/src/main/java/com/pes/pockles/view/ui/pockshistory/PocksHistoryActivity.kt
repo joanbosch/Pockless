@@ -24,20 +24,22 @@ class PocksHistoryActivity : AppCompatActivity(){
         binding.pocksHistoryViewModel = viewModel
 
         initializeObservers()
+        initializeRecyclerView()
     }
 
     private fun initializeObservers() {
         viewModel.pocksHistory.observe(
             this,
-            Observer { value: Array<Pock>? ->
+            Observer { value: List<Pock>? ->
                 value?.let {
-                    //fillAllPocks(value)
+                    initializeRecyclerView()
                 }
             }
         )
     }
 
-    private fun fillAllPocks(value: Array<Pock>) {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private fun initializeRecyclerView() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
 }
