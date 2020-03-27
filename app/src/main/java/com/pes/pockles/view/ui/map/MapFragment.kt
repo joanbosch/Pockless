@@ -32,6 +32,7 @@ import com.pes.pockles.model.Pock
 import com.pes.pockles.util.LastLocationListener
 import com.pes.pockles.util.LocationUtils
 import com.pes.pockles.view.viewmodel.ViewModelFactory
+import timber.log.Timber
 import kotlin.math.cos
 import kotlin.math.ln
 
@@ -108,7 +109,7 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
             }
 
             override fun onLocationError(error: Throwable?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Timber.d(error)
             }
         })
 
