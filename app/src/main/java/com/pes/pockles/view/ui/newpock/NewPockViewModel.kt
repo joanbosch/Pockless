@@ -11,33 +11,55 @@ import com.pes.pockles.model.Pock
 import com.pes.pockles.util.AbsentLiveData
 
 class NewPockViewModel : ViewModel() {
+    private val _errorHandler = MutableLiveData<Boolean>()
+    private val _chatEnabled = MutableLiveData<Boolean>()
+    private val _pockToInsert = MutableLiveData<Pock?>()
+    val pockContent = MutableLiveData<String>()
+    val pockCategory = MutableLiveData<String>()
 
     private val useCase: NewPockUseCase by lazy {
         NewPockUseCase()
     }
 
-    private val _pockToInsert = MutableLiveData<Pock?>()
-    val networkCallback: LiveData<Resource<Pock>>
+    val loading: LiveData<Boolean>
+        get() = Transformations.map(networkCallback) { value: Resource<Pock>? ->
+            value != null && value is Resource.Loading
+        }
+
+    val networkCallback: LiveData<Resource<Pock>?>
         get() = Transformations.switchMap(_pockToInsert) { value: Pock? ->
             if (value != null) useCase.execute(value) else AbsentLiveData.create()
         }
 
-    val pockTitle = MutableLiveData<String>()
-    val pockContent = MutableLiveData<String>()
-    val pockCategory = MutableLiveData<String>()
-    val chatEnabled = MutableLiveData<Boolean>()
+    val keyboardCallback: LiveData<Boolean>
+        get() = Transformations.map(networkCallback) { value: Resource<Pock>? ->
+            value != null && value is Resource.Loading
+        }
+
+    val errorHandlerCallback: LiveData<Boolean>
+        get() = Transformations.map(_errorHandler) { value: Boolean ->
+            value
+        }
 
     init {
-        chatEnabled.value = false
+        _chatEnabled.value = false
     }
 
     fun insertPock() {
-        _pockToInsert.value = Pock(
-            message = pockContent.value!!,
-            category = pockCategory.value!!,
-            chatAccess = chatEnabled.value!!,
-            location = Location(0.0, 0.0) // obtain current location
-        )
+        val category: String = if (pockCategory.value == null)
+            "General"
+        else pockCategory.value.toString()
+
+        if (pockContent.value == null)
+            _errorHandler.value = true
+        else {
+            _pockToInsert.value = Pock(
+                message = pockContent.value!!,
+                category = category,
+                chatAccess = _chatEnabled.value!!,
+                location = Location(0f, 0f) // obtain current location
+            )
+        }
     }
 
 }
