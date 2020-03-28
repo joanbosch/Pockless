@@ -17,6 +17,12 @@
     <string name="notifications_menu_item">Notificaciones</string>
     <string name="profile_menu_item">Perfil</string>
 
+    <string name="button_to_report_a_user">button to report a user</string>
+    <string name="a_button_to_share_a_pock">A button to share a pock</string>
+    <string name="a_button_to_start_a_chat">A button to start a chat</string>
+    <string name="a_button_to_go_back">A button to go back</string>
+    <string name="user_format">User: %s</string>
+
     <string-array name="categories">
         <item>Anuncios</item>
         <item>Compra y Venta</item>

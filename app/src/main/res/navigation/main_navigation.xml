@@ -14,7 +14,11 @@
         android:id="@+id/mapFragment"
         android:name="com.pes.pockles.view.ui.MapFragment"
         android:label="fragment_map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_mapFragment_to_viewPock"
+            app:destination="@id/viewPock" />
+    </fragment>
     <fragment
         android:id="@+id/userProfileFragment"
         android:name="com.pes.pockles.view.ui.UserProfileFragment"
@@ -25,4 +29,15 @@
         android:name="com.pes.pockles.view.ui.NotificationsFragment"
         android:label="fragment_notifications"
         tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/viewPock"
+        android:name="com.pes.pockles.view.ui.ViewPock"
+        android:label="ViewPock" >
+        <action
+            android:id="@+id/action_viewPock_to_mapFragment"
+            app:destination="@id/mapFragment" />
+        <argument
+            android:name="pockIdArg"
+            app:argType="string" />
+    </fragment>
 </navigation>
