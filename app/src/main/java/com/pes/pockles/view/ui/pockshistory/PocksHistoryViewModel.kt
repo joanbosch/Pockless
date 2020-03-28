@@ -1,28 +1,27 @@
 package com.pes.pockles.view.ui.pockshistory
 
-import androidx.lifecycle.*
-import com.pes.pockles.R
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.pes.pockles.data.Resource
 import com.pes.pockles.domain.usecases.PocksHistoryUseCase
 import com.pes.pockles.model.Pock
 
-
-
 class PocksHistoryViewModel : ViewModel() {
 
     fun refreshInformation() {
-        val aux = MediatorLiveData<Resource<List<Pock>>>()
         val source = useCase.execute()
-        aux.addSource(source){
+        _pocksHistory.addSource(source){
             _pocksHistory.value = it
-            if (it != Resource.Loading) aux.removeSource(source)
+            if (it != Resource.Loading) _pocksHistory.removeSource(source)
         }
     }
 
     val pocksHistory: LiveData<Resource<List<Pock>>>
         get() = _pocksHistory
 
-    private val _pocksHistory = MutableLiveData<Resource<List<Pock>>>()
+    private val _pocksHistory = MediatorLiveData<Resource<List<Pock>>>()
 
     private val useCase: PocksHistoryUseCase by lazy {
         PocksHistoryUseCase()

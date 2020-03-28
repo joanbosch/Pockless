@@ -17,7 +17,7 @@ import com.pes.pockles.model.Pock
 import com.pes.pockles.view.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_pocks_history.*
 
-class PocksHistoryActivity : AppCompatActivity(){
+class PocksHistoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPocksHistoryBinding
     private val viewModel: PocksHistoryViewModel by lazy {
         ViewModelProviders.of(this, ViewModelFactory()).get(PocksHistoryViewModel::class.java)
@@ -60,8 +60,9 @@ class PocksHistoryActivity : AppCompatActivity(){
             this,
             Observer { value: Resource<List<Pock>>? ->
                 value?.let {
-                    when(value) {
+                    when (value) {
                         is Resource.Success<List<Pock>> -> setDataRecyclerView(value.data)
+                        is Resource.Error -> binding.swipePocksHistory.isRefreshing = false
                     }
                 }
             }
@@ -70,19 +71,19 @@ class PocksHistoryActivity : AppCompatActivity(){
         // Add refresh action
         swipePocksHistory.setOnRefreshListener {
             viewModel.refreshInformation()
-            binding.swipePocksHistory.isRefreshing = false
         }
 
     }
 
     private fun setDataRecyclerView(data: List<Pock>) {
-    var pockListBinding: List<BindingPockItem> = data.map { pock ->
-        var binding = BindingPockItem()
-        binding.pock = pock
-        binding
-    }
+        binding.swipePocksHistory.isRefreshing = false
+        val pockListBinding: List<BindingPockItem> = data.map { pock ->
+            val binding = BindingPockItem()
+            binding.pock = pock
+            binding
+        }
         //Fill and set the items to the ItemAdapter
-        itemAdapter.add(pockListBinding)
+        itemAdapter.setNewList(pockListBinding)
 
         //Hide progress bar when pocks history showed
         binding.newPockProgressBar.visibility = View.GONE
