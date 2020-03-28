@@ -7,6 +7,7 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -17,14 +18,8 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.*
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.FragmentMapBinding
@@ -75,7 +70,15 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         this.googleMap = googleMap
         runWithPermissions(Permission.ACCESS_COARSE_LOCATION, Permission.ACCESS_FINE_LOCATION) {
-
+            googleMap.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(
+                    context, R.raw.map_style
+                )
+            );
+            //  googleMap.setMinZoomPreference(6.0f);
+              googleMap.setMaxZoomPreference(19.0f);
+          val  uiSettings = googleMap.uiSettings
+            uiSettings.setScrollGesturesEnabled(false)
             setupMap();
 
             startLocationUpdates()
@@ -86,7 +89,7 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
                     value?.let {
                         when (value) {
                             is Resource.Success<*> -> handleSuccess(value as Resource.Success<List<Pock>>)
-                            //   is Resource.Error -> handleError(value.exception)
+                            is Resource.Error -> handleError()
                         }
                     }
                 })
@@ -104,7 +107,6 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
                     .target(latLng)
                     .zoom(getZoomForMetersWide(latLng, 500))
                     .build();
-
                 googleMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(center))
             }
 
@@ -156,7 +158,8 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
         )
     }
 
-
+    /*Link to know how to customize markers
+     *https://developers.google.com/maps/documentation/android-sdk/marker?hl=es*/
     private fun handleSuccess(list: Resource.Success<List<Pock>>) {
         list.data.let {
             it.map { pock ->
@@ -168,5 +171,14 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
                 val marker: Marker = googleMap!!.addMarker(MarkerOptions().position(latLng))
             }
         }
+    }
+
+    private fun handleError() {
+        val text = "No se pudieron obtener los pocks"
+        val duration = Toast.LENGTH_SHORT
+
+        val toast = Toast.makeText(context, text, duration)
+        toast.show()
+
     }
 }
