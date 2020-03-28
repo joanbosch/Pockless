@@ -77,14 +77,14 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
     private fun showFilterDialog() {
 
         val dialog: AlertDialog = AlertDialog.Builder(context!!)
-            .setTitle("Marca las categorías de Pock que desees ver en tu mapa...")
+            .setTitle(resources.getString(R.string.filter_dialog_text))
             .setMultiChoiceItems(
                 viewModel.categories,
                 viewModel.checkedItems
             ) { _, which, isChecked ->
                 viewModel.setFilterItem(which, isChecked)
             }
-            .setPositiveButton("Cerrar") { dialog, _ ->
+            .setPositiveButton(resources.getString(R.string.close_filter_button)) { dialog, _ ->
                 dialog.dismiss()
             }
             .create()

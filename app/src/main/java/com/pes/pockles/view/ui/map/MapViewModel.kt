@@ -15,18 +15,6 @@ class MapViewModel : ViewModel() {
     }
     lateinit var categories :Array<String>
     private val _currentLocation = MutableLiveData<Location?>()
-    /* val categories = arrayOf(
-        "Anuncios",
-        "Compra y Venta",
-        "Deportes",
-        "Entretenimiento",
-        "Mascotas",
-        "Salud",
-        "Tecnología",
-        "Tursimo",
-        "+18",
-        "Varios"
-    )*/
     val checkedItems = booleanArrayOf(true, true, true, true, true, true, true, true, true, true)
 
     init {
