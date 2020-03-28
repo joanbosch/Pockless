@@ -39,11 +39,10 @@
 
                 <!-- Title, secondary and supporting text -->
                 <TextView
+                    android:id="@+id/cardDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/cardDate"
-                    android:textAppearance="?attr/textAppearanceHeadline6"
-                    />
+                    android:textAppearance="?attr/textAppearanceHeadline6" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

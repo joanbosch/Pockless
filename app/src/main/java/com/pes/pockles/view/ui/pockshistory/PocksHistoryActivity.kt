@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.pes.pockles.R
@@ -19,22 +20,26 @@ class PocksHistoryActivity : AppCompatActivity(){
     private val viewModel: PocksHistoryViewModel by lazy {
         ViewModelProviders.of(this, ViewModelFactory()).get(PocksHistoryViewModel::class.java)
     }
+    // Create the ItemAdapter holding your Items
+    private val itemAdapter = ItemAdapter<BindingPockItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Initialize RecyclerView
-        // Create the ItemAdapter holding your Items
-        val itemAdapter = ItemAdapter<BindingPockItem>()
         // Create the managing FastAdapter, by passing in the itemAdapter
         val fastAdapter = FastAdapter.with(itemAdapter)
         // Set out adapters to the RecyclerView
-        binding.rvPocksHistory.adapter
-
-
+        var layoutManager = LinearLayoutManager(this)
 
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_pocks_history)
         binding.lifecycleOwner = this
         binding.pocksHistoryViewModel = viewModel
+
+
+        binding.rvPocksHistory.apply {
+            this.layoutManager = layoutManager
+            this.adapter = fastAdapter
+        }
 
         initializeObservers()
     }
@@ -57,11 +62,13 @@ class PocksHistoryActivity : AppCompatActivity(){
     }
 
     private fun setDataRecyclerView(data: List<Pock>) {
-    var a: List<Int> = data.map { pock ->
-        var s:Int = 5
-        s
+    var pockListBinding: List<BindingPockItem> = data.map { pock ->
+        var binding = BindingPockItem()
+        binding.pock = pock
+        binding
     }
-
+        //Fill and set the items to the ItemAdapter
+        itemAdapter.add(pockListBinding)
     }
 
 }
