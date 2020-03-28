@@ -7,7 +7,6 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -25,7 +24,6 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
@@ -68,7 +66,8 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment?
         mapFragment!!.getMapAsync(this)
-        binding.outlinedButton.setOnClickListener() {
+
+        binding.outlinedButton.setOnClickListener {
             showFilterDialog()
         }
 
@@ -76,29 +75,20 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun showFilterDialog() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        val categories = arrayOf("Anuncios", "Compra&Venta", "Deportes", "Entretenimiento", "Mascotas", "Salud", "Tecnología", "Tursimo", "+18", "Varios")
-        val checkedItems = booleanArrayOf(true, true, true, true, true, true, true, true, true, true)
-        lateinit var dialog: AlertDialog
-        val builder = context?.let { AlertDialog.Builder(it) }
-        builder?.setTitle("Marca las categorías de Pock que desees ver en tu mapa...")
 
+        val dialog: AlertDialog = AlertDialog.Builder(context!!)
+            .setTitle("Marca las categorías de Pock que desees ver en tu mapa...")
+            .setMultiChoiceItems(
+                viewModel.categories,
+                viewModel.checkedItems
+            ) { _, which, isChecked ->
+                viewModel.setFilterItem(which, isChecked)
+            }
+            .setPositiveButton("Cerrar") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
 
-        builder?.setMultiChoiceItems(categories, checkedItems, {dialog,which,isChecked->
-            // Update the clicked item checked status
-            categories[which] = isChecked.toString()
-            !checkedItems[which] //Keep new checked status
-
-            //envio de información [INCOMPLETO]
-        })
-
-        builder?.setPositiveButton("FILTRAR") { dialog, which ->
-            // Do something when user press the positive button
-
-        }
-        builder?.setNeutralButton("ATRÁS") { _, _ ->
-        }
-        dialog = builder?.create()
         dialog.show()
     }
 
@@ -111,7 +101,7 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
 
             startLocationUpdates()
 
-            viewModel.pocks.observe(
+            viewModel.getPocks().observe(
                 this,
                 Observer { value: Resource<List<Pock>>? ->
                     value?.let {
@@ -189,6 +179,7 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
 
 
     private fun handleSuccess(list: Resource.Success<List<Pock>>) {
+        googleMap!!.clear()
         list.data.let {
             it.map { pock ->
                 LatLng(
@@ -196,7 +187,7 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
                     pock.location.longitude
                 )
             }.forEach { latLng ->
-                val marker: Marker = googleMap!!.addMarker(MarkerOptions().position(latLng))
+                googleMap!!.addMarker(MarkerOptions().position(latLng))
             }
         }
     }
