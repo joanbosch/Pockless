@@ -7,6 +7,8 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -66,8 +68,38 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment?
         mapFragment!!.getMapAsync(this)
+        binding.outlinedButton.setOnClickListener() {
+            showFilterDialog()
+        }
 
         return binding.root
+    }
+
+    private fun showFilterDialog() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val categories = arrayOf("Anuncios", "Compra&Venta", "Deportes", "Entretenimiento", "Mascotas", "Salud", "Tecnología", "Tursimo", "+18", "Varios")
+        val checkedItems = booleanArrayOf(true, true, true, true, true, true, true, true, true, true)
+        lateinit var dialog: AlertDialog
+        val builder = context?.let { AlertDialog.Builder(it) }
+        builder?.setTitle("Marca las categorías de Pock que desees ver en tu mapa...")
+
+
+        builder?.setMultiChoiceItems(categories, checkedItems, {dialog,which,isChecked->
+            // Update the clicked item checked status
+            categories[which] = isChecked.toString()
+            !checkedItems[which] //Keep new checked status
+
+            //envio de información [INCOMPLETO]
+        })
+
+        builder?.setPositiveButton("FILTRAR") { dialog, which ->
+            // Do something when user press the positive button
+
+        }
+        builder?.setNeutralButton("ATRÁS") { _, _ ->
+        }
+        dialog = builder?.create()
+        dialog.show()
     }
 
 
