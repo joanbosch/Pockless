@@ -22,37 +22,30 @@ class PocksHistoryActivity : AppCompatActivity() {
     private val viewModel: PocksHistoryViewModel by lazy {
         ViewModelProviders.of(this, ViewModelFactory()).get(PocksHistoryViewModel::class.java)
     }
+
     // Create the ItemAdapter holding your Items
     private val itemAdapter = ItemAdapter<BindingPockItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
 
-        // Initialize RecyclerView
         // Create the managing FastAdapter, by passing in the itemAdapter
         val fastAdapter = FastAdapter.with(itemAdapter)
         // Set out adapters to the RecyclerView
         var layoutManager = LinearLayoutManager(this)
 
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_pocks_history)
         binding.lifecycleOwner = this
         binding.pocksHistoryViewModel = viewModel
 
+        // Apply necessary parameters to RecyclerView to inflate it
         binding.rvPocksHistory.apply {
             this.layoutManager = layoutManager
             this.adapter = fastAdapter
         }
 
-        //binding.loadingLayout.paddingTop = (binding.loadingLayout.height.toInt()/2)
-
         initializeObservers()
         viewModel.refreshInformation()
-    }
-
-    private fun initializeRecyclerView() {
-
     }
 
     private fun initializeObservers() {
@@ -68,7 +61,7 @@ class PocksHistoryActivity : AppCompatActivity() {
             }
         )
 
-        // Add refresh action
+        // Add refresh action for swipePocksHistory
         swipePocksHistory.setOnRefreshListener {
             viewModel.refreshInformation()
         }
