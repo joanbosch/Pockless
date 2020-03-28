@@ -10,7 +10,6 @@ import com.pes.pockles.util.extensions.forceRefresh
 
 class MapViewModel : ViewModel() {
 
-
     private val useCase: GetNearestPocksUseCase by lazy {
         GetNearestPocksUseCase()
     }
