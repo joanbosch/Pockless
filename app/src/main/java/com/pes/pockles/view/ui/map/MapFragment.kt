@@ -66,7 +66,7 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment?
         mapFragment!!.getMapAsync(this)
-
+        viewModel.categories = resources.getStringArray(R.array.categories)
         binding.outlinedButton.setOnClickListener {
             showFilterDialog()
         }

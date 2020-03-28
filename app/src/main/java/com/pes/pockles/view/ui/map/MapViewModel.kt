@@ -13,12 +13,11 @@ class MapViewModel : ViewModel() {
     private val useCase: GetNearestPocksUseCase by lazy {
         GetNearestPocksUseCase()
     }
-
+    lateinit var categories :Array<String>
     private val _currentLocation = MutableLiveData<Location?>()
-
-    val categories = arrayOf(
+    /* val categories = arrayOf(
         "Anuncios",
-        "Compra&Venta",
+        "Compra y Venta",
         "Deportes",
         "Entretenimiento",
         "Mascotas",
@@ -27,7 +26,7 @@ class MapViewModel : ViewModel() {
         "Tursimo",
         "+18",
         "Varios"
-    )
+    )*/
     val checkedItems = booleanArrayOf(true, true, true, true, true, true, true, true, true, true)
 
     init {
