@@ -1,6 +1,7 @@
 package com.pes.pockles.view.ui.pockshistory
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -14,6 +15,7 @@ import com.pes.pockles.databinding.ActivityPocksHistoryBinding
 import com.pes.pockles.model.BindingPockItem
 import com.pes.pockles.model.Pock
 import com.pes.pockles.view.viewmodel.ViewModelFactory
+import kotlinx.android.synthetic.main.activity_pocks_history.*
 
 class PocksHistoryActivity : AppCompatActivity(){
     private lateinit var binding: ActivityPocksHistoryBinding
@@ -24,24 +26,29 @@ class PocksHistoryActivity : AppCompatActivity(){
     private val itemAdapter = ItemAdapter<BindingPockItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        super.onCreate(savedInstanceState)
+
         // Initialize RecyclerView
         // Create the managing FastAdapter, by passing in the itemAdapter
         val fastAdapter = FastAdapter.with(itemAdapter)
         // Set out adapters to the RecyclerView
         var layoutManager = LinearLayoutManager(this)
 
-        super.onCreate(savedInstanceState)
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_pocks_history)
         binding.lifecycleOwner = this
         binding.pocksHistoryViewModel = viewModel
-
 
         binding.rvPocksHistory.apply {
             this.layoutManager = layoutManager
             this.adapter = fastAdapter
         }
 
+        //binding.loadingLayout.paddingTop = (binding.loadingLayout.height.toInt()/2)
+
         initializeObservers()
+        viewModel.refreshInformation()
     }
 
     private fun initializeRecyclerView() {
@@ -59,6 +66,13 @@ class PocksHistoryActivity : AppCompatActivity(){
                 }
             }
         )
+
+        // Add refresh action
+        swipePocksHistory.setOnRefreshListener {
+            viewModel.refreshInformation()
+            binding.swipePocksHistory.isRefreshing = false
+        }
+
     }
 
     private fun setDataRecyclerView(data: List<Pock>) {
@@ -69,6 +83,9 @@ class PocksHistoryActivity : AppCompatActivity(){
     }
         //Fill and set the items to the ItemAdapter
         itemAdapter.add(pockListBinding)
+
+        //Hide progress bar when pocks history showed
+        binding.newPockProgressBar.visibility = View.GONE
     }
 
 }
