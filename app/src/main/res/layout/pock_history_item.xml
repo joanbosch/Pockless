@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
     <data>
 
         <import type="com.pes.pockles.data.Resource" />
 
         <import type="android.view.View" />
+
+        <import type="com.pes.pockles.util.TimeUtils" />
+
+        <variable
+            name="pock"
+            type="com.pes.pockles.model.Pock" />
 
     </data>
 
@@ -42,23 +46,26 @@
                     android:id="@+id/cardDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{TimeUtils.getPockTime(pock)}"
                     android:textAppearance="?attr/textAppearanceHeadline6" />
+
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:id="@+id/cardCategory"
-                    android:layout_marginTop="8dp"
-                    android:textAppearance="?attr/textAppearanceBody2"
-                    android:textColor="?android:attr/textColorSecondary"
-                    />
-                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/cardMessage"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@{pock.category}"
                     android:textAppearance="?attr/textAppearanceBody2"
-                    android:textColor="?android:attr/textColorSecondary"
-                    />
+                    android:textColor="?android:attr/textColorSecondary" />
+
+                <TextView
+                    android:id="@+id/cardMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@{pock.message}"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textColor="?android:attr/textColorSecondary" />
 
             </LinearLayout>
 

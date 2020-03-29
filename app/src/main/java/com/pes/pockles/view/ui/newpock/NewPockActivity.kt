@@ -31,7 +31,7 @@ class NewPockActivity : AppCompatActivity() {
         initializeObservers()
 
         val spinner = binding.categoriesDropdown
-        spinner?.setAdapter(
+        spinner.setAdapter(
             ArrayAdapter(
                 this,
                 android.R.layout.simple_spinner_dropdown_item,
@@ -46,7 +46,7 @@ class NewPockActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun handleError(apiError : Boolean) {
+    private fun handleError(apiError: Boolean) {
         if (apiError)
             Toast.makeText(
                 this,
@@ -77,16 +77,13 @@ class NewPockActivity : AppCompatActivity() {
         viewModel.keyboardCallback.observe(
             this,
             Observer { value: Boolean ->
-                value?.let {
-                    if (value) {
-                        val inputManager: InputMethodManager =
-                            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                        inputManager.hideSoftInputFromWindow(
-                            currentFocus?.windowToken,
-                            InputMethodManager.SHOW_FORCED
-                        )
-                    }
-
+                if (value) {
+                    val inputManager: InputMethodManager =
+                        getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    inputManager.hideSoftInputFromWindow(
+                        currentFocus?.windowToken,
+                        InputMethodManager.SHOW_FORCED
+                    )
                 }
             }
         )
@@ -94,10 +91,8 @@ class NewPockActivity : AppCompatActivity() {
         viewModel.errorHandlerCallback.observe(
             this,
             Observer { value: Boolean ->
-                value?.let {
-                    if (value)
-                        handleError(false)
-                }
+                if (value)
+                    handleError(false)
             })
     }
 

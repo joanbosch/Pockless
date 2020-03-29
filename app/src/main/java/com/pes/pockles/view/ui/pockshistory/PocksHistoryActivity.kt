@@ -12,10 +12,9 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.ActivityPocksHistoryBinding
-import com.pes.pockles.model.BindingPockItem
+import com.pes.pockles.view.ui.pockshistory.item.BindingPockItem
 import com.pes.pockles.model.Pock
 import com.pes.pockles.view.viewmodel.ViewModelFactory
-import kotlinx.android.synthetic.main.activity_pocks_history.*
 
 class PocksHistoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPocksHistoryBinding
@@ -29,30 +28,18 @@ class PocksHistoryActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
 
-        // Initialize RecyclerView
-        // Create the managing FastAdapter, by passing in the itemAdapter
-        val fastAdapter = FastAdapter.with(itemAdapter)
-        // Set out adapters to the RecyclerView
-        var layoutManager = LinearLayoutManager(this)
-
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_pocks_history)
         binding.lifecycleOwner = this
         binding.pocksHistoryViewModel = viewModel
 
-        binding.rvPocksHistory.apply {
-            this.layoutManager = layoutManager
-            this.adapter = fastAdapter
-        }
 
-        //binding.loadingLayout.paddingTop = (binding.loadingLayout.height.toInt()/2)
+        binding.rvPocksHistory.let {
+            it.layoutManager = LinearLayoutManager(this)
+            it.adapter = FastAdapter.with(itemAdapter)
+        }
 
         initializeObservers()
         viewModel.refreshInformation()
-    }
-
-    private fun initializeRecyclerView() {
-
     }
 
     private fun initializeObservers() {
@@ -69,7 +56,7 @@ class PocksHistoryActivity : AppCompatActivity() {
         )
 
         // Add refresh action
-        swipePocksHistory.setOnRefreshListener {
+        binding.swipePocksHistory.setOnRefreshListener {
             viewModel.refreshInformation()
         }
 
@@ -77,8 +64,10 @@ class PocksHistoryActivity : AppCompatActivity() {
 
     private fun setDataRecyclerView(data: List<Pock>) {
         binding.swipePocksHistory.isRefreshing = false
+
         val pockListBinding: List<BindingPockItem> = data.map { pock ->
-            val binding = BindingPockItem()
+            val binding =
+                BindingPockItem()
             binding.pock = pock
             binding
         }
