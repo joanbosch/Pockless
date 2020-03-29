@@ -22,25 +22,13 @@ class NewPockViewModel : ViewModel() {
         NewPockUseCase()
     }
 
-    val loading: LiveData<Boolean>
-        get() = Transformations.map(networkCallback) { value: Resource<Pock>? ->
-            value != null && value is Resource.Loading
-        }
-
     val networkCallback: LiveData<Resource<Pock>?>
         get() = Transformations.switchMap(_pockToInsert) { value: NewPock? ->
             if (value != null) useCase.execute(value) else AbsentLiveData.create()
         }
 
-    val keyboardCallback: LiveData<Boolean>
-        get() = Transformations.map(networkCallback) { value: Resource<Pock>? ->
-            value != null && value is Resource.Loading
-        }
-
     val errorHandlerCallback: LiveData<Boolean>
-        get() = Transformations.map(_errorHandler) { value: Boolean ->
-            value
-        }
+        get() = _errorHandler
 
     init {
         _chatEnabled.value = false

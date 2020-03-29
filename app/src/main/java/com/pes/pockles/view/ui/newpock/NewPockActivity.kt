@@ -2,6 +2,7 @@ package com.pes.pockles.view.ui.newpock
 
 import android.content.Context
 import android.os.Bundle
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -30,8 +31,12 @@ class NewPockActivity : AppCompatActivity() {
 
         initializeObservers()
 
+        binding.closeButton.setOnClickListener {
+            finish()
+        }
+
         val spinner = binding.categoriesDropdown
-        spinner.setAdapter(
+        spinner?.setAdapter(
             ArrayAdapter(
                 this,
                 android.R.layout.simple_spinner_dropdown_item,
@@ -41,12 +46,14 @@ class NewPockActivity : AppCompatActivity() {
     }
 
     private fun handleSuccess() {
+        hideLoading()
         Toast.makeText(this, resources.getString(R.string.added_pock_message), Toast.LENGTH_SHORT)
             .show()
         finish()
     }
 
     private fun handleError(apiError: Boolean) {
+        hideLoading()
         if (apiError)
             Toast.makeText(
                 this,
@@ -69,31 +76,34 @@ class NewPockActivity : AppCompatActivity() {
                         is Resource.Error -> {
                             handleError(true)
                         }
+                        is Resource.Loading -> showLoading()
                     }
                 }
             })
-
-        //Closes keyboard when the pock is being inserted to DB
-        viewModel.keyboardCallback.observe(
-            this,
-            Observer { value: Boolean ->
-                if (value) {
-                    val inputManager: InputMethodManager =
-                        getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    inputManager.hideSoftInputFromWindow(
-                        currentFocus?.windowToken,
-                        InputMethodManager.SHOW_FORCED
-                    )
-                }
-            }
-        )
         //In case there are any error
         viewModel.errorHandlerCallback.observe(
             this,
             Observer { value: Boolean ->
-                if (value)
-                    handleError(false)
+                value?.let {
+                    if (value)
+                        handleError(false)
+                }
             })
+    }
+
+    private fun showLoading() {
+        val inputManager: InputMethodManager =
+            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(
+            currentFocus?.windowToken,
+            InputMethodManager.SHOW_FORCED
+        )
+
+        binding.newPockProgressBar.visibility = View.VISIBLE
+    }
+
+    private fun hideLoading() {
+        binding.newPockProgressBar.visibility = View.GONE
     }
 
 }
