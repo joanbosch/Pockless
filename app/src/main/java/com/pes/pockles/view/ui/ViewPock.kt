@@ -13,7 +13,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.pes.pockles.R
+import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.ViewPockBinding
+import com.pes.pockles.model.Pock
 
 class ViewPock : Fragment() {
 
@@ -43,7 +45,18 @@ class ViewPock : Fragment() {
         var id: String = ViewPockArgs.fromBundle(arguments!!).pockIdArg
         Toast.makeText(context, "Id: ${id}", Toast.LENGTH_LONG).show()
 
-        viewModel.loadPock(id)
+        viewModel.pockView.observe(
+            this,
+            Observer { value: Resource<Pock>? ->
+                value?.let {
+                    when (value) {
+                        is Resource.Success<Pock> -> setData(value.data)
+                    }
+                }
+            }
+         )
+
+        //viewModel.loadPock(id)
 
         // Observer for the Game finished event
         viewModel.goBack.observe(viewLifecycleOwner, Observer<Boolean> { backButtonPressed ->
@@ -63,6 +76,10 @@ class ViewPock : Fragment() {
         })
         return binding.root
 
+    }
+
+    private fun setData(data: Pock) {
+        viewModel.loadPock(data)
     }
 
     fun goBack(){
