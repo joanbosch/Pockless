@@ -33,4 +33,7 @@
         <item>Turismo</item>
         <item>+18</item>
     </string-array>
+
+    <!-- Map Resources -->
+    <string name="failed_loc">No se pudieron obtener los pocks</string>
 </resources>

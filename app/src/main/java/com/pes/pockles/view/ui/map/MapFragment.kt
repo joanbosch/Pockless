@@ -49,6 +49,8 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
         ViewModelProviders.of(this, ViewModelFactory()).get(MapViewModel::class.java)
     }
 
+    private val radio = 500
+    private val minDisplacement = 10.0f
     private var googleMap: GoogleMap? = null
 
     override fun onCreateView(
@@ -78,7 +80,6 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
                     context, R.raw.map_style
                 )
             );
-            //  googleMap.setMinZoomPreference(6.0f);
             googleMap.setMaxZoomPreference(19.0f);
             val uiSettings = googleMap.uiSettings
             uiSettings.isScrollGesturesEnabled = false
@@ -108,7 +109,7 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
                 val latLng = LatLng(location.latitude, location.longitude)
                 val center: CameraPosition = CameraPosition.Builder()
                     .target(latLng)
-                    .zoom(getZoomForMetersWide(latLng, 500))
+                    .zoom(getZoomForMetersWide(latLng, radio))
                     .build();
                 googleMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(center))
             }
@@ -137,7 +138,7 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
         return (ln(arg) / ln(2.0)).toFloat()
     }
 
-    private val mLocationCallback = object : LocationCallback() {
+    private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
             onLocationChanged(locationResult.lastLocation)
         }
@@ -154,10 +155,10 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
         locationRequest.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
         locationRequest.interval = INTERVAL
         locationRequest.fastestInterval = FASTEST_INTERVAL
-        locationRequest.smallestDisplacement = 10f // move 10 meters as minimum to get a callback
+        locationRequest.smallestDisplacement = minDisplacement // move minDisplacement to get a callback
 
         LocationServices.getFusedLocationProviderClient(activity!!).requestLocationUpdates(
-            locationRequest, mLocationCallback, Looper.myLooper()
+            locationRequest, locationCallback, Looper.myLooper()
         )
     }
 
@@ -177,7 +178,7 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun handleError() {
-        val text = "No se pudieron obtener los pocks"
+        val text = getString(R.string.failed_loc)
         val duration = Toast.LENGTH_SHORT
 
         val toast = Toast.makeText(context, text, duration)
