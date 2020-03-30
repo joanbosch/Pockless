@@ -64,7 +64,7 @@ class PocksHistoryActivity : AppCompatActivity() {
 
         // Action for back-button on toolbar
         binding.toolbar.setNavigationOnClickListener{
-            startActivity(Intent(this, MainActivity::class.java))
+            onBackPressed()
         }
 
         // Add refresh action
