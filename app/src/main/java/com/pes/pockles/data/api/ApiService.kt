@@ -1,6 +1,7 @@
 package com.pes.pockles.data.api
 
 import com.pes.pockles.BuildConfig
+import com.pes.pockles.model.NewPock
 import com.pes.pockles.model.Pock
 import io.reactivex.Single
 import okhttp3.Interceptor
@@ -10,6 +11,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 import java.util.concurrent.TimeUnit
 
@@ -32,9 +34,11 @@ interface ApiService {
     - ReturnType    -> The type of the object the API returns, it can be a List (List<ReturnType)
 
      */
+    @GET("pock/history")
+    fun pocksHistory(): Single<List<Pock>>
 
     @POST("pock")
-    fun newPock(@Body pock: Pock): Single<Pock>
+    fun newPock(@Body pock: NewPock): Single<Pock>
 
     companion object {
         /**

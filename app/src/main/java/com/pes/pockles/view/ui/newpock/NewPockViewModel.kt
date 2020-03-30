@@ -7,13 +7,14 @@ import androidx.lifecycle.ViewModel
 import com.pes.pockles.data.Resource
 import com.pes.pockles.domain.usecases.NewPockUseCase
 import com.pes.pockles.model.Location
+import com.pes.pockles.model.NewPock
 import com.pes.pockles.model.Pock
 import com.pes.pockles.util.AbsentLiveData
 
 class NewPockViewModel : ViewModel() {
     private val _errorHandler = MutableLiveData<Boolean>()
     private val _chatEnabled = MutableLiveData<Boolean>()
-    private val _pockToInsert = MutableLiveData<Pock?>()
+    private val _pockToInsert = MutableLiveData<NewPock?>()
     val pockContent = MutableLiveData<String>()
     val pockCategory = MutableLiveData<String>()
 
@@ -22,7 +23,7 @@ class NewPockViewModel : ViewModel() {
     }
 
     val networkCallback: LiveData<Resource<Pock>?>
-        get() = Transformations.switchMap(_pockToInsert) { value: Pock? ->
+        get() = Transformations.switchMap(_pockToInsert) { value: NewPock? ->
             if (value != null) useCase.execute(value) else AbsentLiveData.create()
         }
 
@@ -41,7 +42,7 @@ class NewPockViewModel : ViewModel() {
         if (pockContent.value == null)
             _errorHandler.value = true
         else {
-            _pockToInsert.value = Pock(
+            _pockToInsert.value = NewPock(
                 message = pockContent.value!!,
                 category = category,
                 chatAccess = _chatEnabled.value!!,

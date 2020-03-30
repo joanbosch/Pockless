@@ -55,6 +55,11 @@ dependencies {
     implementation 'com.mikepenz:fastadapter:3.3.1'
     implementation 'com.mikepenz:fastadapter-commons:3.3.1'
     implementation 'com.mikepenz:fastadapter-extensions:3.3.1'
+
+    implementation 'com.mikepenz:fastadapter-extensions-expandable:3.3.1'
+
+    implementation "com.mikepenz:fastadapter-extensions-binding:5.0.0" // diff util helpers
+
     //GSON
     implementation 'com.google.code.gson:gson:2.8.5'
     //Stetho
@@ -76,4 +81,8 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
+    // For Toolbar
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
 }
