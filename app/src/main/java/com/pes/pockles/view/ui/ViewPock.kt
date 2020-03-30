@@ -43,7 +43,7 @@ class ViewPock : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         var id: String = ViewPockArgs.fromBundle(arguments!!).pockIdArg
-        Toast.makeText(context, "Id: ${id}", Toast.LENGTH_LONG).show()
+        //Toast.makeText(context, "Id: ${id}", Toast.LENGTH_LONG).show()
 
         viewModel.pockView.observe(
             this,
