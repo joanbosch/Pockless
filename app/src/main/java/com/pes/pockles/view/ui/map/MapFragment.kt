@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.afollestad.assent.Permission
 import com.afollestad.assent.runWithPermissions
 import com.google.android.gms.location.LocationCallback
@@ -117,6 +118,11 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
                 Timber.d(error)
             }
         })
+        googleMap!!.setOnMarkerClickListener { marker ->
+            findNavController().navigate(MapFragmentDirections.actionMapFragmentToViewPock(marker.tag.toString()))
+            true
+
+        }
 
     }
 
@@ -165,13 +171,13 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
      *https://developers.google.com/maps/documentation/android-sdk/marker?hl=es*/
     private fun handleSuccess(list: Resource.Success<List<Pock>>) {
         list.data.let {
-            it.map { pock ->
-                LatLng(
+            it.forEach {pock ->
+                val latLng = LatLng(
                     pock.location.latitude,
                     pock.location.longitude
                 )
-            }.forEach { latLng ->
                 val marker: Marker = googleMap!!.addMarker(MarkerOptions().position(latLng))
+                marker.tag = pock.id
             }
         }
     }
