@@ -1,5 +1,6 @@
 package com.pes.pockles.view.ui.pockshistory
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,8 @@ import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.ActivityPocksHistoryBinding
 import com.pes.pockles.view.ui.pockshistory.item.BindingPockItem
 import com.pes.pockles.model.Pock
+import com.pes.pockles.view.ui.MainActivity
+import com.pes.pockles.view.ui.UserProfileFragment
 import com.pes.pockles.view.viewmodel.ViewModelFactory
 
 class PocksHistoryActivity : AppCompatActivity() {
@@ -32,6 +35,10 @@ class PocksHistoryActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.pocksHistoryViewModel = viewModel
 
+        // Add back-button to toolbar
+        setSupportActionBar(binding.toolbar)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setDisplayShowHomeEnabled(true)
 
         binding.rvPocksHistory.let {
             it.layoutManager = LinearLayoutManager(this)
@@ -54,6 +61,11 @@ class PocksHistoryActivity : AppCompatActivity() {
                 }
             }
         )
+
+        // Action for back-button on toolbar
+        binding.toolbar.setNavigationOnClickListener{
+            startActivity(Intent(this, MainActivity::class.java))
+        }
 
         // Add refresh action
         binding.swipePocksHistory.setOnRefreshListener {
