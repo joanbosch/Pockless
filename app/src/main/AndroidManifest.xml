@@ -15,12 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".view.ui.newpock.NewPockActivity"
+            android:name=".view.ui.NewPockActivity"
             android:label="@string/title_activity_new_pock"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity
-            android:name=".view.ui.pockshistory.PocksHistoryActivity"
-            android:label="@string/title_activity_pocks_history"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".view.ui.MainActivity">
             <intent-filter>
