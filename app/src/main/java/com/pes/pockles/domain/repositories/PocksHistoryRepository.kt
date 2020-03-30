@@ -1,10 +1,10 @@
 package com.pes.pockles.domain.repositories
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.pes.pockles.data.Resource
-import com.pes.pockles.model.NewPock
 import com.pes.pockles.model.Pock
 
-interface PockRepository {
-    fun newPock(pock: NewPock): LiveData<Resource<Pock>>
+interface PocksHistoryRepository {
+    fun getPocksHistory(): LiveData<Resource<List<Pock>>>
 }

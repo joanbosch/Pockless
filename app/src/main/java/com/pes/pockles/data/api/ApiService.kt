@@ -1,6 +1,7 @@
 package com.pes.pockles.data.api
 
 import com.pes.pockles.BuildConfig
+import com.pes.pockles.model.NewPock
 import com.pes.pockles.model.Pock
 import io.reactivex.Single
 import okhttp3.Interceptor
@@ -34,9 +35,11 @@ interface ApiService {
     - ReturnType    -> The type of the object the API returns, it can be a List (List<ReturnType)
 
      */
+    @GET("pock/history")
+    fun pocksHistory(): Single<List<Pock>>
 
     @POST("pock")
-    fun newPock(@Body pock: Pock): Single<Pock>
+    fun newPock(@Body pock: NewPock): Single<Pock>
 
     @GET("pock")
     fun getNearPocks(

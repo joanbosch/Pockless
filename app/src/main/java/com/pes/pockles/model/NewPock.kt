@@ -1,9 +1,8 @@
 package com.pes.pockles.model
 
-data class Pock(
+data class NewPock(
     val message: String,
     val category: String,
     val chatAccess: Boolean,
-    val location: Location,
-    val dateInserted : Long = 0L
+    val location: Location
 )
