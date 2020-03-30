@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".view.ui.newpock.NewPockActivity"
+            android:name=".view.ui.NewPockActivity"
             android:label="@string/title_activity_new_pock"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".view.ui.MainActivity">
@@ -25,7 +25,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAWdMmSmIipejU-RllmMzXIFa055bGnrcQ"/>
     </application>
 
 </manifest>

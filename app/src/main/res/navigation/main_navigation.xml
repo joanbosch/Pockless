@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_chat" />
     <fragment
         android:id="@+id/mapFragment"
-        android:name="com.pes.pockles.view.ui.MapFragment"
+        android:name="com.pes.pockles.view.ui.map.MapFragment"
         android:label="fragment_map"
         tools:layout="@layout/fragment_map" >
         <action

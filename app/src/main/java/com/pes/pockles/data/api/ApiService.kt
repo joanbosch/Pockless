@@ -13,6 +13,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
 
@@ -37,6 +38,12 @@ interface ApiService {
 
     @POST("pock")
     fun newPock(@Body pock: Pock): Single<Pock>
+
+    @GET("pock")
+    fun getNearPocks(
+        @Query("latitude") latitude: Double,
+        @Query("longitude") longitude: Double
+    ): Single<List<Pock>>
 
     @GET("pock/{id}")
     fun viewPock(@Path("id") id: String): Single<Pock>
