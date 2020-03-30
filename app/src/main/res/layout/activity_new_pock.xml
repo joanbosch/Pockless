@@ -10,6 +10,7 @@
 
         <import type="android.view.View" />
 
+        <import type="com.pes.pockles.data.Status"></import>
 
         <variable
             name="newPockViewModel"
@@ -44,11 +45,10 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <FrameLayout
-                android:id="@+id/share_button"
+                android:id="@+id/closeButton"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="16dp"
-
                 android:background="?selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
@@ -137,7 +137,7 @@
                 android:layout_marginTop="64dp"
                 android:minWidth="50dp"
                 android:minHeight="50dp"
-                android:visibility="@{newPockViewModel.loading? View.VISIBLE : View.GONE }" />
+                android:visibility="gone" />
 
         </LinearLayout>
 
