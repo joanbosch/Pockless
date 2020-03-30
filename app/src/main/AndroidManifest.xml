@@ -29,9 +29,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".view.ui.viewpock.ViewPockActivity"
+            android:theme="@style/ViewPock" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAWdMmSmIipejU-RllmMzXIFa055bGnrcQ"/>
+            android:value="AIzaSyAWdMmSmIipejU-RllmMzXIFa055bGnrcQ" />
     </application>
 
 </manifest>

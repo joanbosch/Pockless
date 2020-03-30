@@ -1,18 +1,17 @@
-package com.pes.pockles.view.ui
+package com.pes.pockles.view.ui.viewpock
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.pes.pockles.data.Resource
 import com.pes.pockles.domain.usecases.ViewPockUseCase
 import com.pes.pockles.model.Pock
-import com.pes.pockles.data.Resource
 
-class ViewPockViewModel : ViewModel(){
+class ViewPockViewModel : ViewModel() {
 
-    private val _pockView = MediatorLiveData<Resource<Pock>>()
-    val pockView: LiveData<Resource<Pock>>
-    get() = _pockView
+    private val useCase: ViewPockUseCase by lazy {
+        ViewPockUseCase();
+    }
 
     private val _pockMessage = MutableLiveData<String>()
     val pockMessage: LiveData<String>
@@ -48,14 +47,8 @@ class ViewPockViewModel : ViewModel(){
 
     }
 
-    public fun loadPock(pock: Pock) {
-        val useCase: ViewPockUseCase by lazy {
-            ViewPockUseCase();
-        }
-        _pockMessage.value = pock.message
-        //_pockAuthor.value = pock.user (pock.user is not implemented yet)
-        //For the moment just to test
-        _pockAuthor.value = "Carlos"
+    fun loadPock(pockId: String): LiveData<Resource<Pock>> {
+        return useCase.execute(pockId)
     }
 
     fun onBack() {
@@ -70,7 +63,7 @@ class ViewPockViewModel : ViewModel(){
         _goReport.value = true
     }
 
-    fun  onChat() {
+    fun onChat() {
         _goChat.value = true
     }
 

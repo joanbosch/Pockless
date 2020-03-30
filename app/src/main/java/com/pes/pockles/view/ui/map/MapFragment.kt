@@ -1,6 +1,7 @@
 package com.pes.pockles.view.ui.map
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Looper
 import android.util.DisplayMetrics
@@ -12,7 +13,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
 import com.afollestad.assent.Permission
 import com.afollestad.assent.runWithPermissions
 import com.google.android.gms.location.LocationCallback
@@ -30,6 +30,7 @@ import com.pes.pockles.databinding.FragmentMapBinding
 import com.pes.pockles.model.Pock
 import com.pes.pockles.util.LastLocationListener
 import com.pes.pockles.util.LocationUtils
+import com.pes.pockles.view.ui.viewpock.ViewPockActivity
 import com.pes.pockles.view.viewmodel.ViewModelFactory
 import timber.log.Timber
 import kotlin.math.cos
@@ -119,9 +120,10 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
             }
         })
         googleMap!!.setOnMarkerClickListener { marker ->
-            findNavController().navigate(MapFragmentDirections.actionMapFragmentToViewPock(marker.tag.toString()))
+            val intent = Intent(activity, ViewPockActivity::class.java)
+            intent.putExtra("markerId", marker.tag as String)
+            startActivity(intent)
             true
-
         }
 
     }
@@ -171,7 +173,7 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
      *https://developers.google.com/maps/documentation/android-sdk/marker?hl=es*/
     private fun handleSuccess(list: Resource.Success<List<Pock>>) {
         list.data.let {
-            it.forEach {pock ->
+            it.forEach { pock ->
                 val latLng = LatLng(
                     pock.location.latitude,
                     pock.location.longitude
