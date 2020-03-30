@@ -13,6 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
 
@@ -39,6 +40,12 @@ interface ApiService {
 
     @POST("pock")
     fun newPock(@Body pock: NewPock): Single<Pock>
+
+    @GET("pock")
+    fun getNearPocks(
+        @Query("latitude") latitude: Double,
+        @Query("longitude") longitude: Double
+    ): Single<List<Pock>>
 
     companion object {
         /**
