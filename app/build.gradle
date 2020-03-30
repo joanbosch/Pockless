@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: "org.jlleitschuh.gradle.ktlint"
 
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -85,4 +86,18 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
 
     implementation 'com.afollestad.assent:core:3.0.0-RC4'
+
+    //Firebase
+    implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
+    implementation 'com.google.firebase:firebase-analytics:17.2.2'
+
+//    classpath "com.firebaseui:firebase-ui-auth:3.3.1"
+    implementation 'com.google.firebase:firebase-auth:17.0.0'
+    implementation 'com.google.firebase:firebase-core:16.0.9'
+
+    //Facebook
+    implementation 'com.facebook.android:facebook-android-sdk:6.3.0'
+    //Twitter
+//    implementation 'com.twitter.sdk.android:twitter-core:3.0'
 }
+apply plugin: 'com.google.gms.google-services'

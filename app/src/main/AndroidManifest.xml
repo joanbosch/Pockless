@@ -22,6 +22,10 @@
             android:name=".view.ui.pockshistory.PocksHistoryActivity"
             android:label="@string/title_activity_pocks_history"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.ui.login.FirebaseActivity"
+            android:label="asdasd"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".view.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
