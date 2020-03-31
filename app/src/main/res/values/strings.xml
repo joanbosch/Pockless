@@ -17,7 +17,13 @@
     <string name="notifications_menu_item">Notificaciones</string>
     <string name="profile_menu_item">Perfil</string>
     <string name="close_filter_button">Cerrar</string>
-    <string name="filter_dialog_text">Marca las categorías de Pock que desees ver en tu mapa...</string>
+    <string name="filter_dialog_text">Marca las categorías de Pock que desees ver en tu mapa…</string>
+
+    <!-- Pocks History Resources -->
+    <string name="pocks_history_button">Historial de Pocks</string>
+    <string name="title_activity_pocks_history">NewPocksHistory</string>
+    <string name="message">Message</string>
+
     <string-array name="categories">
         <item>Anuncios</item>
         <item>Compra y Venta</item>
@@ -30,4 +36,7 @@
         <item>+18</item>
         <item>Varios</item>
     </string-array>
+
+    <!-- Map Resources -->
+    <string name="failed_loc">No se pudieron obtener los pocks</string>
 </resources>

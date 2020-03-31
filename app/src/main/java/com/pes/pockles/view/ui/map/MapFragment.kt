@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -25,6 +26,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.FragmentMapBinding
@@ -32,6 +34,7 @@ import com.pes.pockles.model.Pock
 import com.pes.pockles.util.LastLocationListener
 import com.pes.pockles.util.LocationUtils
 import com.pes.pockles.view.viewmodel.ViewModelFactory
+import timber.log.Timber
 import kotlin.math.cos
 import kotlin.math.ln
 
@@ -50,6 +53,8 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
         ViewModelProviders.of(this, ViewModelFactory()).get(MapViewModel::class.java)
     }
 
+    private val radio = 500
+    private val minDisplacement = 10.0f
     private var googleMap: GoogleMap? = null
 
     override fun onCreateView(
@@ -96,7 +101,14 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         this.googleMap = googleMap
         runWithPermissions(Permission.ACCESS_COARSE_LOCATION, Permission.ACCESS_FINE_LOCATION) {
-
+            googleMap.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(
+                    context, R.raw.map_style
+                )
+            );
+            googleMap.setMaxZoomPreference(19.0f);
+            val uiSettings = googleMap.uiSettings
+            uiSettings.isScrollGesturesEnabled = false
             setupMap();
 
             startLocationUpdates()
@@ -107,7 +119,7 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
                     value?.let {
                         when (value) {
                             is Resource.Success<*> -> handleSuccess(value as Resource.Success<List<Pock>>)
-                            //   is Resource.Error -> handleError(value.exception)
+                            is Resource.Error -> handleError()
                         }
                     }
                 })
@@ -123,14 +135,13 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
                 val latLng = LatLng(location.latitude, location.longitude)
                 val center: CameraPosition = CameraPosition.Builder()
                     .target(latLng)
-                    .zoom(getZoomForMetersWide(latLng, 500))
+                    .zoom(getZoomForMetersWide(latLng, radio))
                     .build();
-
                 googleMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(center))
             }
 
             override fun onLocationError(error: Throwable?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Timber.d(error)
             }
         })
 
@@ -153,7 +164,7 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
         return (ln(arg) / ln(2.0)).toFloat()
     }
 
-    private val mLocationCallback = object : LocationCallback() {
+    private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
             onLocationChanged(locationResult.lastLocation)
         }
@@ -170,14 +181,15 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
         locationRequest.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
         locationRequest.interval = INTERVAL
         locationRequest.fastestInterval = FASTEST_INTERVAL
-        locationRequest.smallestDisplacement = 10f // move 10 meters as minimum to get a callback
+        locationRequest.smallestDisplacement = minDisplacement // move minDisplacement to get a callback
 
         LocationServices.getFusedLocationProviderClient(activity!!).requestLocationUpdates(
-            locationRequest, mLocationCallback, Looper.myLooper()
+            locationRequest, locationCallback, Looper.myLooper()
         )
     }
 
-
+    /*Link to know how to customize markers
+     *https://developers.google.com/maps/documentation/android-sdk/marker?hl=es*/
     private fun handleSuccess(list: Resource.Success<List<Pock>>) {
         googleMap!!.clear()
         list.data.let {
@@ -190,5 +202,14 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
                 googleMap!!.addMarker(MarkerOptions().position(latLng))
             }
         }
+    }
+
+    private fun handleError() {
+        val text = getString(R.string.failed_loc)
+        val duration = Toast.LENGTH_SHORT
+
+        val toast = Toast.makeText(context, text, duration)
+        toast.show()
+
     }
 }
