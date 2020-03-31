@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
 
-  >
+    >
 
     <data>
 
@@ -25,5 +25,12 @@
             android:layout_height="match_parent"
             tools:context=".view.ui.map.MapFragment"
             />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/outlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_filter_list_black_24dp"
+            app:useCompatPadding="true"
+            app:fabSize="mini"/>
    </FrameLayout>
 </layout>

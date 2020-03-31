@@ -7,6 +7,7 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -22,6 +23,9 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.*
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
@@ -67,8 +71,30 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment?
         mapFragment!!.getMapAsync(this)
+        viewModel.categories = resources.getStringArray(R.array.categories)
+        binding.outlinedButton.setOnClickListener {
+            showFilterDialog()
+        }
 
         return binding.root
+    }
+
+    private fun showFilterDialog() {
+
+        val dialog: AlertDialog = AlertDialog.Builder(context!!)
+            .setTitle(resources.getString(R.string.filter_dialog_text))
+            .setMultiChoiceItems(
+                viewModel.categories,
+                viewModel.checkedItems
+            ) { _, which, isChecked ->
+                viewModel.setFilterItem(which, isChecked)
+            }
+            .setPositiveButton(resources.getString(R.string.close_filter_button)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+
+        dialog.show()
     }
 
 
@@ -87,7 +113,7 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
 
             startLocationUpdates()
 
-            viewModel.pocks.observe(
+            viewModel.getPocks().observe(
                 this,
                 Observer { value: Resource<List<Pock>>? ->
                     value?.let {
@@ -165,6 +191,7 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
     /*Link to know how to customize markers
      *https://developers.google.com/maps/documentation/android-sdk/marker?hl=es*/
     private fun handleSuccess(list: Resource.Success<List<Pock>>) {
+        googleMap!!.clear()
         list.data.let {
             it.map { pock ->
                 LatLng(
@@ -172,7 +199,7 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
                     pock.location.longitude
                 )
             }.forEach { latLng ->
-                val marker: Marker = googleMap!!.addMarker(MarkerOptions().position(latLng))
+                googleMap!!.addMarker(MarkerOptions().position(latLng))
             }
         }
     }
