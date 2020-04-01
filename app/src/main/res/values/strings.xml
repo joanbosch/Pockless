@@ -19,6 +19,8 @@
     <string name="close_filter_button">Cerrar</string>
     <string name="filter_dialog_text">Marca las categorías de Pock que desees ver en tu mapa…</string>
 
+    <string name="user_format">User: %s</string>
+
     <!-- Pocks History Resources -->
     <string name="pocks_history_button">Historial de Pocks</string>
     <string name="title_activity_pocks_history">NewPocksHistory</string>
