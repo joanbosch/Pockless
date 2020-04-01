@@ -13,14 +13,6 @@ class ViewPockViewModel : ViewModel() {
         ViewPockUseCase();
     }
 
-    private val _pockMessage = MutableLiveData<String>()
-    val pockMessage: LiveData<String>
-        get() = _pockMessage
-
-    private val _pockAuthor = MutableLiveData<String>()
-    val pockAuthor: LiveData<String>
-        get() = _pockAuthor
-
     private val _goShare = MutableLiveData<Boolean>()
     val goShare: LiveData<Boolean>
         get() = _goShare
@@ -38,8 +30,6 @@ class ViewPockViewModel : ViewModel() {
         get() = _goBack
 
     init {
-        _pockMessage.value = ""
-        _pockAuthor.value = ""
         _goBack.value = false
         _goShare.value = false
         _goReport.value = false
