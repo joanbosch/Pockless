@@ -37,12 +37,7 @@
     <!-- Map Resources -->
     <string name="failed_loc">No se pudieron obtener los pocks</string>
 
-
-<!--    &lt;!&ndash; Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). &ndash;&gt;-->
-<!--    <string name="facebook_application_id" translatable="false">pockles</string>-->
-<!--    <string name="facebook_login_protocol_scheme" translatable="false">pockles</string>-->
-<!--    &lt;!&ndash; Twitter consumer key and secret &ndash;&gt;-->
-<!--    <string name="twitter_consumer_key" translatable="false">YOUR_CONSUMER_KEY</string>-->
-<!--    <string name="twitter_consumer_secret" translatable="false">YOUR_CONSUMER_SECRET</string>-->
+    <string name="facebook_application_id" translatable="false">1291320611078328</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb1291320611078328</string>
 
 </resources>

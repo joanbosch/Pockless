@@ -1,6 +1,7 @@
 package com.pes.pockles
 
 import android.app.Application
+import com.google.firebase.FirebaseApp
 import timber.log.Timber
 
 class PocklesApplication : Application(){
@@ -11,6 +12,8 @@ class PocklesApplication : Application(){
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
+
+        FirebaseApp.initializeApp(this)
     }
 
 }
