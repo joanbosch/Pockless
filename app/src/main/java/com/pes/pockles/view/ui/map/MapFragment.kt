@@ -8,6 +8,7 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -23,6 +24,9 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.*
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
@@ -51,6 +55,8 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
         ViewModelProviders.of(this, ViewModelFactory()).get(MapViewModel::class.java)
     }
 
+    private val radio = 500
+    private val minDisplacement = 10.0f
     private var googleMap: GoogleMap? = null
 
     override fun onCreateView(
@@ -67,8 +73,30 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment?
         mapFragment!!.getMapAsync(this)
+        viewModel.categories = resources.getStringArray(R.array.categories)
+        binding.outlinedButton.setOnClickListener {
+            showFilterDialog()
+        }
 
         return binding.root
+    }
+
+    private fun showFilterDialog() {
+
+        val dialog: AlertDialog = AlertDialog.Builder(context!!)
+            .setTitle(resources.getString(R.string.filter_dialog_text))
+            .setMultiChoiceItems(
+                viewModel.categories,
+                viewModel.checkedItems
+            ) { _, which, isChecked ->
+                viewModel.setFilterItem(which, isChecked)
+            }
+            .setPositiveButton(resources.getString(R.string.close_filter_button)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+
+        dialog.show()
     }
 
 
@@ -80,7 +108,6 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
                     context, R.raw.map_style
                 )
             );
-            //  googleMap.setMinZoomPreference(6.0f);
             googleMap.setMaxZoomPreference(19.0f);
             val uiSettings = googleMap.uiSettings
             uiSettings.isScrollGesturesEnabled = false
@@ -88,7 +115,7 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
 
             startLocationUpdates()
 
-            viewModel.pocks.observe(
+            viewModel.getPocks().observe(
                 this,
                 Observer { value: Resource<List<Pock>>? ->
                     value?.let {
@@ -110,7 +137,7 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
                 val latLng = LatLng(location.latitude, location.longitude)
                 val center: CameraPosition = CameraPosition.Builder()
                     .target(latLng)
-                    .zoom(getZoomForMetersWide(latLng, 500))
+                    .zoom(getZoomForMetersWide(latLng, radio))
                     .build();
                 googleMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(center))
             }
@@ -145,7 +172,7 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
         return (ln(arg) / ln(2.0)).toFloat()
     }
 
-    private val mLocationCallback = object : LocationCallback() {
+    private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
             onLocationChanged(locationResult.lastLocation)
         }
@@ -162,16 +189,17 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
         locationRequest.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
         locationRequest.interval = INTERVAL
         locationRequest.fastestInterval = FASTEST_INTERVAL
-        locationRequest.smallestDisplacement = 10f // move 10 meters as minimum to get a callback
+        locationRequest.smallestDisplacement = minDisplacement // move minDisplacement to get a callback
 
         LocationServices.getFusedLocationProviderClient(activity!!).requestLocationUpdates(
-            locationRequest, mLocationCallback, Looper.myLooper()
+            locationRequest, locationCallback, Looper.myLooper()
         )
     }
 
     /*Link to know how to customize markers
      *https://developers.google.com/maps/documentation/android-sdk/marker?hl=es*/
     private fun handleSuccess(list: Resource.Success<List<Pock>>) {
+        googleMap!!.clear()
         list.data.let {
             it.forEach { pock ->
                 val latLng = LatLng(
@@ -185,7 +213,7 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun handleError() {
-        val text = "No se pudieron obtener los pocks"
+        val text = getString(R.string.failed_loc)
         val duration = Toast.LENGTH_SHORT
 
         val toast = Toast.makeText(context, text, duration)

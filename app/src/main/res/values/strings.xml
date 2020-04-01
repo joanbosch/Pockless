@@ -16,6 +16,8 @@
     <string name="chat_menu_item">Chats</string>
     <string name="notifications_menu_item">Notificaciones</string>
     <string name="profile_menu_item">Perfil</string>
+    <string name="close_filter_button">Cerrar</string>
+    <string name="filter_dialog_text">Marca las categorías de Pock que desees ver en tu mapa…</string>
 
     <string name="user_format">User: %s</string>
 
@@ -34,5 +36,9 @@
         <item>Tecnología</item>
         <item>Turismo</item>
         <item>+18</item>
+        <item>Varios</item>
     </string-array>
+
+    <!-- Map Resources -->
+    <string name="failed_loc">No se pudieron obtener los pocks</string>
 </resources>
