@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
@@ -37,6 +38,8 @@ class ViewPockActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.view_pock)
 
+        binding.loading.visibility = View.VISIBLE
+
         binding.pockViewModel = viewModel
         binding.lifecycleOwner = this
 
@@ -45,7 +48,10 @@ class ViewPockActivity : AppCompatActivity() {
             Observer { value: Resource<Pock>? ->
                 value?.let {
                     when (value) {
-                        is Resource.Success<Pock> -> binding.pock = value.data
+                        is Resource.Success<Pock> -> {
+                            binding.loading.visibility = View.GONE
+                            binding.pock = value.data
+                        }
                     }
                 }
             }

@@ -97,6 +97,16 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <ProgressBar
+                    android:id="@+id/loading"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:indeterminateDrawable="@drawable/loading_view_pock"
+                    android:indeterminateDuration="@android:integer/config_longAnimTime">
+
+                </ProgressBar>
+
                 <TextView
                     android:id="@+id/pock_message"
                     android:layout_width="match_parent"
