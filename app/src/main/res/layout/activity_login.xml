@@ -1,8 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:gravity="top|left"
+                app:srcCompat="@drawable/ic_logo" />
+
+            <!--        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton-->
+            <!--            android:layout_width="wrap_content"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:layout_margin="8dp"-->
+            <!--            android:contentDescription="GORA ETA"-->
+            <!--            android:text="GORA ETA"-->
+            <!--            app:icon="@drawable/ic_mail"-->
+
+            <!--            app:layout_anchorGravity="bottom|right|end"/>-->
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/emailbutton"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="50dp"
+                android:text="Iniciar sesión con tu e-mail"
+                android:textColor="#434343"
+                app:backgroundTint="#F3F3F3"
+                app:cornerRadius="25dp"
+                app:icon="@drawable/ic_mail" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/telephopnebutton"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:text="Iniciar sesión con el teléfono"
+                android:textColor="#434343"
+                app:backgroundTint="#F3F3F3"
+                app:cornerRadius="25dp"
+                app:icon="@drawable/ic_local_phone_black_24dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/facebookButton"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="65dp"
+                android:text="Iniciar sesión con Facebook"
+                android:textColor="#434343"
+                app:backgroundTint="#F3F3F3"
+                app:cornerRadius="25dp"
+                app:icon="@drawable/ic_facebook" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+            <!--            <com.google.android.material.button.MaterialButton-->
+            <!--                android:id="@+id/signupbutton"-->
+            <!--                style="@style/Widget.MaterialComponents.Button.TextButton"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginEnd="102dp"-->
+            <!--                android:text="Regístrate"-->
+            <!--                android:textAllCaps="false"-->
+            <!--                android:textColor="@android:color/secondary_text_light"-->
+            <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+            <TextView
+                android:id="@+id/text_view_id2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="¿No tienes cuenta?"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/text_view_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:text="Utiliza cualqueira de las opciones " />
+
+            <TextView
+                android:id="@+id/text_view_id3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_gravity="center"
+                android:text="ateriores para registrarte" />
 
 
+        </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

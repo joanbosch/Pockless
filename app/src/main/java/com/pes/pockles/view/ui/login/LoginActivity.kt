@@ -4,19 +4,24 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import com.firebase.ui.auth.AuthMethodPickerLayout
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
 import com.pes.pockles.R
+import com.pes.pockles.databinding.ActivityLoginBinding
 import com.pes.pockles.model.PreferencesManager
 import timber.log.Timber
 
 
 class LoginActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityLoginBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         createSignInIntent()
     }
 
@@ -29,18 +34,19 @@ class LoginActivity : AppCompatActivity() {
 //            AuthUI.IdpConfig.TwitterBuilder().build())
         )
 
-//        val customLayout =
-//            AuthMethodPickerLayout.Builder(R.layout.activity_login)
-//                .setFacebookButtonId()
-//                .setEmailButtonId()
-//                .setPhoneButtonId()
-//                .build()
+        val customLayout =
+            AuthMethodPickerLayout.Builder(R.layout.activity_login)
+                .setFacebookButtonId(binding.facebookButton.id)
+                .setEmailButtonId(binding.emailbutton.id)
+                .setPhoneButtonId(binding.telephopnebutton.id)
+                .build()
 
         // Create and launch sign-in intent
         startActivityForResult(
             AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
+                .setAuthMethodPickerLayout(customLayout)
                 .build(),
             RC_SIGN_IN
         )
