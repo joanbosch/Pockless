@@ -12,6 +12,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.pes.pockles.R
 import com.pes.pockles.databinding.ActivityLoginBinding
 import com.pes.pockles.model.PreferencesManager
+import com.pes.pockles.view.ui.MainActivity
+import com.pes.pockles.view.ui.newpock.NewPockActivity
 import timber.log.Timber
 
 
@@ -23,22 +25,21 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         createSignInIntent()
+        this.supportActionBar?.hide()
     }
 
     private fun createSignInIntent() {
         val providers = arrayListOf(
             AuthUI.IdpConfig.EmailBuilder().build(),
-            AuthUI.IdpConfig.PhoneBuilder().build(),
-//            AuthUI.IdpConfig.GoogleBuilder().build(),
+            AuthUI.IdpConfig.GoogleBuilder().build(),
             AuthUI.IdpConfig.FacebookBuilder().build()
-//            AuthUI.IdpConfig.TwitterBuilder().build())
         )
-
+        //Creates the custom layout and binds buttons to login methods
         val customLayout =
             AuthMethodPickerLayout.Builder(R.layout.activity_login)
                 .setFacebookButtonId(binding.facebookButton.id)
                 .setEmailButtonId(binding.emailbutton.id)
-                .setPhoneButtonId(binding.telephopnebutton.id)
+                .setGoogleButtonId(binding.googleButton.id)
                 .build()
 
         // Create and launch sign-in intent
@@ -56,7 +57,6 @@ class LoginActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == RC_SIGN_IN) {
-            IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
                 // Successfully signed in
                 val user = FirebaseAuth.getInstance().currentUser
@@ -65,10 +65,11 @@ class LoginActivity : AppCompatActivity() {
                         val idToken = task.result!!.token
                         PreferencesManager.setToken(idToken)
                         Timber.d(idToken)
-                        // Send token to the backend???
                     } else { // Handle error -> task.getException() and make things;
                     }
                 }
+
+                startActivity(Intent(this, MainActivity::class.java))
             } else {
                 // Sign in failed. If response is null the user canceled the
                 // sign-in flow using the back button. Otherwise check

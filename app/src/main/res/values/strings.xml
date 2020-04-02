@@ -39,5 +39,8 @@
 
     <string name="facebook_application_id" translatable="false">1291320611078328</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb1291320611078328</string>
+    <string name="google_signin">Iniciar sesión con Google     </string>
+    <string name="facebook_sign_in">Iniciar sesión con Facebook</string>
+    <string name="email_sign_in">Iniciar sesión con tu e-mail</string>
 
 </resources>
