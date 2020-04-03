@@ -7,14 +7,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.firebase.ui.auth.AuthMethodPickerLayout
 import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
 import com.pes.pockles.R
 import com.pes.pockles.databinding.ActivityLoginBinding
 import com.pes.pockles.model.PreferencesManager
 import com.pes.pockles.view.ui.MainActivity
-import com.pes.pockles.view.ui.newpock.NewPockActivity
-import timber.log.Timber
 
 
 class LoginActivity : AppCompatActivity() {
@@ -25,7 +22,6 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         createSignInIntent()
-        this.supportActionBar?.hide()
     }
 
     private fun createSignInIntent() {
@@ -48,11 +44,13 @@ class LoginActivity : AppCompatActivity() {
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
                 .setAuthMethodPickerLayout(customLayout)
+                .setTheme(R.style.Login)
                 .build(),
             RC_SIGN_IN
         )
     }
 
+    // When login process finishes
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -64,11 +62,10 @@ class LoginActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                         val idToken = task.result!!.token
                         PreferencesManager.setToken(idToken)
-                        Timber.d(idToken)
-                    } else { // Handle error -> task.getException() and make things;
+                    } else { // Handle error -> task.getException() and make things, Out of scope;
                     }
                 }
-
+                //The user has logged in
                 startActivity(Intent(this, MainActivity::class.java))
             } else {
                 // Sign in failed. If response is null the user canceled the
@@ -78,6 +75,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    //This method will be useful for User profile
     private fun signOut() {
         // [START auth_fui_signout]
         AuthUI.getInstance()
@@ -88,6 +86,7 @@ class LoginActivity : AppCompatActivity() {
         // [END auth_fui_signout]
     }
 
+    //This method will be useful for User profile
     private fun delete() {
         // full account delete
         AuthUI.getInstance()
