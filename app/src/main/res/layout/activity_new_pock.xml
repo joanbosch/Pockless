@@ -10,8 +10,6 @@
 
         <import type="android.view.View" />
 
-        <import type="com.pes.pockles.data.Status"></import>
-
         <variable
             name="newPockViewModel"
             type="com.pes.pockles.view.ui.newpock.NewPockViewModel" />

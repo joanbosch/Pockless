@@ -9,6 +9,7 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -24,6 +25,8 @@ class ViewPockActivity : AppCompatActivity() {
     private val viewModel: ViewPockViewModel by lazy {
         ViewModelProviders.of(this, ViewModelFactory()).get(ViewPockViewModel::class.java)
     }
+
+    private lateinit var pock: Pock
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,8 +52,9 @@ class ViewPockActivity : AppCompatActivity() {
                 value?.let {
                     when (value) {
                         is Resource.Success<Pock> -> {
+                            this.pock = value.data
                             binding.loading.visibility = View.GONE
-                            binding.pock = value.data
+                            binding.pock = this.pock
                         }
                     }
                 }
@@ -95,14 +99,9 @@ class ViewPockActivity : AppCompatActivity() {
 
     // Starting an Activity with our new Intent
     private fun shareSuccess() {
-        startActivity(getShareIntent())
-    }
-
-    // Creating our Share Intent
-    private fun getShareIntent(): Intent {
         val shareIntent = Intent(Intent.ACTION_SEND)
-        shareIntent.setType("text/plain").putExtra(Intent.EXTRA_TEXT, binding.pock.message)
-        return shareIntent
+        shareIntent.setType("text/plain").putExtra(Intent.EXTRA_TEXT, this.pock.message)
+        startActivity(shareIntent)
     }
 
     private fun setUpWindow() {
@@ -115,7 +114,14 @@ class ViewPockActivity : AppCompatActivity() {
         params.alpha = 1.0f // lower than one makes it more transparent
         params.dimAmount = .6f
         window.attributes = params
-        window.setBackgroundDrawable(ColorDrawable(resources.getColor(android.R.color.transparent)))
+        window.setBackgroundDrawable(
+            ColorDrawable(
+                ContextCompat.getColor(
+                    this,
+                    android.R.color.transparent
+                )
+            )
+        )
         val display = windowManager.defaultDisplay
         val size = Point()
         display.getSize(size)
