@@ -10,8 +10,6 @@
 
         <import type="android.view.View" />
 
-        <import type="com.pes.pockles.data.Status"></import>
-
         <variable
             name="newPockViewModel"
             type="com.pes.pockles.view.ui.newpock.NewPockViewModel" />
@@ -37,7 +35,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"
-                android:onClick="@{() -> newPockViewModel.insertPock()}"
                 android:text="@string/pockear_button"
                 android:textColor="@android:color/white"
                 app:backgroundTint="@color/colorAccent"

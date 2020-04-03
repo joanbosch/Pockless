@@ -18,6 +18,7 @@ class NewPockViewModel : ViewModel() {
     val pockContent = MutableLiveData<String>()
     val pockCategory = MutableLiveData<String>()
 
+
     private val useCase: NewPockUseCase by lazy {
         NewPockUseCase()
     }
@@ -34,7 +35,7 @@ class NewPockViewModel : ViewModel() {
         _chatEnabled.value = false
     }
 
-    fun insertPock() {
+    fun insertPock(location: Location) {
         val category: String = if (pockCategory.value == null)
             "General"
         else pockCategory.value.toString()
@@ -46,7 +47,7 @@ class NewPockViewModel : ViewModel() {
                 message = pockContent.value!!,
                 category = category,
                 chatAccess = _chatEnabled.value!!,
-                location = Location(0.0, 0.0) // obtain current location
+                location = location
             )
         }
     }

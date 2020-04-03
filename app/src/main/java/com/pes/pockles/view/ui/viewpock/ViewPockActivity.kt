@@ -76,12 +76,10 @@ class ViewPockActivity : AppCompatActivity() {
     }
 
     private fun goBack() {
-        Toast.makeText(this, "Pock View is closed!", Toast.LENGTH_SHORT).show()
         onBackPressed()
     }
 
     private fun goShare() {
-        Toast.makeText(this, "Loading share options", Toast.LENGTH_SHORT).show()
         shareSuccess()
     }
 
@@ -101,7 +99,7 @@ class ViewPockActivity : AppCompatActivity() {
     // Creating our Share Intent
     private fun getShareIntent(): Intent {
         val shareIntent = Intent(Intent.ACTION_SEND)
-        shareIntent.setType("text/plain").putExtra(Intent.EXTRA_TEXT, binding.pock.message)
+        shareIntent.setType("text/plain").putExtra(Intent.EXTRA_TEXT, binding.pock?.message)
         return shareIntent
     }
 

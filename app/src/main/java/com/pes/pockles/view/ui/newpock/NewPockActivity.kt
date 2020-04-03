@@ -13,7 +13,9 @@ import androidx.lifecycle.ViewModelProviders
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.ActivityNewPockBinding
+import com.pes.pockles.model.Location
 import com.pes.pockles.model.Pock
+import com.pes.pockles.util.LocationUtils.Companion.getLastLocation
 import com.pes.pockles.view.viewmodel.ViewModelFactory
 
 class NewPockActivity : AppCompatActivity() {
@@ -35,8 +37,16 @@ class NewPockActivity : AppCompatActivity() {
             finish()
         }
 
+        binding.pockButton.setOnClickListener {
+            getLastLocation(this, {
+                viewModel.insertPock(Location(it.latitude, it.longitude))
+            }, {
+                handleError(true)
+            })
+        }
+
         val spinner = binding.categoriesDropdown
-        spinner?.setAdapter(
+        spinner.setAdapter(
             ArrayAdapter(
                 this,
                 android.R.layout.simple_spinner_dropdown_item,
@@ -84,7 +94,7 @@ class NewPockActivity : AppCompatActivity() {
         viewModel.errorHandlerCallback.observe(
             this,
             Observer { value: Boolean ->
-                value?.let {
+                value.let {
                     if (value)
                         handleError(false)
                 }
