@@ -22,12 +22,9 @@
             android:name=".view.ui.pockshistory.PocksHistoryActivity"
             android:label="@string/title_activity_pocks_history"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".view.ui.login.LoginActivity"
-            android:label="asdasd"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".view.ui.MainActivity" />
-        <activity android:name=".view.ui.login.BrandledLaunchActivity">
+        <activity android:name=".view.ui.login.LaunchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,6 +34,7 @@
         <activity
             android:name=".view.ui.viewpock.ViewPockActivity"
             android:theme="@style/ViewPock" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAWdMmSmIipejU-RllmMzXIFa055bGnrcQ" />

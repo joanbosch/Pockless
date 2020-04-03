@@ -4,24 +4,25 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import com.firebase.ui.auth.AuthMethodPickerLayout
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.pes.pockles.R
-import com.pes.pockles.databinding.ActivityLoginBinding
 import com.pes.pockles.model.PreferencesManager
 import com.pes.pockles.view.ui.MainActivity
 
-
-class LoginActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityLoginBinding
+class LaunchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
-        createSignInIntent()
+
+        var user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+        if (user == null) {
+            createSignInIntent()
+        } else {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
     }
 
     private fun createSignInIntent() {
@@ -33,9 +34,9 @@ class LoginActivity : AppCompatActivity() {
         //Creates the custom layout and binds buttons to login methods
         val customLayout =
             AuthMethodPickerLayout.Builder(R.layout.activity_login)
-                .setFacebookButtonId(binding.facebookButton.id)
-                .setEmailButtonId(binding.emailbutton.id)
-                .setGoogleButtonId(binding.googleButton.id)
+                .setFacebookButtonId(R.id.facebookButton)
+                .setEmailButtonId(R.id.emailButton)
+                .setGoogleButtonId(R.id.googleButton)
                 .build()
 
         // Create and launch sign-in intent
@@ -100,5 +101,4 @@ class LoginActivity : AppCompatActivity() {
     companion object {
         private const val RC_SIGN_IN = 123
     }
-
 }

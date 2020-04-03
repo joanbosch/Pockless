@@ -4,6 +4,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_new_pock">NewPockActivity</string>
+    <string name="title_login_activity">LoginActivity</string>
     <string name="pock_something_hint">Pockea algo</string>
     <string name="category_hint">Categoría</string>
     <string name="chat_switch_hint">Chat</string>
@@ -44,11 +45,11 @@
 
     <string name="facebook_application_id" translatable="false">1291320611078328</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb1291320611078328</string>
-    <string name="google_signin">Iniciar sesión con Google     </string>
+    <string name="google_signin">Iniciar sesión con Google</string>
     <string name="facebook_sign_in">Iniciar sesión con Facebook</string>
     <string name="email_sign_in">Iniciar sesión con tu e-mail</string>
     <string name="register_text_p1">¿No tienes cuenta?</string>
-    <string name="register_text_p2">Utiliza cualqueira de las opciones</string>
-    <string name="register_text_p3">ateriores para registrarte</string>
+    <string name="register_text_p2">Utiliza cualqueira de las opciones\nanteriores para registrarte</string>
+
 
 </resources>
