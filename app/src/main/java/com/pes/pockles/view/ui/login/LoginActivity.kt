@@ -62,9 +62,9 @@ class LoginActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                         val idToken = task.result!!.token
                         PreferencesManager.setToken(idToken)
-                    } else { // Handle error -> task.getException() and make things, Out of scope;
                     }
                 }
+                //TODO Pick up the user and pass it to the profile
                 //The user has logged in
                 startActivity(Intent(this, MainActivity::class.java))
             } else {

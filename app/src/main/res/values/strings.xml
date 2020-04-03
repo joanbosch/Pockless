@@ -42,5 +42,8 @@
     <string name="google_signin">Iniciar sesión con Google     </string>
     <string name="facebook_sign_in">Iniciar sesión con Facebook</string>
     <string name="email_sign_in">Iniciar sesión con tu e-mail</string>
+    <string name="register_text_p1">¿No tienes cuenta?</string>
+    <string name="register_text_p2">Utiliza cualqueira de las opciones</string>
+    <string name="register_text_p3">ateriores para registrarte</string>
 
 </resources>
