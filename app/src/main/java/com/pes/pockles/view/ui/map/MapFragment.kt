@@ -193,19 +193,49 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
         )
     }
 
+
     /*Link to know how to customize markers
      *https://developers.google.com/maps/documentation/android-sdk/marker?hl=es*/
     private fun handleSuccess(list: Resource.Success<List<Pock>>) {
+        var cat: String
         googleMap!!.clear()
         list.data.let {
             it.forEach { pock ->
+                cat = pock.category
                 val latLng = LatLng(
                     pock.location.latitude,
                     pock.location.longitude
+
                 )
-                val marker: Marker = googleMap!!.addMarker(MarkerOptions().position(latLng))
+                val marker: Marker = googleMap!!.addMarker(
+                    MarkerOptions().position(latLng)
+                )
+                if (cat == "+18") {
+                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_18))
+                } else if (cat == "Anuncios") {
+                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_anunci))
+                } else if (cat == "Compra y Venta") {
+                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_mail))
+                } else if (cat == "Deportes") {
+                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_deportes))
+                } else if (cat == "Entretenimiento") {
+                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_deportes))
+                } else if (cat == "Mascotas") {
+                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_mail))
+                } else if (cat == "Salud") {
+                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_mail))
+                } else if (cat == "Tecnología") {
+                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_mail))
+                } else if (cat == "Turismo") {
+                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_mail))
+                } else if (cat == "Varios") {
+                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_mail))
+                } else marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_mail))
+
                 marker.tag = pock.id
             }
+
+
         }
     }
 

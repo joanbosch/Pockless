@@ -101,7 +101,7 @@ class ViewPockActivity : AppCompatActivity() {
     // Creating our Share Intent
     private fun getShareIntent(): Intent {
         val shareIntent = Intent(Intent.ACTION_SEND)
-        shareIntent.setType("text/plain").putExtra(Intent.EXTRA_TEXT, binding.pock.message)
+        shareIntent.setType("text/plain").putExtra(Intent.EXTRA_TEXT, binding.pock?.message)  /*CAUTION OF THIS CHANGE*/
         return shareIntent
     }
 
