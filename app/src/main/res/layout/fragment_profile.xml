@@ -8,6 +8,10 @@
         <variable
             name="user"
             type="com.pes.pockles.model.User" />
+
+        <variable
+            name="viewModel"
+            type="com.pes.pockles.view.ui.profile.ProfileViewModel" />
     </data>
 
     <ScrollView
@@ -76,6 +80,7 @@
                         android:background="?selectableItemBackgroundBorderless"
                         android:clickable="true"
                         android:focusable="true"
+                        android:onClick="@{viewModel.navigateToHistoryOnClick}"
                         android:orientation="vertical"
                         app:layout_constraintEnd_toStartOf="@+id/guideline"
                         app:layout_constraintStart_toStartOf="parent"
@@ -208,6 +213,7 @@
                 android:background="?selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
+                android:onClick="@{viewModel.navigateToHistoryOnClick}"
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatImageView
