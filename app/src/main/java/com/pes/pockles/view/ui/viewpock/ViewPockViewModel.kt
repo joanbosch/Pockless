@@ -33,7 +33,6 @@ class ViewPockViewModel @Inject constructor(
         _goShare.value = false
         _goReport.value = false
         _goChat.value = false
-
     }
 
     fun loadPock(pockId: String): LiveData<Resource<Pock>> {

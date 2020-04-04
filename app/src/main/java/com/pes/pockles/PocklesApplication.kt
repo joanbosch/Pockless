@@ -5,6 +5,7 @@ import com.pes.pockles.di.injector.initInjector
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
+import com.google.firebase.FirebaseApp
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -18,6 +19,8 @@ class PocklesApplication : Application(), HasAndroidInjector {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
+
+        FirebaseApp.initializeApp(this)
 
         initInjector(this)
     }
