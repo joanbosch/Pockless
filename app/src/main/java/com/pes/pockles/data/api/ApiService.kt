@@ -3,6 +3,7 @@ package com.pes.pockles.data.api
 import com.pes.pockles.BuildConfig
 import com.pes.pockles.model.NewPock
 import com.pes.pockles.model.Pock
+import com.pes.pockles.model.User
 import io.reactivex.Single
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -50,6 +51,9 @@ interface ApiService {
 
     @GET("pock/{id}")
     fun viewPock(@Path("id") id: String): Single<Pock>
+
+    @GET("user")
+    fun getUser(): Single<User>
 
     companion object {
         /**

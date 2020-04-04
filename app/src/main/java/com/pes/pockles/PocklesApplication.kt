@@ -1,9 +1,10 @@
 package com.pes.pockles
 
 import android.app.Application
+import com.pes.pockles.data.database.AppDatabase
 import timber.log.Timber
 
-class PocklesApplication : Application(){
+class PocklesApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
@@ -11,6 +12,8 @@ class PocklesApplication : Application(){
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
+
+        AppDatabase.initDatabase(this)
     }
 
 }

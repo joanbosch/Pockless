@@ -41,4 +41,11 @@
 
     <!-- Map Resources -->
     <string name="failed_loc">No se pudieron obtener los pocks</string>
+    <string name="achievements_button_text">Logros</string>
+    <string name="pock_history_profile_button_text">Historial de pocks</string>
+    <string name="edit_info_profile_button_text">Editar perfil</string>
+    <string name="settings_profile_button_text">Configuración</string>
+    <string name="close_session_profile_button_text">Cerrar sesión</string>
+    <string name="badge_profile_text">Badge</string>
+    <string name="pocks_created_length_profile">%s pocks</string>
 </resources>

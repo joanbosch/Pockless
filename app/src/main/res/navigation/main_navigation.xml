@@ -17,7 +17,7 @@
         tools:layout="@layout/fragment_map" />
     <fragment
         android:id="@+id/userProfileFragment"
-        android:name="com.pes.pockles.view.ui.UserProfileFragment"
+        android:name="com.pes.pockles.view.ui.profile.ProfileFragment"
         android:label="fragment_user_profile"
         tools:layout="@layout/fragment_user_profile" />
     <fragment

@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.pes.pockles.R
+import com.pes.pockles.data.repository.implementation.UserRepositoryImpl
 import com.pes.pockles.databinding.ActivityMainBinding
 import com.pes.pockles.view.ui.newpock.NewPockActivity
 
@@ -17,12 +18,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        var navController = findNavController(R.id.navigationHostFragment)
+        val navController = findNavController(R.id.navigationHostFragment)
         NavigationUI.setupWithNavController(binding.bottomNavigation, navController)
 
         binding.fab.setOnClickListener {
             startActivity(Intent(this, NewPockActivity::class.java))
         }
+
+        UserRepositoryImpl().reloadUser()
 
     }
 }

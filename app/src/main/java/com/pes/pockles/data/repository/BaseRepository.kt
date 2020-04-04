@@ -16,11 +16,11 @@ import io.reactivex.schedulers.Schedulers
  */
 open class BaseRepository {
 
-    private val apiService by lazy {
+    protected val apiService by lazy {
         ApiService.get()
     }
 
-    private val disposable: CompositeDisposable = CompositeDisposable()
+    protected val disposable: CompositeDisposable = CompositeDisposable()
 
     /**
      * Transforms the supplied call through the @param [apiCall] into a @see [LiveData] with
