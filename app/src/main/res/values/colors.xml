@@ -4,5 +4,7 @@
     <color name="colorPrimaryDark">#024651</color>
     <color name="colorAccent">#2196F3</color>
     <color name="white">#FFFFFF</color>
+    <color name="backgroundLoginButtons">#F3F3F3</color>
+    <color name="textColorLoginButtons">#434343</color>
 
 </resources>

@@ -22,14 +22,15 @@
             android:name=".view.ui.pockshistory.PocksHistoryActivity"
             android:label="@string/title_activity_pocks_history"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".view.ui.MainActivity">
+
+        <activity android:name=".view.ui.MainActivity" />
+        <activity android:name=".view.ui.login.LaunchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".view.ui.viewpock.ViewPockActivity"
             android:theme="@style/ViewPock" />
