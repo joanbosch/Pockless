@@ -1,0 +1,31 @@
+package com.pes.pockles.view.ui.base
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.annotation.LayoutRes
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.ViewModelProvider
+import com.pes.pockles.di.injector.Injectable
+import dagger.android.support.DaggerFragment
+import javax.inject.Inject
+
+abstract class BaseFragment<DataBinding : ViewDataBinding> : DaggerFragment(), Injectable {
+    @Inject
+    protected lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    protected lateinit var binding: DataBinding
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
+        binding = DataBindingUtil.inflate(inflater, getLayout(), container, false)
+        binding.lifecycleOwner = this
+        return binding.root
+    }
+
+    @LayoutRes
+    abstract fun getLayout(): Int
+}

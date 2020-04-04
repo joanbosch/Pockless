@@ -1,4 +1,4 @@
-package com.pes.pockles.util
+package com.pes.pockles.util.livedata
 
 import androidx.lifecycle.LiveData
 

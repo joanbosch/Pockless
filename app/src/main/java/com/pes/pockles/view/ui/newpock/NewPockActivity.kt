@@ -6,7 +6,6 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -16,13 +15,13 @@ import com.pes.pockles.databinding.ActivityNewPockBinding
 import com.pes.pockles.model.Location
 import com.pes.pockles.model.Pock
 import com.pes.pockles.util.LocationUtils.Companion.getLastLocation
-import com.pes.pockles.view.viewmodel.ViewModelFactory
+import com.pes.pockles.view.ui.base.BaseActivity
 
-class NewPockActivity : AppCompatActivity() {
+class NewPockActivity : BaseActivity() {
 
     private lateinit var binding: ActivityNewPockBinding
     private val viewModel: NewPockViewModel by lazy {
-        ViewModelProviders.of(this, ViewModelFactory()).get(NewPockViewModel::class.java)
+        ViewModelProviders.of(this, viewModelFactory).get(NewPockViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

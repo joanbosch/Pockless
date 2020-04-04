@@ -14,11 +14,7 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Base repository with helper functions
  */
-open class BaseRepository {
-
-    protected val apiService by lazy {
-        ApiService.get()
-    }
+open class BaseRepository constructor(private var apiService: ApiService) {
 
     protected val disposable: CompositeDisposable = CompositeDisposable()
 

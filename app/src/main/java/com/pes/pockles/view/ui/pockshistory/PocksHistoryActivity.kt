@@ -1,9 +1,7 @@
 package com.pes.pockles.view.ui.pockshistory
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -13,17 +11,17 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.ActivityPocksHistoryBinding
-import com.pes.pockles.view.ui.pockshistory.item.BindingPockItem
 import com.pes.pockles.model.Pock
-import com.pes.pockles.view.ui.MainActivity
-import com.pes.pockles.view.ui.UserProfileFragment
-import com.pes.pockles.view.viewmodel.ViewModelFactory
+import com.pes.pockles.view.ui.base.BaseActivity
+import com.pes.pockles.view.ui.pockshistory.item.BindingPockItem
 
-class PocksHistoryActivity : AppCompatActivity() {
+class PocksHistoryActivity : BaseActivity() {
+
     private lateinit var binding: ActivityPocksHistoryBinding
     private val viewModel: PocksHistoryViewModel by lazy {
-        ViewModelProviders.of(this, ViewModelFactory()).get(PocksHistoryViewModel::class.java)
+        ViewModelProviders.of(this, viewModelFactory).get(PocksHistoryViewModel::class.java)
     }
+
     // Create the ItemAdapter holding your Items
     private val itemAdapter = ItemAdapter<BindingPockItem>()
 
@@ -63,7 +61,7 @@ class PocksHistoryActivity : AppCompatActivity() {
         )
 
         // Action for back-button on toolbar
-        binding.toolbar.setNavigationOnClickListener{
+        binding.toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
 

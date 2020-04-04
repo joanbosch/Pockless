@@ -1,34 +1,18 @@
 package com.pes.pockles.view.ui.profile
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.pes.pockles.R
 import com.pes.pockles.databinding.FragmentProfileBinding
-import com.pes.pockles.view.viewmodel.ViewModelFactory
+import com.pes.pockles.view.ui.base.BaseFragment
 
-class ProfileFragment : Fragment() {
-
-    private lateinit var binding: FragmentProfileBinding
+class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     private val viewModel: ProfileViewModel by lazy {
-        ViewModelProviders.of(this, ViewModelFactory()).get(ProfileViewModel::class.java)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
-        binding.lifecycleOwner = this
-        return binding.root
+        ViewModelProviders.of(this, viewModelFactory).get(ProfileViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,7 +27,9 @@ class ProfileFragment : Fragment() {
                 binding.user = user
             }
         })
+    }
 
-
+    override fun getLayout(): Int {
+        return R.layout.fragment_profile
     }
 }
