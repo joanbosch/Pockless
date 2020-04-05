@@ -4,7 +4,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/backgroundLoginButtons">
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -91,6 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/register_text_p1"
+                android:textColor="@color/textColorLoginButtons"
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -100,7 +102,8 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
-                android:text="@string/register_text_p2" />
+                android:text="@string/register_text_p2"
+                android:textColor="@color/textColorLoginButtons" />
 
         </LinearLayout>
 
