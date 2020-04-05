@@ -58,6 +58,11 @@ class EditPockActivity : AppCompatActivity() {
         )
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
     private fun handleSuccess() {
         hideLoading()
         Toast.makeText(this, resources.getString(R.string.updated_pock_message), Toast.LENGTH_SHORT)

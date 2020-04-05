@@ -25,6 +25,7 @@
     <string name="pocks_history_button">Historial de Pocks</string>
     <string name="title_activity_pocks_history">NewPocksHistory</string>
     <string name="message">Message</string>
+    <string name="edit_button">Editar</string>
 
     <string-array name="categories">
         <item>Anuncios</item>
