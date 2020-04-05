@@ -16,6 +16,7 @@ class MainActivity : BaseActivity() {
 
     @Inject
     lateinit var userRepository: UserRepository
+
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,8 +29,5 @@ class MainActivity : BaseActivity() {
         binding.fab.setOnClickListener {
             startActivity(Intent(this, NewPockActivity::class.java))
         }
-
-        userRepository.reloadUser()
-
     }
 }

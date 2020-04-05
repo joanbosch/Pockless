@@ -3,21 +3,30 @@ package com.pes.pockles.view.ui.login
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.firebase.ui.auth.AuthMethodPickerLayout
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.pes.pockles.R
-import com.pes.pockles.model.PreferencesManager
+import com.pes.pockles.data.Resource
+import com.pes.pockles.util.livedata.EventObserver
 import com.pes.pockles.view.ui.MainActivity
+import com.pes.pockles.view.ui.base.BaseActivity
+import timber.log.Timber
 
-class LaunchActivity : AppCompatActivity() {
+class LaunchActivity : BaseActivity() {
+
+    private val viewModel: LaunchActivityViewModel by lazy {
+        ViewModelProviders.of(this, viewModelFactory).get(LaunchActivityViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+        val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
         if (user == null) {
             createSignInIntent()
         } else {
@@ -57,34 +66,41 @@ class LaunchActivity : AppCompatActivity() {
 
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == Activity.RESULT_OK) {
-                // Successfully signed in
                 val user = FirebaseAuth.getInstance().currentUser
-                user?.getIdToken(true)?.addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val idToken = task.result!!.token
-                        PreferencesManager.setToken(idToken)
+                viewModel.userExists(user!!.uid).observe(this, Observer { value ->
+                    when (value) {
+                        is Resource.Success<Boolean> -> {
+                            if (value.data) {
+                                startActivity(Intent(this, MainActivity::class.java))
+                            } else {
+//                                startActivity(Intent(this, RegisterActivity::class.java))
+                                viewModel
+                                    .registerUser("#ff0044", 860189821, 5)
+                                    .observe(this, EventObserver(::doWhatever))
+                            }
+                        }
+                        is Resource.Error -> Toast.makeText(
+                            this,
+                            "ME CAGO EN LA PUTA",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-                }
-                //TODO Pick up the user and pass it to the profile
-                //The user has logged in
-                startActivity(Intent(this, MainActivity::class.java))
-            } else {
-                // Sign in failed. If response is null the user canceled the
-                // sign-in flow using the back button. Otherwise check
-                // response.getError().getErrorCode() and handle the error.
+                })
             }
         }
     }
 
-    //This method will be useful for User profile
-    private fun signOut() {
-        // [START auth_fui_signout]
-        AuthUI.getInstance()
-            .signOut(this)
-            .addOnCompleteListener {
-                // TODO Make something at log out
-            }
-        // [END auth_fui_signout]
+    private fun doWhatever(b: Boolean) {
+        Timber.d("Register user went with value $b")
+        if (b) {
+            startActivity(Intent(this, MainActivity::class.java))
+        } else {
+            Toast.makeText(
+                this,
+                "CREA TU PERFIL CERDO",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     //This method will be useful for User profile

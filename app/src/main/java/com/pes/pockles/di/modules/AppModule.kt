@@ -2,11 +2,11 @@ package com.pes.pockles.di.modules
 
 import android.app.Application
 import android.content.Context
-import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import com.pes.pockles.PocklesApplication
+import com.pes.pockles.data.TokenManager
+import com.pes.pockles.data.api.ApiManager
 import com.pes.pockles.data.api.ApiService
-import com.pes.pockles.data.api.createApi
 import com.pes.pockles.data.database.AppDatabase
 import dagger.Module
 import dagger.Provides
@@ -25,8 +25,14 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideApi(): ApiService {
-        return createApi(ApiService::class.java)
+    fun provideTokenManager(): TokenManager {
+        return TokenManager()
+    }
+
+    @Singleton
+    @Provides
+    fun provideApi(tokenManager: TokenManager): ApiService {
+        return ApiManager(tokenManager).createApi(ApiService::class.java)
     }
 
     @Singleton

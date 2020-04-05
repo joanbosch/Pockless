@@ -1,6 +1,12 @@
 package com.pes.pockles.model
 
-object PreferencesManager {
+import android.content.Context
+import android.content.SharedPreferences
+import javax.inject.Inject
+import javax.inject.Singleton
+
+@Singleton
+class PreferencesManager @Inject constructor(context: Context) {
 
     private var token : String = ""
         get() {

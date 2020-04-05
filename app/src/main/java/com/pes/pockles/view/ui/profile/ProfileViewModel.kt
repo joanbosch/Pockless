@@ -1,7 +1,9 @@
 package com.pes.pockles.view.ui.profile
 
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.pes.pockles.data.repository.UserRepository
 import com.pes.pockles.domain.usecases.LogoutUseCase
@@ -18,13 +20,26 @@ class ProfileViewModel @Inject constructor(
     val navigateToHistory: LiveData<Event<Boolean>>
         get() = _navigateToHistory
 
+    private val doLogout = MutableLiveData<Boolean>()
+    val navigateToLogin: LiveData<Event<Boolean>>
+        get() = Transformations.switchMap(doLogout) {
+            if (it) {
+                logoutUseCase.execute()
+            } else {
+                val result = MutableLiveData<Event<Boolean>>()
+                result.value = Event(false)
+                result
+            }
+        }
+
+
     val user: LiveData<User> = repository.getUser()
 
-    fun navigateToHistoryOnClick() {
+    fun navigateToHistoryOnClick(v: View) {
         _navigateToHistory.value = Event(true)
     }
 
-    fun logout() {
-        logoutUseCase.execute()
+    fun logout(v: View) {
+        doLogout.value = true
     }
 }

@@ -1,22 +1,11 @@
 package com.pes.pockles.data.api
 
-import com.pes.pockles.BuildConfig
+import com.pes.pockles.model.CreateUser
 import com.pes.pockles.model.NewPock
 import com.pes.pockles.model.Pock
 import com.pes.pockles.model.User
 import io.reactivex.Single
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
-import retrofit2.http.Query
-import java.util.concurrent.TimeUnit
+import retrofit2.http.*
 
 
 interface ApiService {
@@ -55,43 +44,9 @@ interface ApiService {
     @GET("user")
     fun getUser(): Single<User>
 
-    companion object {
-        /**
-         * Gets the @see [ApiService] ready to use it.
-         *
-         * Specific headers are added so the API can work correctly (like the AppClient).
-         *
-         * To call locally change the baseUrl (line 63) to where the local API is running,
-         * usually it would be http://localhost:5001/pockles/us-central1/api/ (do not
-         * forget the last slash or it will not work). This only works for emulator.
-         */
-        fun get(): ApiService {
-            val loggingInterceptor = HttpLoggingInterceptor()
-            loggingInterceptor.level =
-                if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BASIC else HttpLoggingInterceptor.Level.NONE
+    @GET("user/{id}/exists")
+    fun userExists(@Path("id") id: String): Single<Boolean>
 
-            val appClientInterceptor = Interceptor { chain: Interceptor.Chain ->
-                val requestBuilder = chain.request().newBuilder()
-                requestBuilder.addHeader("AppClient", "PockleS")
-                chain.proceed(requestBuilder.build())
-            }
-
-            val client: OkHttpClient = OkHttpClient.Builder()
-                .connectTimeout(15, TimeUnit.SECONDS)
-                .writeTimeout(1, TimeUnit.MINUTES)
-                .readTimeout(5, TimeUnit.MINUTES)
-                .addInterceptor(loggingInterceptor)
-                .addInterceptor(appClientInterceptor)
-                .build()
-
-            val retrofit = Retrofit.Builder()
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("https://us-central1-pockles.cloudfunctions.net/api/")
-                .client(client)
-                .build()
-
-            return retrofit.create(ApiService::class.java)
-        }
-    }
+    @POST("user")
+    fun createUser(@Body createUser: CreateUser): Single<User>
 }

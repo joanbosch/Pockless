@@ -295,6 +295,7 @@
                 android:background="?selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
+                android:onClick="@{viewModel.logout}"
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatImageView

@@ -24,6 +24,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity android:name=".view.ui.MainActivity" />
+        <activity android:name=".view.ui.login.RegisterActivity" />
         <activity android:name=".view.ui.login.LaunchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
