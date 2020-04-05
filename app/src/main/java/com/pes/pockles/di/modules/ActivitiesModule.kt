@@ -2,7 +2,8 @@ package com.pes.pockles.di.modules
 
 import com.pes.pockles.view.ui.MainActivity
 import com.pes.pockles.view.ui.login.LaunchActivity
-import com.pes.pockles.view.ui.login.RegisterActivity
+import com.pes.pockles.view.ui.login.register.RegisterActivity
+import com.pes.pockles.view.ui.login.register.RegisterActivityIcon
 import com.pes.pockles.view.ui.newpock.NewPockActivity
 import com.pes.pockles.view.ui.pockshistory.PocksHistoryActivity
 import com.pes.pockles.view.ui.viewpock.ViewPockActivity
@@ -28,4 +29,9 @@ abstract class ActivitiesModule {
 
     @ContributesAndroidInjector
     abstract fun contributeRegisterActivity(): RegisterActivity
+
+    @ContributesAndroidInjector
+    abstract fun contributeRegisterActivityIcon(): RegisterActivityIcon
+
+
 }

@@ -8,6 +8,7 @@ import com.pes.pockles.data.TokenManager
 import com.pes.pockles.data.api.ApiManager
 import com.pes.pockles.data.api.ApiService
 import com.pes.pockles.data.database.AppDatabase
+import com.pes.pockles.di.util.ViewModelFactory
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

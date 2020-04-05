@@ -5,7 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.pes.pockles.di.util.ViewModelFactory
 import com.pes.pockles.di.util.ViewModelKey
 import com.pes.pockles.view.ui.login.LaunchActivityViewModel
-import com.pes.pockles.view.ui.login.RegisterActivityViewModel
+import com.pes.pockles.view.ui.login.register.RegisterActivityViewModel
+import com.pes.pockles.view.ui.login.register.RegisterIconViewModel
 import com.pes.pockles.view.ui.map.MapViewModel
 import com.pes.pockles.view.ui.newpock.NewPockViewModel
 import com.pes.pockles.view.ui.pockshistory.PocksHistoryViewModel
@@ -17,41 +18,47 @@ import dagger.multibindings.IntoMap
 
 @Module
 abstract class ViewModelModule {
-    @Binds
-    internal abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 
     @Binds
     @IntoMap
     @ViewModelKey(ProfileViewModel::class)
-    internal abstract fun profileViewModel(viewModel: ProfileViewModel): ViewModel
+    abstract fun profileViewModel(viewModel: ProfileViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(MapViewModel::class)
-    internal abstract fun mapViewModel(viewModel: MapViewModel): ViewModel
+    abstract fun mapViewModel(viewModel: MapViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(NewPockViewModel::class)
-    internal abstract fun newPockViewModel(viewModel: NewPockViewModel): ViewModel
+    abstract fun newPockViewModel(viewModel: NewPockViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(PocksHistoryViewModel::class)
-    internal abstract fun pocksHistoryViewModel(viewModel: PocksHistoryViewModel): ViewModel
+    abstract fun pocksHistoryViewModel(viewModel: PocksHistoryViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(ViewPockViewModel::class)
-    internal abstract fun viewPockViewModel(viewModel: ViewPockViewModel): ViewModel
+    abstract fun viewPockViewModel(viewModel: ViewPockViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(LaunchActivityViewModel::class)
-    internal abstract fun launchActivityViewModel(viewModel: LaunchActivityViewModel): ViewModel
+    abstract fun launchActivityViewModel(viewModel: LaunchActivityViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(RegisterActivityViewModel::class)
-    internal abstract fun registerActivityViewModel(viewModel: RegisterActivityViewModel): ViewModel
+    abstract fun registerActivityViewModel(viewModel: RegisterActivityViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RegisterIconViewModel::class)
+    abstract fun registerIconViewModel(viewModel: RegisterIconViewModel): ViewModel
+
+    @Binds
+    abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 }

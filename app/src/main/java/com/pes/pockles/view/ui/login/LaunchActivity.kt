@@ -12,9 +12,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
-import com.pes.pockles.util.livedata.EventObserver
 import com.pes.pockles.view.ui.MainActivity
 import com.pes.pockles.view.ui.base.BaseActivity
+import com.pes.pockles.view.ui.login.register.RegisterActivity
 import timber.log.Timber
 
 class LaunchActivity : BaseActivity() {
@@ -30,7 +30,7 @@ class LaunchActivity : BaseActivity() {
         if (user == null) {
             createSignInIntent()
         } else {
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
 
@@ -64,6 +64,7 @@ class LaunchActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == Activity.RESULT_OK) {
                 val user = FirebaseAuth.getInstance().currentUser
@@ -73,10 +74,7 @@ class LaunchActivity : BaseActivity() {
                             if (value.data) {
                                 startActivity(Intent(this, MainActivity::class.java))
                             } else {
-//                                startActivity(Intent(this, RegisterActivity::class.java))
-                                viewModel
-                                    .registerUser("#ff0044", 860189821, 5)
-                                    .observe(this, EventObserver(::doWhatever))
+                                startActivity(Intent(this, RegisterActivity::class.java))
                             }
                         }
                         is Resource.Error -> Toast.makeText(
@@ -101,17 +99,6 @@ class LaunchActivity : BaseActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         }
-    }
-
-    //This method will be useful for User profile
-    private fun delete() {
-        // full account delete
-        AuthUI.getInstance()
-            .delete(this)
-            .addOnCompleteListener {
-                // TODO Make something at removing the account
-            }
-
     }
 
     companion object {

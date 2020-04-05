@@ -18,37 +18,4 @@ class LaunchActivityViewModel @Inject constructor(
     fun userExists(uid: String): LiveData<Resource<Boolean>> {
         return userRepository.userExists(uid)
     }
-
-    fun registerUser(color: String, birthDate: Int, radius: Int): LiveData<Event<Boolean>> {
-        val mediatorLiveData = MediatorLiveData<Event<Boolean>>()
-
-        val user = FirebaseAuth.getInstance().currentUser
-        user?.let {
-            val createUser = CreateUser(
-                id = it.uid,
-                name = it.displayName!!,
-                birthDate = birthDate,
-                mail = it.email!!,
-                profileImageUrl = "",
-                radiusVisibility = radius, //km
-                accentColor = color
-            )
-
-            mediatorLiveData.addSource(userRepository.createUser(createUser)) { resource ->
-                when (resource) {
-                    is Resource.Success<User> -> {
-                        userRepository.saveUser(resource.data)
-                        mediatorLiveData.value = Event(true)
-                    }
-                    is Resource.Error -> mediatorLiveData.value = Event(false)
-                }
-            }
-        }
-
-        if (user == null) {
-            mediatorLiveData.value = Event(false)
-        }
-
-        return mediatorLiveData
-    }
 }

@@ -57,6 +57,19 @@
     <string name="email_sign_in">Iniciar sesión con tu e-mail</string>
     <string name="register_text_p1">¿No tienes cuenta?</string>
     <string name="register_text_p2">Utiliza cualqueira de las opciones\nanteriores para registrarte</string>
+    <string name="create_profile_register_activity_text">Crear perfil</string>
+    <string name="register_name_hint">Nombre</string>
+    <string name="register_birthdate_hint">Fecha nacimiento</string>
+    <string name="register_accent_color_hint">Color resaltado</string>
+    <string name="register_accent_color_subtitle">Color que se muestra en el perfil</string>
+    <string name="register_pocks_visibility_title">Visibilidad pocks</string>
+    <string name="register_pock_visibility_subtitle">Radio en km de los pocks que aparecerán en el mapa</string>
+    <string name="register_create_profile_button_text">Crear</string>
+    <string name="next">Continuar</string>
+    <string name="visibility_register_format">%s km</string>
+    <string name="field_must_not_be_empty">El campo no puede estar vacío</string>
+    <string name="too_young">Edad minima de 13 años</string>
+    <string name="change">Cambiar</string>
 
 
 </resources>
