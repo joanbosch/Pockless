@@ -41,4 +41,12 @@
 
     <!-- Map Resources -->
     <string name="failed_loc">No se pudieron obtener los pocks</string>
+
+    <!-- Edit Pock Resources -->
+    <string name="title_activity_edit_pock">EditPockActivity</string>
+    <string name="title_toolbar_edit_pock">Editar Pock</string>
+    <string name="correct_pock_hint">Corrige tu Pock</string>
+    <string name="update_pock_button">Guardar cambios</string>
+    <string name="updated_pock_message">Se ha actualizado el contenido de tu pock</string>
+    <string name="api_error_updating_message">Ha habido algún problema actualizando el contenido de tu pock</string>
 </resources>
