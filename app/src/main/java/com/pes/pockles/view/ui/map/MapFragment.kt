@@ -25,6 +25,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.maps.android.heatmaps.HeatmapTileProvider
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.FragmentMapBinding
@@ -49,11 +50,16 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
         const val MIN_DISPLACEMENT = 10f //In m
     }
 
+
     private val viewModel: MapViewModel by lazy {
         ViewModelProviders.of(this, ViewModelFactory()).get(MapViewModel::class.java)
     }
 
     private var googleMap: GoogleMap? = null
+    private var mProvider: HeatmapTileProvider? = null
+
+    // Add Listener to change this variable when zoom is in x number
+    private var heatMapEnabled: Boolean = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -190,6 +196,7 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
     /*Link to know how to customize markers
      *https://developers.google.com/maps/documentation/android-sdk/marker?hl=es*/
     private fun handleSuccess(list: Resource.Success<List<Pock>>) {
+        val locations: ArrayList<LatLng> = ArrayList<LatLng>()
         googleMap!!.clear()
         list.data.let {
             it.forEach { pock ->
@@ -197,8 +204,19 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
                     pock.location.latitude,
                     pock.location.longitude
                 )
-                val marker: Marker = googleMap!!.addMarker(MarkerOptions().position(latLng))
-                marker.tag = pock.id
+                if (!heatMapEnabled) {
+                    val marker: Marker = googleMap!!.addMarker(MarkerOptions().position(latLng))
+                    marker.tag = pock.id
+                } else {
+                    locations.add(latLng)
+                }
+            }
+
+            if(heatMapEnabled){
+                mProvider = HeatmapTileProvider.Builder().data(locations).build()
+                mProvider!!.setRadius(50)
+                googleMap!!.addTileOverlay(TileOverlayOptions().tileProvider(mProvider))
+
             }
         }
     }
