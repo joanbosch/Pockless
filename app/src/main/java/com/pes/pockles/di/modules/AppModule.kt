@@ -8,6 +8,7 @@ import com.pes.pockles.data.TokenManager
 import com.pes.pockles.data.api.ApiManager
 import com.pes.pockles.data.api.ApiService
 import com.pes.pockles.data.database.AppDatabase
+import com.pes.pockles.data.storage.StorageManager
 import com.pes.pockles.di.util.ViewModelFactory
 import dagger.Module
 import dagger.Provides
@@ -28,6 +29,12 @@ class AppModule {
     @Provides
     fun provideTokenManager(): TokenManager {
         return TokenManager()
+    }
+
+    @Singleton
+    @Provides
+    fun provideStorageManager(): StorageManager {
+        return StorageManager()
     }
 
     @Singleton

@@ -109,7 +109,7 @@ dependencies {
     //Firebase
     implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
     implementation 'com.google.firebase:firebase-analytics:17.2.2'
-
+    implementation 'com.google.firebase:firebase-storage-ktx:19.1.1'
     implementation 'com.google.firebase:firebase-auth:17.0.0'
     implementation 'com.google.firebase:firebase-core:16.0.9'
 
@@ -120,6 +120,9 @@ dependencies {
     //Facebook
     implementation 'com.facebook.android:facebook-android-sdk:6.3.0'
     //Twitter
-//    implementation 'com.twitter.sdk.android:twitter-core:3.0'
+    //implementation 'com.twitter.sdk.android:twitter-core:3.0'
+
+    implementation 'com.afollestad.material-dialogs:core:3.0.1'
+    implementation 'com.afollestad.material-dialogs:bottomsheets:3.0.1'
 }
 apply plugin: 'com.google.gms.google-services'

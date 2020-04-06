@@ -1,18 +1,21 @@
 package com.pes.pockles.view.ui.login.register
 
+import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.pes.pockles.data.Resource
 import com.pes.pockles.data.repository.UserRepository
+import com.pes.pockles.data.storage.StorageManager
 import com.pes.pockles.model.CreateUser
 import com.pes.pockles.model.User
 import com.pes.pockles.util.livedata.Event
 import javax.inject.Inject
 
 class RegisterIconViewModel @Inject constructor(
-    private var userRepository: UserRepository
+    private var userRepository: UserRepository,
+    private val storageManager: StorageManager
 ) : ViewModel() {
 
     val user = MutableLiveData<CreateUser>()
@@ -36,5 +39,17 @@ class RegisterIconViewModel @Inject constructor(
             }
         }
         return mediatorLiveData
+    }
+
+    fun uploadMedia(bitmap: Bitmap): LiveData<Resource<String>> {
+        return storageManager.uploadMedia(bitmap, "profileImages");
+    }
+
+    fun setImageUrl(data: String) {
+        val u = user.value
+        u?.let {
+            it.profileImageUrl = data
+            user.value = it
+        }
     }
 }

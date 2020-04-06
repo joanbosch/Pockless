@@ -1,15 +1,31 @@
 package com.pes.pockles.view.ui.login.register
 
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
-import android.widget.Toast
+import android.provider.MediaStore
+import android.view.View
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.bottomsheets.BasicGridItem
+import com.afollestad.materialdialogs.bottomsheets.BottomSheet
+import com.afollestad.materialdialogs.bottomsheets.gridItems
+import com.afollestad.materialdialogs.bottomsheets.setPeekHeight
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.pes.pockles.R
+import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.ActivityRegister2Binding
 import com.pes.pockles.model.CreateUser
 import com.pes.pockles.view.ui.base.BaseActivity
-import timber.log.Timber
+import java.io.FileNotFoundException
+import java.io.InputStream
+
 
 class RegisterActivityIcon : BaseActivity() {
 
@@ -25,7 +41,7 @@ class RegisterActivityIcon : BaseActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_register_2)
 
         binding.changeIconButton.setOnClickListener {
-            Toast.makeText(this, "FUCK YOU", Toast.LENGTH_SHORT).show()
+            photoPicker()
         }
 
         val user: CreateUser? = intent.extras?.getParcelable("createUser")
@@ -38,6 +54,85 @@ class RegisterActivityIcon : BaseActivity() {
                 .load(it.profileImageUrl)
                 .into(binding.circularImageView)
         }
+    }
 
+    private fun photoPicker() {
+        val items = listOf(
+            BasicGridItem(R.drawable.ic_icon_camera, "Tomar foto"),
+            BasicGridItem(R.drawable.ic_image, "Seleccionar foto")
+        )
+
+        MaterialDialog(this, BottomSheet()).show {
+            title(text = "Subir imagen")
+            cornerRadius(16f)
+            setPeekHeight(res = R.dimen.register_menu_peek_height)
+            gridItems(items) { _, index, _ ->
+                run {
+                    if (index == 0) {
+                        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+                            takePictureIntent.resolveActivity(packageManager)?.also {
+                                startActivityForResult(takePictureIntent, 112)
+                            }
+                        }
+                    } else {
+                        val photoPickerIntent = Intent(Intent.ACTION_PICK)
+                        photoPickerIntent.type = "image/*"
+                        startActivityForResult(photoPickerIntent, 111)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setPhoto(bitmap: Bitmap) {
+        viewModel.uploadMedia(bitmap).observe(this, Observer {
+            when (it) {
+                is Resource.Loading -> binding.loadingView.visibility = View.VISIBLE
+                is Resource.Error -> {
+                    binding.loadingView.visibility = View.GONE
+                    Snackbar.make(
+                        binding.containerRegister2,
+                        "Ha ocurrido un error al subir la imagen",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+                is Resource.Success<String> -> {
+                    binding.circularImageView.setImageBitmap(bitmap)
+                    binding.loadingView.visibility = View.GONE
+                    Snackbar.make(
+                        binding.containerRegister2,
+                        "¡Imagen subida!",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                    viewModel.setImageUrl(it.data)
+                }
+            }
+        })
+    }
+
+    override fun onActivityResult(reqCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(reqCode, resultCode, data)
+        if (reqCode == 111) {
+            if (resultCode == Activity.RESULT_OK) {
+                try {
+                    val imageUri: Uri? = data?.data
+                    val imageStream: InputStream? = contentResolver.openInputStream(imageUri!!)
+                    val selectedImage = BitmapFactory.decodeStream(imageStream)
+                    setPhoto(selectedImage)
+                } catch (e: FileNotFoundException) {
+                    e.printStackTrace()
+                    Snackbar.make(
+                        binding.containerRegister2,
+                        "Ha ocurrido un error al seleccionar la imagen",
+                        Snackbar.LENGTH_LONG
+                    ).show();
+                }
+            }
+        } else if (reqCode == 112) {
+            if (resultCode == Activity.RESULT_OK) {
+                val imageBitmap = data?.extras?.get("data") as Bitmap
+                setPhoto(imageBitmap)
+            }
+        }
     }
 }
