@@ -10,7 +10,7 @@ data class User(
     @PrimaryKey
     val id: String,
     val name: String,
-    val birthDate: Int,
+    val birthDate: String,
     val mail: String,
     @SerializedName("profileImageUrl")
     val profileImage: String,

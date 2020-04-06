@@ -9,9 +9,11 @@ import com.pes.pockles.R
 import com.pes.pockles.model.CreateUser
 import com.pes.pockles.util.livedata.Event
 import timber.log.Timber
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+
 
 class RegisterActivityViewModel @Inject constructor() : ViewModel() {
 
@@ -67,15 +69,25 @@ class RegisterActivityViewModel @Inject constructor() : ViewModel() {
                 )
             error = true
         } else {
-            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-            val calendar = Calendar.getInstance()
-            calendar.add(Calendar.YEAR, -13)
-            val date = sdf.parse(u.birthDate!!)
-            if (date != null && date > calendar.time) {
+            try {
+                val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                sdf.isLenient = false
+                val calendar = Calendar.getInstance()
+                calendar.add(Calendar.YEAR, -13)
+                val date = sdf.parse(u.birthDate!!)
+                if (date != null && date > calendar.time) {
+                    _nextRegisterError.value =
+                        RegisterActivityUiModel(
+                            key = RegisterActivityUiFields.BIRTH_DATE_FIELD,
+                            error = R.string.too_young
+                        )
+                    error = true
+                }
+            } catch (e: ParseException) {
                 _nextRegisterError.value =
                     RegisterActivityUiModel(
                         key = RegisterActivityUiFields.BIRTH_DATE_FIELD,
-                        error = R.string.too_young
+                        error = R.string.invalid_date
                     )
                 error = true
             }
