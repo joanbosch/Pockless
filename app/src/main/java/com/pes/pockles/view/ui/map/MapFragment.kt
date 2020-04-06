@@ -219,15 +219,15 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
                 } else if (cat == "Deportes") {
                     marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_deportes))
                 } else if (cat == "Entretenimiento") {
-                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_deportes))
+                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_entre))
                 } else if (cat == "Mascotas") {
                     marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_mail))
                 } else if (cat == "Salud") {
-                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_mail))
+                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_salud))
                 } else if (cat == "Tecnología") {
-                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_mail))
+                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_tecnologia))
                 } else if (cat == "Turismo") {
-                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_mail))
+                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_turismo))
                 } else if (cat == "Varios") {
                     marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_mail))
                 } else marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_mail))
