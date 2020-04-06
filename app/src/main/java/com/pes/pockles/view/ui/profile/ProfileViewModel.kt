@@ -16,6 +16,10 @@ class ProfileViewModel @Inject constructor(
     var logoutUseCase: LogoutUseCase
 ) : ViewModel() {
 
+    init {
+        repository.reloadUser()
+    }
+
     private val _navigateToHistory = MutableLiveData<Event<Boolean>>()
     val navigateToHistory: LiveData<Event<Boolean>>
         get() = _navigateToHistory

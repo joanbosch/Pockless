@@ -52,6 +52,10 @@ class RegisterActivityIcon : BaseActivity() {
             photoPicker()
         }
 
+        binding.backButton.setOnClickListener {
+            onBackPressed()
+        }
+
         binding.registerButton.setOnClickListener {
             if (!preventMultipleClicks) {
                 preventMultipleClicks = true
@@ -65,7 +69,6 @@ class RegisterActivityIcon : BaseActivity() {
 
         bindProgressButton(binding.registerButton)
         binding.registerButton.attachTextChangeAnimator()
-
 
         val user: CreateUser? = intent.extras?.getParcelable("createUser")
         user?.let {
@@ -136,11 +139,6 @@ class RegisterActivityIcon : BaseActivity() {
                 is Resource.Success<String> -> {
                     binding.circularImageView.setImageBitmap(bitmap)
                     binding.loadingView.visibility = View.GONE
-                    Snackbar.make(
-                        binding.containerRegister2,
-                        "¡Imagen subida!",
-                        Snackbar.LENGTH_SHORT
-                    ).show()
                     viewModel.setImageUrl(it.data)
                 }
             }
@@ -162,7 +160,7 @@ class RegisterActivityIcon : BaseActivity() {
                         binding.containerRegister2,
                         "Ha ocurrido un error al seleccionar la imagen",
                         Snackbar.LENGTH_LONG
-                    ).show();
+                    ).show()
                 }
             }
         } else if (reqCode == 112) {

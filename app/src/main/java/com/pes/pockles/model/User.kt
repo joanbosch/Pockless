@@ -14,7 +14,7 @@ data class User(
     val mail: String,
     @SerializedName("profileImageUrl")
     val profileImage: String,
-    val radiusVisibility: Int,
+    val radiusVisibility: Float,
     val badge: Int, // todo: change to badge once available
     @SerializedName("pocks")
     val createdPocksNumber: Int

@@ -25,7 +25,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         binding.viewModel = viewModel
 
         viewModel.user.observe(this, Observer {
-            it.let { user ->
+            it?.let { user ->
                 Glide.with(this)
                     .load(user.profileImage)
                     .into(binding.profileImage)

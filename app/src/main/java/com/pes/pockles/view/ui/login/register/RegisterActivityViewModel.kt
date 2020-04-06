@@ -115,15 +115,6 @@ class RegisterActivityViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun setBirthDate(time: Long) {
-        val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        val u = user.value
-        u?.let {
-            it.birthDate = sdf.format(time)
-            user.value = it
-        }
-    }
-
     data class RegisterActivityUiModel(
         val key: RegisterActivityUiFields,
         val error: Int

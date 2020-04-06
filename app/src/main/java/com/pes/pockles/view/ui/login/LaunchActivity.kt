@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.afollestad.materialdialogs.MaterialDialog
 import com.firebase.ui.auth.AuthMethodPickerLayout
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
@@ -15,7 +16,6 @@ import com.pes.pockles.data.Resource
 import com.pes.pockles.view.ui.MainActivity
 import com.pes.pockles.view.ui.base.BaseActivity
 import com.pes.pockles.view.ui.login.register.RegisterActivity
-import timber.log.Timber
 
 class LaunchActivity : BaseActivity() {
 
@@ -30,7 +30,7 @@ class LaunchActivity : BaseActivity() {
         if (user == null) {
             createSignInIntent()
         } else {
-            startActivity(Intent(this, RegisterActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
         }
     }
 
@@ -40,6 +40,7 @@ class LaunchActivity : BaseActivity() {
             AuthUI.IdpConfig.GoogleBuilder().build(),
             AuthUI.IdpConfig.FacebookBuilder().build()
         )
+
         //Creates the custom layout and binds buttons to login methods
         val customLayout =
             AuthMethodPickerLayout.Builder(R.layout.activity_login)
@@ -60,44 +61,42 @@ class LaunchActivity : BaseActivity() {
         )
     }
 
-    // When login process finishes
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
-
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == Activity.RESULT_OK) {
                 val user = FirebaseAuth.getInstance().currentUser
-                viewModel.userExists(user!!.uid).observe(this, Observer { value ->
-                    when (value) {
-                        is Resource.Success<Boolean> -> {
-                            if (value.data) {
-                                startActivity(Intent(this, MainActivity::class.java))
-                            } else {
-                                startActivity(Intent(this, RegisterActivity::class.java))
-                            }
-                        }
-                        is Resource.Error -> Toast.makeText(
-                            this,
-                            "ME CAGO EN LA PUTA",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                })
+                dialog = MaterialDialog(this)
+                    .title(text = "Comprobando datos...")
+                    .cancelOnTouchOutside(false)
+                viewModel.userExists(user!!.uid)
+                    .observe(this, Observer { handleUserExistsResult(it) })
             }
         }
     }
 
-    private fun doWhatever(b: Boolean) {
-        Timber.d("Register user went with value $b")
-        if (b) {
-            startActivity(Intent(this, MainActivity::class.java))
-        } else {
-            Toast.makeText(
-                this,
-                "CREA TU PERFIL CERDO",
-                Toast.LENGTH_SHORT
-            ).show()
+    private lateinit var dialog: MaterialDialog
+
+    private fun handleUserExistsResult(value: Resource<Boolean>) {
+        dialog.dismiss()
+        when (value) {
+            is Resource.Loading -> dialog.show()
+            is Resource.Success<Boolean> -> {
+                if (value.data) {
+                    viewModel.loadUser()
+                    startActivity(Intent(this, MainActivity::class.java))
+                } else {
+                    startActivity(Intent(this, RegisterActivity::class.java))
+                }
+            }
+            is Resource.Error -> {
+                dialog.dismiss()
+                Toast.makeText(
+                    this,
+                    "Ha ocurrido un error, intentelo de nuevo mas tarde",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 

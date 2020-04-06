@@ -11,6 +11,7 @@ import com.pes.pockles.data.storage.StorageManager
 import com.pes.pockles.model.CreateUser
 import com.pes.pockles.model.User
 import com.pes.pockles.util.livedata.Event
+import timber.log.Timber
 import javax.inject.Inject
 
 class RegisterIconViewModel @Inject constructor(
@@ -34,7 +35,10 @@ class RegisterIconViewModel @Inject constructor(
                         userRepository.saveUser(resource.data)
                         mediatorLiveData.value = Event(true)
                     }
-                    is Resource.Error -> mediatorLiveData.value = Event(false)
+                    is Resource.Error -> {
+                        Timber.d(resource.exception)
+                        mediatorLiveData.value = Event(false)
+                    }
                 }
             }
         }

@@ -6,12 +6,14 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:statusBarColor">@color/primary</item>
     </style>
 
     <!--    Needed because FireBaseUI builds its own theme and overrides the app one-->
     <style name="Login" parent="FirebaseUI">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@color/primary</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -32,6 +34,11 @@
         <!-- <item name="android:windowAnimationStyle">@style/PopupAnimation</item> -->
         <item name="android:windowCloseOnTouchOutside">true</item>
         <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="AppTheme.BrandedLaunch" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/branded_logo</item>
+        <item name="android:navigationBarColor">@color/primary</item>
     </style>
 
 </resources>

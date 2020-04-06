@@ -72,6 +72,7 @@
     <string name="change">Cambiar</string>
     <string name="registering">Registrando...</string>
     <string name="invalid_date">Fecha invalida</string>
+    <string name="register_back_button_text">Atrás</string>
 
 
 </resources>
