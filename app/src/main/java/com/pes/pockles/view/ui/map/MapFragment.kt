@@ -48,6 +48,7 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
         const val FASTEST_INTERVAL: Long = 10 * 1000 //this is when it need higher precision
         const val RADIUS = 500 //In m
         const val MIN_DISPLACEMENT = 10f //In m
+        const val HM_ZOOM = 15 // Max Zoom Lever for HeatMap
     }
 
 
@@ -127,6 +128,17 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
                         }
                     }
                 })
+
+            viewModel.getAllLatLngPocks().observe(
+                this,
+                Observer { value: Resource<List<Pock>>? ->
+                    value?.let {
+                        when (value) {
+                            is Resource.Success<*> -> handleSuccess(value as Resource.Success<List<Pock>>)
+                            is Resource.Error -> handleError()
+                        }
+                    }
+                })
         }
     }
 
@@ -150,6 +162,22 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
             intent.putExtra("markerId", marker.tag as String)
             startActivity(intent)
             true
+        }
+
+        googleMap!!.setOnCameraIdleListener {
+            if (heatMapEnabled != (googleMap!!.cameraPosition.zoom < HM_ZOOM)){
+                heatMapEnabled = (googleMap!!.cameraPosition.zoom < HM_ZOOM)
+                // If HeatMap Enabled (true) and zoomIN -> Put HeatMap
+                if(heatMapEnabled){
+                    viewModel.getAllLatLngPocks()
+                    googleMap!!.uiSettings.isScrollGesturesEnabled = true
+                }
+                //If HeatMap Disabled (false) and ZoomOut -> Put Markers
+                else {
+                    viewModel.getPocks()
+                    googleMap!!.uiSettings.isScrollGesturesEnabled = false
+                }
+            }
         }
     }
 
@@ -214,7 +242,7 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
 
             if(heatMapEnabled){
                 mProvider = HeatmapTileProvider.Builder().data(locations).build()
-                mProvider!!.setRadius(50)
+                mProvider!!.setRadius(30)
                 googleMap!!.addTileOverlay(TileOverlayOptions().tileProvider(mProvider))
 
             }
