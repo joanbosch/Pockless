@@ -4,7 +4,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/backgroundLoginButtons">
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -29,8 +30,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginHorizontal="40dp"
+                android:layout_marginHorizontal="30dp"
                 android:layout_marginTop="50dp"
+                android:gravity="center"
                 android:text="@string/email_sign_in"
                 android:textColor="@color/textColorLoginButtons"
                 app:backgroundTint="@color/backgroundLoginButtons"
@@ -44,8 +46,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginHorizontal="40dp"
+                android:layout_marginHorizontal="30dp"
                 android:layout_marginTop="20dp"
+                android:gravity="center"
                 android:text="@string/google_signin"
                 android:textColor="@color/textColorLoginButtons"
                 app:backgroundTint="@color/backgroundLoginButtons"
@@ -59,9 +62,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginHorizontal="40dp"
+                android:layout_marginHorizontal="30dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="65dp"
+                android:gravity="center"
                 android:text="@string/facebook_sign_in"
                 android:textColor="@color/textColorLoginButtons"
                 app:backgroundTint="@color/backgroundLoginButtons"
@@ -88,6 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/register_text_p1"
+                android:textColor="@color/textColorLoginButtons"
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -95,9 +100,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center"
                 android:layout_marginTop="5dp"
-                android:text="@string/register_text_p2" />
+                android:gravity="center"
+                android:text="@string/register_text_p2"
+                android:textColor="@color/textColorLoginButtons" />
 
         </LinearLayout>
 
