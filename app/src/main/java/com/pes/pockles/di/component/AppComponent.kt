@@ -12,6 +12,12 @@ import dagger.android.AndroidInjectionModule
 import dagger.android.AndroidInjector
 import javax.inject.Singleton
 
+/**
+ * Main component of the application and the one injected into the application scope.
+ *
+ * It contains all the modules the app needs.
+ */
+
 @Singleton
 @Component(
     modules = [
@@ -22,7 +28,7 @@ import javax.inject.Singleton
         ViewModelModule::class
     ]
 )
-interface AppComponent: AndroidInjector<PocklesApplication> {
+interface AppComponent : AndroidInjector<PocklesApplication> {
 
     @Component.Builder
     interface Builder {

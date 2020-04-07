@@ -17,10 +17,10 @@ class PocksHistoryViewModel @Inject constructor(
 
     private val _pocksHistory = MediatorLiveData<Resource<List<Pock>>>()
 
-   // Executed when RecyclerView must be updated
+    // Executed when RecyclerView must be updated
     fun refreshInformation() {
         val source = useCase.execute()
-        _pocksHistory.addSource(source){
+        _pocksHistory.addSource(source) {
             _pocksHistory.value = it
             if (it != Resource.Loading) _pocksHistory.removeSource(source)
         }

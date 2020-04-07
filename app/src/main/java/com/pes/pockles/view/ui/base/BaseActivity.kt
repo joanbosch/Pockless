@@ -1,11 +1,14 @@
 package com.pes.pockles.view.ui.base
 
 import androidx.lifecycle.ViewModelProvider
-import com.pes.pockles.di.injector.Injectable
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
-abstract class BaseActivity : DaggerAppCompatActivity(), Injectable {
+/**
+ * Base [Activity] that injects the viewModelFactory. It also sets the activity as injectable
+ * so Dagger can inject the dependencies automatically
+ */
+abstract class BaseActivity : DaggerAppCompatActivity() {
 
     @Inject
     internal lateinit var viewModelFactory: ViewModelProvider.Factory

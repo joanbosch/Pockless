@@ -39,6 +39,7 @@ import kotlin.math.ln
 /**
  * A [Fragment] subclass for map view.
  */
+// TODO: Add a fucking loader -> DANI
 open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback {
 
     override fun getLayout(): Int {

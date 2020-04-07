@@ -18,9 +18,27 @@ class StorageManager {
 
     private val storage: FirebaseStorage = Firebase.storage
 
+    /**
+     * Uploads the given [bitmap] to the given [childReference] path to the firebase storage
+     * and returns the public link in a [Resource] wrapper.
+     *
+     * Images uploaded are bounded to the user as the id of the user is in the name of the image,
+     * with the date uploaded. There is no check for duplicate name, but is very strange that
+     * there could be a duplicate name.
+     *
+     * Usage:
+     *
+     * To upload a file just treat this like a backend api call, observe the changes in the resource
+     * and when it is success, the public URL of the uploaded image will be in the data.
+     *
+     * TODO: Resize image, for not uploading full 4k hd knife at 1kºC images that could take
+     * all the available storage.
+     *
+     * @param bitmap            The bitmap to upload
+     * @param childReference    The path to upload the data on the server. Optional
+     */
     fun uploadMedia(bitmap: Bitmap, childReference: String = "other"): LiveData<Resource<String>> {
         val result = MediatorLiveData<Resource<String>>()
-
 
         val user = FirebaseAuth.getInstance().currentUser
         user?.let {

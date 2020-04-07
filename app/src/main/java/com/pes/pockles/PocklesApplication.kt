@@ -1,6 +1,7 @@
 package com.pes.pockles
 
 import android.app.Application
+import com.facebook.stetho.Stetho
 import com.google.firebase.FirebaseApp
 import com.pes.pockles.di.injector.initInjector
 import dagger.android.AndroidInjector
@@ -19,6 +20,7 @@ class PocklesApplication : Application(), HasAndroidInjector {
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
+            Stetho.initializeWithDefaults(this)
         }
 
         FirebaseApp.initializeApp(this)

@@ -11,6 +11,16 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 class ApiManager constructor(var tokenManager: TokenManager) {
+
+    companion object {
+        const val PROD_URL = "https://us-central1-pockles.cloudfunctions.net/api/"
+        const val DEV_URL = "http://localhost:5001/pockles/us-central1/api/"
+    }
+
+    /**
+     * Creates an API service of type [service] and adds interceptors to
+     * add necessary data to the headers
+     */
     fun <T> createApi(service: Class<T>): T {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level =
@@ -21,7 +31,7 @@ class ApiManager constructor(var tokenManager: TokenManager) {
             requestBuilder.addHeader("AppClient", "PockleS")
             // TODO: What happens if there's no token but the user is currently logged?
             tokenManager.token?.let {
-                requestBuilder.addHeader("Authentication", it)
+                requestBuilder.addHeader("Authorization", "Bearer $it")
             }
             chain.proceed(requestBuilder.build())
         }
@@ -37,7 +47,7 @@ class ApiManager constructor(var tokenManager: TokenManager) {
         val retrofit = Retrofit.Builder()
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("https://us-central1-pockles.cloudfunctions.net/api/")
+            .baseUrl(PROD_URL)
             .client(client)
             .build()
 

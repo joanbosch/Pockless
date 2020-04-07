@@ -23,6 +23,8 @@ class LaunchActivity : BaseActivity() {
         ViewModelProviders.of(this, viewModelFactory).get(LaunchActivityViewModel::class.java)
     }
 
+    private lateinit var dialog: MaterialDialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -66,16 +68,15 @@ class LaunchActivity : BaseActivity() {
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == Activity.RESULT_OK) {
                 val user = FirebaseAuth.getInstance().currentUser
+                viewModel.saveToken()
                 dialog = MaterialDialog(this)
-                    .title(text = "Comprobando datos...")
+                    .title(R.string.checking_data)
                     .cancelOnTouchOutside(false)
                 viewModel.userExists(user!!.uid)
                     .observe(this, Observer { handleUserExistsResult(it) })
             }
         }
     }
-
-    private lateinit var dialog: MaterialDialog
 
     private fun handleUserExistsResult(value: Resource<Boolean>) {
         dialog.dismiss()
@@ -93,7 +94,7 @@ class LaunchActivity : BaseActivity() {
                 dialog.dismiss()
                 Toast.makeText(
                     this,
-                    "Ha ocurrido un error, intentelo de nuevo mas tarde",
+                    getString(R.string.error_try_later),
                     Toast.LENGTH_SHORT
                 ).show()
             }

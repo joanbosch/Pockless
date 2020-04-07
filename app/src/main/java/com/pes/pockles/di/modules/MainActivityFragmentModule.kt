@@ -8,6 +8,12 @@ import com.pes.pockles.view.ui.profile.ProfileFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
+/**
+ * Module that contains all the fragments the main activity shows.
+ *
+ * If necessary more, they must be in the *FragmentModule of their correspondent activity
+ * and then indicated in the [ActivitiesModule]
+ */
 @Module
 abstract class MainActivityFragmentModule {
 

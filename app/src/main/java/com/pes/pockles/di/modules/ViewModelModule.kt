@@ -16,6 +16,9 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 
+/**
+ * Module that lists all the [ViewModel] available so they can be created by the [ViewModelFactory]
+ */
 @Module
 abstract class ViewModelModule {
 

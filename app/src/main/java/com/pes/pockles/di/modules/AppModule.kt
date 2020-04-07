@@ -9,11 +9,15 @@ import com.pes.pockles.data.api.ApiManager
 import com.pes.pockles.data.api.ApiService
 import com.pes.pockles.data.database.AppDatabase
 import com.pes.pockles.data.storage.StorageManager
-import com.pes.pockles.di.util.ViewModelFactory
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
+/**
+ * Basic module that provides all the necessary for the di to work. As the provided dependencies
+ * have not an inject, di does not know how to treat them, thus we must put them here (or on
+ * the module it should go).
+ */
 @Module
 class AppModule {
 
@@ -23,12 +27,6 @@ class AppModule {
         return Room.databaseBuilder(app, AppDatabase::class.java, "pocklesDatabase")
             .allowMainThreadQueries()
             .build()
-    }
-
-    @Singleton
-    @Provides
-    fun provideTokenManager(): TokenManager {
-        return TokenManager()
     }
 
     @Singleton

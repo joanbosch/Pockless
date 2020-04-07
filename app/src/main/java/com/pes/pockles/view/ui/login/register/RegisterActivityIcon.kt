@@ -90,7 +90,7 @@ class RegisterActivityIcon : BaseActivity() {
         } else {
             Snackbar.make(
                 binding.containerRegister2,
-                "Ha ocurrido un error al crear el perfil. Intentelo de nuevo más tarde",
+                getString(R.string.error_creating_profile),
                 Snackbar.LENGTH_LONG
             ).show()
         }
@@ -98,12 +98,12 @@ class RegisterActivityIcon : BaseActivity() {
 
     private fun photoPicker() {
         val items = listOf(
-            BasicGridItem(R.drawable.ic_icon_camera, "Tomar foto"),
-            BasicGridItem(R.drawable.ic_image, "Seleccionar foto")
+            BasicGridItem(R.drawable.ic_icon_camera, getString(R.string.take_photo_dialog_option)),
+            BasicGridItem(R.drawable.ic_image, getString(R.string.select_photo_dialog_option))
         )
 
         MaterialDialog(this, BottomSheet()).show {
-            title(text = "Subir imagen")
+            title(text = getString(R.string.upload_image_dialog_title))
             cornerRadius(16f)
             setPeekHeight(res = R.dimen.register_menu_peek_height)
             gridItems(items) { _, index, _ ->
@@ -132,7 +132,7 @@ class RegisterActivityIcon : BaseActivity() {
                     binding.loadingView.visibility = View.GONE
                     Snackbar.make(
                         binding.containerRegister2,
-                        "Ha ocurrido un error al subir la imagen",
+                        getString(R.string.error_uploading_an_image),
                         Snackbar.LENGTH_LONG
                     ).show()
                 }
@@ -158,7 +158,7 @@ class RegisterActivityIcon : BaseActivity() {
                     e.printStackTrace()
                     Snackbar.make(
                         binding.containerRegister2,
-                        "Ha ocurrido un error al seleccionar la imagen",
+                        getString(R.string.error_selecting_image),
                         Snackbar.LENGTH_LONG
                     ).show()
                 }

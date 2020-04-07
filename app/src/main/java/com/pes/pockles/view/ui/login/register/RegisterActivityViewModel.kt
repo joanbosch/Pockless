@@ -8,7 +8,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.pes.pockles.R
 import com.pes.pockles.model.CreateUser
 import com.pes.pockles.util.livedata.Event
-import timber.log.Timber
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -17,8 +16,11 @@ import javax.inject.Inject
 
 class RegisterActivityViewModel @Inject constructor() : ViewModel() {
 
-    init {
-        Timber.d("RegisterActivityViewModel init")
+    companion object {
+        const val DEFAULT_IMAGE =
+            "https://firebasestorage.googleapis.com/v0/b/pockles.appspot.com/o/default_user_profile_image.png?alt=media&token=af8dd6a0-2dec-4780-9f6d-633cb9a93ba6"
+        const val DEFAULT_COLOR = "#3f51b5"
+        const val DEFAULT_RADIUS = 1F
     }
 
     val user = MutableLiveData<CreateUser>()
@@ -40,9 +42,9 @@ class RegisterActivityViewModel @Inject constructor() : ViewModel() {
                     name = it.displayName,
                     birthDate = null,
                     mail = it.email!!,
-                    profileImageUrl = "https://i.guim.co.uk/img/media/7b9255fb199d680ae7f8568bcdb3192b3d8c1e6b/0_35_3720_4649/master/3720.jpg?width=300&quality=85&auto=format&fit=max&s=1557dfc9dcbe713524ef1c302b0a807d",
-                    radiusVisibility = 1F, //km
-                    accentColor = "#3f51b5"
+                    profileImageUrl = DEFAULT_IMAGE,
+                    radiusVisibility = DEFAULT_RADIUS,
+                    accentColor = DEFAULT_COLOR
                 )
 
         }

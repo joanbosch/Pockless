@@ -57,6 +57,7 @@
     <string name="email_sign_in">Iniciar sesión con tu e-mail</string>
     <string name="register_text_p1">¿No tienes cuenta?</string>
     <string name="register_text_p2">Utiliza cualqueira de las opciones\nanteriores para registrarte</string>
+
     <string name="create_profile_register_activity_text">Crear perfil</string>
     <string name="register_name_hint">Nombre</string>
     <string name="register_birthdate_hint">Fecha nacimiento</string>
@@ -70,9 +71,21 @@
     <string name="field_must_not_be_empty">El campo no puede estar vacío</string>
     <string name="too_young">Edad minima de 13 años</string>
     <string name="change">Cambiar</string>
-    <string name="registering">Registrando...</string>
+    <string name="registering">Registrando</string>
     <string name="invalid_date">Fecha invalida</string>
     <string name="register_back_button_text">Atrás</string>
+    <string name="error_try_later">Ha ocurrido un error, intentelo de nuevo mas tarde</string>
+    <string name="checking_data">Comprobando datos…</string>
+    <string name="cancel_register_dialog_title">Cancelar registro</string>
+    <string name="cancel_register_dialog_description">¿Seguro que quieres cancelar el registro?</string>
+    <string name="yes">Si</string>
+    <string name="no">No</string>
+    <string name="error_uploading_an_image">Ha ocurrido un error al subir la imagen</string>
+    <string name="error_selecting_image">Ha ocurrido un error al seleccionar la imagen</string>
+    <string name="upload_image_dialog_title">Subir imagen</string>
+    <string name="take_photo_dialog_option">Tomar foto</string>
+    <string name="select_photo_dialog_option">Seleccionar foto</string>
+    <string name="error_creating_profile">Ha ocurrido un error al crear el perfil. Intentelo de nuevo más tarde</string>
 
 
 </resources>

@@ -8,11 +8,17 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
-import com.pes.pockles.di.injector.Injectable
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-abstract class BaseFragment<DataBinding : ViewDataBinding> : DaggerFragment(), Injectable {
+/**
+ * Base [Fragment] that injects the viewModelFactory. It also sets the fragment as injectable
+ * so Dagger can inject the dependencies automatically.
+ *
+ * It also inflates the layout and assigns them to the binding. No need to write repetitive
+ * code anymore
+ */
+abstract class BaseFragment<DataBinding : ViewDataBinding> : DaggerFragment() {
     @Inject
     protected lateinit var viewModelFactory: ViewModelProvider.Factory
 

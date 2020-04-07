@@ -6,6 +6,9 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
+/**
+ * Module that contains all the DAOs of the application.
+ */
 @Module
 class DaoModule {
 

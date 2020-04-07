@@ -8,7 +8,6 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -80,12 +79,10 @@ class ViewPockActivity : BaseActivity() {
     }
 
     private fun goBack() {
-        Toast.makeText(this, "Pock View is closed!", Toast.LENGTH_SHORT).show()
         onBackPressed()
     }
 
     private fun goShare() {
-        Toast.makeText(this, "Loading share options", Toast.LENGTH_SHORT).show()
         shareSuccess()
     }
 

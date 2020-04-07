@@ -13,7 +13,6 @@ import javax.inject.Singleton
 
 @Singleton
 class PockRepository @Inject constructor(
-    var database: AppDatabase,
     apiService: ApiService
 ) : BaseRepository(apiService) {
 

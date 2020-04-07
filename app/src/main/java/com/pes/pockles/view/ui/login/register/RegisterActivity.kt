@@ -111,17 +111,17 @@ class RegisterActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        AlertDialog.Builder(this).setTitle("Cancelar registro")
-            .setMessage("¿Seguro que quieres cancelar el registro?")
+        AlertDialog.Builder(this).setTitle(getString(R.string.cancel_register_dialog_title))
+            .setMessage(getString(R.string.cancel_register_dialog_description))
             .setPositiveButton(
-                "Si"
+                getString(R.string.yes)
             ) { _, _ ->
                 run {
                     AuthUI.getInstance().delete(this@RegisterActivity)
                     finish()
                 }
             }
-            .setNegativeButton("No") { dialog, _ ->
+            .setNegativeButton(getString(R.string.no)) { dialog, _ ->
                 dialog.dismiss()
             }.show()
     }

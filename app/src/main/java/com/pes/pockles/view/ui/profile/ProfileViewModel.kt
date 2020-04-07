@@ -36,7 +36,6 @@ class ProfileViewModel @Inject constructor(
             }
         }
 
-
     val user: LiveData<User> = repository.getUser()
 
     fun navigateToHistoryOnClick(v: View) {

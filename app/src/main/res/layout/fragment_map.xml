@@ -12,25 +12,25 @@
 
     </data>
 
-<!--If android:name is changed to MapFragment, it will break the app-->
+    <!--If android:name is changed to MapFragment, it will break the app-->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <fragment
-            xmlns:tools="http://schemas.android.com/tools"
-            xmlns:map="http://schemas.android.com/apk/res-auto"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
+
+        <fragment xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/mapView"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".view.ui.map.MapFragment"
-            />
+            tools:context=".view.ui.map.MapFragment" />
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/outlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:backgroundTint="@color/primary"
+            app:fabSize="mini"
             app:srcCompat="@drawable/ic_filter_list_black_24dp"
-            app:useCompatPadding="true"
-            app:fabSize="mini"/>
-   </FrameLayout>
+            app:useCompatPadding="true" />
+    </FrameLayout>
 </layout>

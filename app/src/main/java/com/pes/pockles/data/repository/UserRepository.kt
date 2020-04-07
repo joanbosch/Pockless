@@ -21,10 +21,6 @@ class UserRepository @Inject constructor(
     private var executors: AppExecutors
 ) : BaseRepository(apiService) {
 
-    init {
-        Timber.d("Database object in UserRepositoryImpl is $database")
-    }
-
     fun getUser(): LiveData<User> {
         return database.userDao().getUser()
     }

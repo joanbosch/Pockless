@@ -174,9 +174,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/appCompatTextView4" />
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <!--        android:text="@string/register_create_profile_button_text"-->
+
         <com.google.android.material.button.MaterialButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
