@@ -5,6 +5,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
 
     <application
         android:name=".PocklesApplication"
@@ -24,7 +29,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity android:name=".view.ui.MainActivity" />
-        <activity android:name=".view.ui.login.LaunchActivity">
+        <activity android:name=".view.ui.login.register.RegisterActivity" />
+        <activity android:name=".view.ui.login.register.RegisterActivityIcon" />
+        <activity
+            android:name=".view.ui.login.LaunchActivity"
+            android:theme="@style/AppTheme.BrandedLaunch">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,6 +47,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAWdMmSmIipejU-RllmMzXIFa055bGnrcQ" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
