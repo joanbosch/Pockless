@@ -108,10 +108,10 @@ dependencies {
 
     //Firebase
     implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
-    implementation 'com.google.firebase:firebase-analytics:17.2.2'
+    implementation 'com.google.firebase:firebase-analytics:17.3.0'
     implementation 'com.google.firebase:firebase-storage-ktx:19.1.1'
-    implementation 'com.google.firebase:firebase-auth:17.0.0'
-    implementation 'com.google.firebase:firebase-core:16.0.9'
+    implementation 'com.google.firebase:firebase-auth:19.3.0'
+    implementation 'com.google.firebase:firebase-messaging:20.1.5'
 
     implementation "dev.sasikanth:colorsheet:1.0.1"
     implementation 'com.xw.repo:bubbleseekbar:3.20-lite'

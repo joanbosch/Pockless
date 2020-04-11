@@ -5,11 +5,14 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
 import com.pes.pockles.R
 import com.pes.pockles.data.repository.UserRepository
 import com.pes.pockles.databinding.ActivityMainBinding
 import com.pes.pockles.view.ui.base.BaseActivity
 import com.pes.pockles.view.ui.newpock.NewPockActivity
+import timber.log.Timber
 import javax.inject.Inject
 
 class MainActivity : BaseActivity() {
@@ -29,5 +32,21 @@ class MainActivity : BaseActivity() {
         binding.fab.setOnClickListener {
             startActivity(Intent(this, NewPockActivity::class.java))
         }
+
+        retrieveRegisterToken()
+    }
+
+    private fun retrieveRegisterToken(){
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    return@OnCompleteListener
+                }
+
+                // Get new Instance ID token
+                val token = task.result?.token
+                Timber.i(token)
+
+            })
     }
 }
