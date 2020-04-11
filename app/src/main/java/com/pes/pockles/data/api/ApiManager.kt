@@ -1,7 +1,6 @@
 package com.pes.pockles.data.api
 
 import com.pes.pockles.BuildConfig
-import com.pes.pockles.data.TokenManager
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -10,11 +9,16 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-class ApiManager constructor(var tokenManager: TokenManager) {
+class ApiManager constructor(
+    private val tokenAuthenticator: TokenAuthenticator
+) {
 
     companion object {
         const val PROD_URL = "https://us-central1-pockles.cloudfunctions.net/api/"
         const val DEV_URL = "http://localhost:5001/pockles/us-central1/api/"
+
+        const val APP_CLIENT_HEADER_NAME = "AppClient"
+        const val APP_CLIENT_VALUE = "PockleS"
     }
 
     /**
@@ -28,11 +32,7 @@ class ApiManager constructor(var tokenManager: TokenManager) {
 
         val appClientInterceptor = Interceptor { chain: Interceptor.Chain ->
             val requestBuilder = chain.request().newBuilder()
-            requestBuilder.addHeader("AppClient", "PockleS")
-            // TODO: What happens if there's no token but the user is currently logged?
-            tokenManager.token?.let {
-                requestBuilder.addHeader("Authorization", "Bearer $it")
-            }
+            requestBuilder.addHeader(APP_CLIENT_HEADER_NAME, APP_CLIENT_VALUE)
             chain.proceed(requestBuilder.build())
         }
 
@@ -42,6 +42,7 @@ class ApiManager constructor(var tokenManager: TokenManager) {
             .readTimeout(5, TimeUnit.MINUTES)
             .addInterceptor(loggingInterceptor)
             .addInterceptor(appClientInterceptor)
+            .authenticator(tokenAuthenticator)
             .build()
 
         val retrofit = Retrofit.Builder()

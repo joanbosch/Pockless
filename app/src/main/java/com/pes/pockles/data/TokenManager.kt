@@ -2,6 +2,7 @@ package com.pes.pockles.data
 
 import android.content.Context
 import android.preference.PreferenceManager
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.internal.InternalTokenResult
 import javax.inject.Inject
@@ -36,13 +37,15 @@ class TokenManager @Inject constructor(val context: Context) {
             }
     }
 
-    fun refreshToken() {
+    fun refreshToken(): String? {
         val user = FirebaseAuth.getInstance().currentUser
-        user?.let {
-            it.getIdToken(true).addOnSuccessListener { token ->
-                token.token?.let { t -> saveToken(t) }
+        return if (user != null) {
+            val token = Tasks.await(user.getIdToken(true))
+            if (token != null && token.token != null) {
+                saveToken(token.token!!)
             }
-        }
+            token.token
+        } else null
     }
 
     private fun loadToken() {

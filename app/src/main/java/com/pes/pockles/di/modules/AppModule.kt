@@ -4,9 +4,9 @@ import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import com.pes.pockles.PocklesApplication
-import com.pes.pockles.data.TokenManager
 import com.pes.pockles.data.api.ApiManager
 import com.pes.pockles.data.api.ApiService
+import com.pes.pockles.data.api.TokenAuthenticator
 import com.pes.pockles.data.database.AppDatabase
 import com.pes.pockles.data.storage.StorageManager
 import dagger.Module
@@ -37,8 +37,8 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideApi(tokenManager: TokenManager): ApiService {
-        return ApiManager(tokenManager).createApi(ApiService::class.java)
+    fun provideApi(tokenAuthenticator: TokenAuthenticator): ApiService {
+        return ApiManager(tokenAuthenticator).createApi(ApiService::class.java)
     }
 
     @Singleton
