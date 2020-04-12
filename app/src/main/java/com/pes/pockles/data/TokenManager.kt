@@ -25,27 +25,18 @@ class TokenManager @Inject constructor(val context: Context) {
     init {
         //https://firebase.google.com/docs/reference/android/com/google/firebase/auth/FirebaseAuth.IdTokenListener#public-method-summary
         loadToken()
-        FirebaseAuth.getInstance()
-            .addIdTokenListener { i: InternalTokenResult ->
-                run {
-                    this.token?.let { t ->
-                        {
-                            this.saveToken(t)
-                        }
-                    }
-                }
+        FirebaseAuth.getInstance().addIdTokenListener { i: InternalTokenResult ->
+            i.token?.let {
+                this.saveToken(it)
             }
+        }
     }
 
-    fun refreshToken(): String? {
+    fun refreshToken() {
         val user = FirebaseAuth.getInstance().currentUser
-        return if (user != null) {
-            val token = Tasks.await(user.getIdToken(true))
-            if (token != null && token.token != null) {
-                saveToken(token.token!!)
-            }
-            token.token
-        } else null
+        user?.let {
+            user.getIdToken(true)
+        }
     }
 
     private fun loadToken() {
