@@ -11,7 +11,7 @@ import com.pes.pockles.util.extensions.forceRefresh
 import javax.inject.Inject
 
 class MapViewModel @Inject constructor(
-    private var useCaseNearestPocks: GetNearestPocksUseCase
+    private var useCaseNearestPocks: GetNearestPocksUseCase,
     private var useCaseAllPocks: PocksHistoryUseCase
 ) : ViewModel() {
 
