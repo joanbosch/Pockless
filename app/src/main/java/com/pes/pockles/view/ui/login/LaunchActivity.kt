@@ -3,21 +3,32 @@ package com.pes.pockles.view.ui.login
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import com.afollestad.materialdialogs.MaterialDialog
 import com.firebase.ui.auth.AuthMethodPickerLayout
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.pes.pockles.R
-import com.pes.pockles.model.PreferencesManager
+import com.pes.pockles.data.Resource
 import com.pes.pockles.view.ui.MainActivity
+import com.pes.pockles.view.ui.base.BaseActivity
+import com.pes.pockles.view.ui.login.register.RegisterActivity
 
-class LaunchActivity : AppCompatActivity() {
+class LaunchActivity : BaseActivity() {
+
+    private val viewModel: LaunchActivityViewModel by lazy {
+        ViewModelProviders.of(this, viewModelFactory).get(LaunchActivityViewModel::class.java)
+    }
+
+    private lateinit var dialog: MaterialDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+        val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
         if (user == null) {
             createSignInIntent()
         } else {
@@ -31,6 +42,7 @@ class LaunchActivity : AppCompatActivity() {
             AuthUI.IdpConfig.GoogleBuilder().build(),
             AuthUI.IdpConfig.FacebookBuilder().build()
         )
+
         //Creates the custom layout and binds buttons to login methods
         val customLayout =
             AuthMethodPickerLayout.Builder(R.layout.activity_login)
@@ -51,51 +63,42 @@ class LaunchActivity : AppCompatActivity() {
         )
     }
 
-    // When login process finishes
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == Activity.RESULT_OK) {
-                // Successfully signed in
                 val user = FirebaseAuth.getInstance().currentUser
-                user?.getIdToken(true)?.addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val idToken = task.result!!.token
-                        PreferencesManager.setToken(idToken)
-                    }
-                }
-                //TODO Pick up the user and pass it to the profile
-                //The user has logged in
-                startActivity(Intent(this, MainActivity::class.java))
-            } else {
-                // Sign in failed. If response is null the user canceled the
-                // sign-in flow using the back button. Otherwise check
-                // response.getError().getErrorCode() and handle the error.
+                viewModel.saveToken()
+                dialog = MaterialDialog(this)
+                    .title(R.string.checking_data)
+                    .cancelOnTouchOutside(false)
+                viewModel.userExists(user!!.uid)
+                    .observe(this, Observer { handleUserExistsResult(it) })
             }
         }
     }
 
-    //This method will be useful for User profile
-    private fun signOut() {
-        // [START auth_fui_signout]
-        AuthUI.getInstance()
-            .signOut(this)
-            .addOnCompleteListener {
-                // TODO Make something at log out
+    private fun handleUserExistsResult(value: Resource<Boolean>) {
+        dialog.dismiss()
+        when (value) {
+            is Resource.Loading -> dialog.show()
+            is Resource.Success<Boolean> -> {
+                if (value.data) {
+                    viewModel.loadUser()
+                    startActivity(Intent(this, MainActivity::class.java))
+                } else {
+                    startActivity(Intent(this, RegisterActivity::class.java))
+                }
             }
-        // [END auth_fui_signout]
-    }
-
-    //This method will be useful for User profile
-    private fun delete() {
-        // full account delete
-        AuthUI.getInstance()
-            .delete(this)
-            .addOnCompleteListener {
-                // TODO Make something at removing the account
+            is Resource.Error -> {
+                dialog.dismiss()
+                Toast.makeText(
+                    this,
+                    getString(R.string.error_try_later),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-
+        }
     }
 
     companion object {

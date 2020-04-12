@@ -6,18 +6,14 @@ import com.pes.pockles.domain.usecases.GetNearestPocksUseCase
 import com.pes.pockles.domain.usecases.PocksHistoryUseCase
 import com.pes.pockles.model.Location
 import com.pes.pockles.model.Pock
-import com.pes.pockles.util.AbsentLiveData
+import com.pes.pockles.util.livedata.AbsentLiveData
 import com.pes.pockles.util.extensions.forceRefresh
+import javax.inject.Inject
 
-class MapViewModel : ViewModel() {
-
-    private val useCaseNearestPocks: GetNearestPocksUseCase by lazy {
-        GetNearestPocksUseCase()
-    }
-
-    private val useCaseAllPocks: PocksHistoryUseCase by lazy {
-        PocksHistoryUseCase()
-    }
+class MapViewModel @Inject constructor(
+    private var useCaseNearestPocks: GetNearestPocksUseCase
+    private var useCaseAllPocks: PocksHistoryUseCase
+) : ViewModel() {
 
     lateinit var categories :Array<String>
     private val _currentLocation = MutableLiveData<Location?>()

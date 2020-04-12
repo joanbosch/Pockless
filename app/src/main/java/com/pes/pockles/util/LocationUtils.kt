@@ -21,8 +21,3 @@ class LocationUtils {
         }
     }
 }
-
-interface LastLocationListener {
-    fun onLocationReady(location: android.location.Location)
-    fun onLocationError(error: Throwable?)
-}

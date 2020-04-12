@@ -8,7 +8,6 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -17,13 +16,13 @@ import com.pes.pockles.R
 import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.ViewPockBinding
 import com.pes.pockles.model.Pock
-import com.pes.pockles.view.viewmodel.ViewModelFactory
+import com.pes.pockles.view.ui.base.BaseActivity
 
-class ViewPockActivity : AppCompatActivity() {
+class ViewPockActivity : BaseActivity() {
 
     private lateinit var binding: ViewPockBinding
     private val viewModel: ViewPockViewModel by lazy {
-        ViewModelProviders.of(this, ViewModelFactory()).get(ViewPockViewModel::class.java)
+        ViewModelProviders.of(this, viewModelFactory).get(ViewPockViewModel::class.java)
     }
 
     private lateinit var pock: Pock
@@ -80,12 +79,10 @@ class ViewPockActivity : AppCompatActivity() {
     }
 
     private fun goBack() {
-        Toast.makeText(this, "Pock View is closed!", Toast.LENGTH_SHORT).show()
         onBackPressed()
     }
 
     private fun goShare() {
-        Toast.makeText(this, "Loading share options", Toast.LENGTH_SHORT).show()
         shareSuccess()
     }
 

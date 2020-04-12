@@ -5,6 +5,11 @@
     <color name="colorAccent">#2196F3</color>
     <color name="white">#FFFFFF</color>
     <color name="backgroundLoginButtons">#F3F3F3</color>
-    <color name="textColorLoginButtons">#434343</color>
+    <color name="textColorLoginButtons">#434343</color>fcfcfc
+    <color name="lightColorBackground">#FCFCFC</color>
+
+
+    <color name="profile_light_background">#F1F1F1</color>
+    <color name="profile_camera_color">#2196f3</color>
 
 </resources>
