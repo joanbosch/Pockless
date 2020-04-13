@@ -6,21 +6,22 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.ActivityNewPockBinding
+import com.pes.pockles.model.Location
 import com.pes.pockles.model.Pock
-import com.pes.pockles.view.viewmodel.ViewModelFactory
+import com.pes.pockles.util.LocationUtils.Companion.getLastLocation
+import com.pes.pockles.view.ui.base.BaseActivity
 
-class NewPockActivity : AppCompatActivity() {
+class NewPockActivity : BaseActivity() {
 
     private lateinit var binding: ActivityNewPockBinding
     private val viewModel: NewPockViewModel by lazy {
-        ViewModelProviders.of(this, ViewModelFactory()).get(NewPockViewModel::class.java)
+        ViewModelProviders.of(this, viewModelFactory).get(NewPockViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,8 +36,16 @@ class NewPockActivity : AppCompatActivity() {
             finish()
         }
 
+        binding.pockButton.setOnClickListener {
+            getLastLocation(this, {
+                viewModel.insertPock(Location(it.latitude, it.longitude))
+            }, {
+                handleError(true)
+            })
+        }
+
         val spinner = binding.categoriesDropdown
-        spinner?.setAdapter(
+        spinner.setAdapter(
             ArrayAdapter(
                 this,
                 android.R.layout.simple_spinner_dropdown_item,
@@ -84,7 +93,7 @@ class NewPockActivity : AppCompatActivity() {
         viewModel.errorHandlerCallback.observe(
             this,
             Observer { value: Boolean ->
-                value?.let {
+                value.let {
                     if (value)
                         handleError(false)
                 }

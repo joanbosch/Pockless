@@ -9,18 +9,18 @@ import com.pes.pockles.domain.usecases.NewPockUseCase
 import com.pes.pockles.model.Location
 import com.pes.pockles.model.NewPock
 import com.pes.pockles.model.Pock
-import com.pes.pockles.util.AbsentLiveData
+import com.pes.pockles.util.livedata.AbsentLiveData
+import javax.inject.Inject
 
-class NewPockViewModel : ViewModel() {
+class NewPockViewModel @Inject constructor(
+    private var useCase: NewPockUseCase
+) : ViewModel() {
+
     private val _errorHandler = MutableLiveData<Boolean>()
     private val _chatEnabled = MutableLiveData<Boolean>()
     private val _pockToInsert = MutableLiveData<NewPock?>()
     val pockContent = MutableLiveData<String>()
     val pockCategory = MutableLiveData<String>()
-
-    private val useCase: NewPockUseCase by lazy {
-        NewPockUseCase()
-    }
 
     val networkCallback: LiveData<Resource<Pock>?>
         get() = Transformations.switchMap(_pockToInsert) { value: NewPock? ->
@@ -34,7 +34,7 @@ class NewPockViewModel : ViewModel() {
         _chatEnabled.value = false
     }
 
-    fun insertPock() {
+    fun insertPock(location: Location) {
         val category: String = if (pockCategory.value == null)
             "General"
         else pockCategory.value.toString()
@@ -46,7 +46,7 @@ class NewPockViewModel : ViewModel() {
                 message = pockContent.value!!,
                 category = category,
                 chatAccess = _chatEnabled.value!!,
-                location = Location(0.0, 0.0) // obtain current location
+                location = location
             )
         }
     }

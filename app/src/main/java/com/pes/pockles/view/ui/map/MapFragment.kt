@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -29,10 +28,9 @@ import com.pes.pockles.R
 import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.FragmentMapBinding
 import com.pes.pockles.model.Pock
-import com.pes.pockles.util.LastLocationListener
-import com.pes.pockles.util.LocationUtils
+import com.pes.pockles.util.LocationUtils.Companion.getLastLocation
+import com.pes.pockles.view.ui.base.BaseFragment
 import com.pes.pockles.view.ui.viewpock.ViewPockActivity
-import com.pes.pockles.view.viewmodel.ViewModelFactory
 import timber.log.Timber
 import kotlin.math.cos
 import kotlin.math.ln
@@ -41,7 +39,12 @@ import kotlin.math.ln
 /**
  * A [Fragment] subclass for map view.
  */
-open class MapFragment : Fragment(), OnMapReadyCallback {
+// TODO: Add a fucking loader -> DANI
+open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback {
+
+    override fun getLayout(): Int {
+        return R.layout.fragment_map
+    }
 
     companion object {
         const val INTERVAL: Long = 60 * 1000 //interval for updates the loc
@@ -51,7 +54,7 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private val viewModel: MapViewModel by lazy {
-        ViewModelProviders.of(this, ViewModelFactory()).get(MapViewModel::class.java)
+        ViewModelProviders.of(this, viewModelFactory).get(MapViewModel::class.java)
     }
 
     private var googleMap: GoogleMap? = null
@@ -61,11 +64,9 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding: FragmentMapBinding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_map, container, false
-        )
+        super.onCreateView(inflater, container, savedInstanceState)
 
-        binding.lifecycleOwner = this
+
         binding.mapViewModel = viewModel
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment?
@@ -129,32 +130,27 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
         googleMap!!.isMyLocationEnabled = true
         googleMap!!.cameraPosition
 
-        LocationUtils.getLatLocation(activity!!, object : LastLocationListener {
-            override fun onLocationReady(location: android.location.Location) {
-                val latLng = LatLng(location.latitude, location.longitude)
-                val center: CameraPosition = CameraPosition.Builder()
-                    .target(latLng)
-                    .zoom(getZoomForMetersWide(latLng, RADIUS))
-                    .build();
-                googleMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(center))
-            }
-
-            override fun onLocationError(error: Throwable?) {
-                Timber.d(error)
-            }
+        getLastLocation(activity!!, { location ->
+            val latLng = LatLng(location.latitude, location.longitude)
+            val center: CameraPosition = CameraPosition.Builder()
+                .target(latLng)
+                .zoom(getZoomForMetersWide(latLng))
+                .build();
+            googleMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(center))
+        }, {
+            Timber.d(it)
         })
+
         googleMap!!.setOnMarkerClickListener { marker ->
             val intent = Intent(activity, ViewPockActivity::class.java)
             intent.putExtra("markerId", marker.tag as String)
             startActivity(intent)
             true
         }
-
     }
 
-    fun getZoomForMetersWide(
-        latLngPoint: LatLng,
-        desiredMeters: Int
+    private fun getZoomForMetersWide(
+        latLngPoint: LatLng
     ): Float {
         // calculate width screen
         val displayMetrics = DisplayMetrics()
@@ -165,7 +161,7 @@ open class MapFragment : Fragment(), OnMapReadyCallback {
         val metrics: DisplayMetrics = context!!.resources.displayMetrics
         val mapWidth: Float = mapViewWidth / metrics.density
         val latitudinalAdjustment: Double = cos(Math.PI * latLngPoint.latitude / 180.0)
-        val arg: Double = 40075004 * mapWidth * latitudinalAdjustment / (desiredMeters * 256.0)
+        val arg: Double = 40075004 * mapWidth * latitudinalAdjustment / (RADIUS * 256.0)
         return (ln(arg) / ln(2.0)).toFloat()
     }
 

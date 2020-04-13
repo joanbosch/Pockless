@@ -6,10 +6,10 @@ package com.pes.pockles.data
  *
  * Source: https://github.com/android/architecture-samples/blob/master/app/src/main/java/com/example/android/architecture/blueprints/todoapp/data/Result.kt
  */
-sealed class Resource<out R>(val status: Status) {
-    data class Success<out T>(val data: T) : Resource<T>(Status.SUCCESS)
-    data class Error(val exception: Throwable) : Resource<Nothing>(Status.ERROR)
-    object Loading : Resource<Nothing>(Status.LOADING)
+sealed class Resource<out R>() {
+    data class Success<out T>(val data: T) : Resource<T>()
+    data class Error(val exception: Throwable) : Resource<Nothing>()
+    object Loading : Resource<Nothing>()
 
     override fun toString(): String {
         return when (this) {
@@ -25,6 +25,3 @@ sealed class Resource<out R>(val status: Status) {
  */
 val Resource<*>.succeeded
     get() = this is Resource.Success && data != null
-
-val Resource<*>.loading
-    get() = this is Resource.Loading
