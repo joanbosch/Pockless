@@ -119,6 +119,13 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     tools:text="Pock message" />
 
+                <ImageView
+                    android:id="@+id/pockImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:contentDescription="@null"
+                    app:srcCompat="@drawable/ic_image" />
+
             </LinearLayout>
         </ScrollView>
 

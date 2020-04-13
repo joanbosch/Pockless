@@ -1,10 +1,12 @@
 package com.pes.pockles.view.ui.newpock
 
+import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.pes.pockles.data.Resource
+import com.pes.pockles.data.storage.StorageManager
 import com.pes.pockles.domain.usecases.NewPockUseCase
 import com.pes.pockles.model.Location
 import com.pes.pockles.model.NewPock
@@ -13,14 +15,19 @@ import com.pes.pockles.util.livedata.AbsentLiveData
 import javax.inject.Inject
 
 class NewPockViewModel @Inject constructor(
-    private var useCase: NewPockUseCase
+    private var useCase: NewPockUseCase, private val storageManager: StorageManager
 ) : ViewModel() {
 
     private val _errorHandler = MutableLiveData<Boolean>()
     private val _chatEnabled = MutableLiveData<Boolean>()
     private val _pockToInsert = MutableLiveData<NewPock?>()
+    private var _mediaURL: String? = null
     val pockContent = MutableLiveData<String>()
     val pockCategory = MutableLiveData<String>()
+
+    private val _goUploadImage = MutableLiveData<Boolean>()
+    val goUploadImage: LiveData<Boolean>
+        get() = _goUploadImage
 
     val networkCallback: LiveData<Resource<Pock>?>
         get() = Transformations.switchMap(_pockToInsert) { value: NewPock? ->
@@ -32,6 +39,7 @@ class NewPockViewModel @Inject constructor(
 
     init {
         _chatEnabled.value = false
+        _goUploadImage.value = false
     }
 
     fun insertPock(location: Location) {
@@ -46,9 +54,22 @@ class NewPockViewModel @Inject constructor(
                 message = pockContent.value!!,
                 category = category,
                 chatAccess = _chatEnabled.value!!,
-                location = location
+                location = location,
+                media = _mediaURL
             )
         }
+    }
+
+    fun onUploadImage() {
+        _goUploadImage.value = true
+    }
+
+    fun uploadMedia(bitmap: Bitmap): LiveData<Resource<String>> {
+        return storageManager.uploadMedia(bitmap, "pockImages")
+    }
+
+    fun setImageUrl(data: String) {
+        _mediaURL = data
     }
 
 }

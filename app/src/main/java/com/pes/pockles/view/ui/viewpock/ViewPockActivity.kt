@@ -1,6 +1,7 @@
 package com.pes.pockles.view.ui.viewpock
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -12,11 +13,14 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.Glide
 import com.pes.pockles.R
+import com.pes.pockles.R.*
 import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.ViewPockBinding
 import com.pes.pockles.model.Pock
 import com.pes.pockles.view.ui.base.BaseActivity
+
 
 class ViewPockActivity : BaseActivity() {
 
@@ -38,7 +42,7 @@ class ViewPockActivity : BaseActivity() {
 
         setUpWindow()
 
-        binding = DataBindingUtil.setContentView(this, R.layout.view_pock)
+        binding = DataBindingUtil.setContentView(this, layout.view_pock)
 
         binding.loading.visibility = View.VISIBLE
 
@@ -53,12 +57,22 @@ class ViewPockActivity : BaseActivity() {
                         is Resource.Success<Pock> -> {
                             this.pock = value.data
                             binding.loading.visibility = View.GONE
+                            Glide.with(this)
+                                .load(pock.media)
+                                .into(binding.pockImage)
+                            Toast.makeText(this, value.data.media, Toast.LENGTH_SHORT).show()
+                            /*if (pock.media != null) {
+                                Toast.makeText(this, pock.message, Toast.LENGTH_SHORT).show()
+                            }*/
                             binding.pock = this.pock
                         }
+                        //else -> Toast.makeText(this, "Error loading the pock", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
         )
+
+
 
         viewModel.goBack.observe(this, Observer<Boolean> { backButtonPressed ->
             if (backButtonPressed) goBack()
