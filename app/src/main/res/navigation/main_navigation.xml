@@ -17,12 +17,21 @@
         tools:layout="@layout/fragment_map" />
     <fragment
         android:id="@+id/userProfileFragment"
-        android:name="com.pes.pockles.view.ui.UserProfileFragment"
+        android:name="com.pes.pockles.view.ui.profile.ProfileFragment"
         android:label="fragment_user_profile"
-        tools:layout="@layout/fragment_user_profile" />
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_userProfileFragment_to_pocksHistoryActivity"
+            app:destination="@id/pocksHistoryActivity" />
+    </fragment>
     <fragment
         android:id="@+id/notificationsFragment"
         android:name="com.pes.pockles.view.ui.NotificationsFragment"
         android:label="fragment_notifications"
         tools:layout="@layout/fragment_notifications" />
+    <activity
+        android:id="@+id/pocksHistoryActivity"
+        android:name="com.pes.pockles.view.ui.pockshistory.PocksHistoryActivity"
+        android:label="PocksHistoryActivity"
+        tools:layout="@layout/activity_pocks_history" />
 </navigation>
