@@ -65,7 +65,6 @@ class ViewPockActivity : BaseActivity() {
                             }
                             binding.loading.visibility = View.GONE
                         }
-                        //else -> Toast.makeText(this, "Error loading the pock", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
