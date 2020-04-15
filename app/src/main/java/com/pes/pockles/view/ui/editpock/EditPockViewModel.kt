@@ -8,19 +8,18 @@ import com.pes.pockles.data.Resource
 import com.pes.pockles.domain.usecases.EditPockUseCase
 import com.pes.pockles.model.EditedPock
 import com.pes.pockles.model.Pock
-import com.pes.pockles.util.AbsentLiveData
+import com.pes.pockles.util.livedata.AbsentLiveData
+import javax.inject.Inject
 
-class EditPockViewModel : ViewModel() {
+class EditPockViewModel @Inject constructor(
+    private var useCase: EditPockUseCase
+) : ViewModel() {
+
     private val _errorHandler = MutableLiveData<Boolean>()
     private val _chatEnabled = MutableLiveData<Boolean>()
     private val _pockToUpdate = MutableLiveData<EditedPock?>()
     val pockContent = MutableLiveData<String>()
     val pockCategory = MutableLiveData<String>()
-
-
-    private val useCase: EditPockUseCase by lazy {
-        EditPockUseCase()
-    }
 
     val networkCallback: LiveData<Resource<Pock>?>
         get() = Transformations.switchMap(_pockToUpdate) { value: EditedPock? ->

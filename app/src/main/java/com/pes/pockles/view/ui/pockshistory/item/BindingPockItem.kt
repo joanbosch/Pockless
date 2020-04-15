@@ -2,6 +2,7 @@ package com.pes.pockles.view.ui.pockshistory.item
 
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
 import com.pes.pockles.R
@@ -21,6 +22,9 @@ class BindingPockItem : AbstractBindingItem<PockHistoryItemBinding>() {
         }
         binding.editButton.setOnClickListener {
             it.context.startActivity(Intent(it.context, EditPockActivity::class.java))
+        }
+        if (System.currentTimeMillis() < pock!!.dateInserted + (20 * 60 * 1000)) {
+            binding.editButton.visibility = View.VISIBLE
         }
     }
 

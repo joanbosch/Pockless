@@ -6,24 +6,20 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.ActivityEditPockBinding
-import com.pes.pockles.databinding.ActivityNewPockBinding
-import com.pes.pockles.model.Location
 import com.pes.pockles.model.Pock
-import com.pes.pockles.util.LocationUtils.Companion.getLastLocation
-import com.pes.pockles.view.viewmodel.ViewModelFactory
+import com.pes.pockles.view.ui.base.BaseActivity
 
-class EditPockActivity : AppCompatActivity() {
+class EditPockActivity : BaseActivity() {
 
     private lateinit var binding: ActivityEditPockBinding
     private val viewModel: EditPockViewModel by lazy {
-        ViewModelProviders.of(this, ViewModelFactory()).get(EditPockViewModel::class.java)
+        ViewModelProviders.of(this, viewModelFactory).get(EditPockViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,11 +37,6 @@ class EditPockActivity : AppCompatActivity() {
 
         binding.updatePockButton.setOnClickListener {
             viewModel.updatePock()
-            /*getLastLocation(this, {
-                viewModel.updatePock(Location(it.latitude, it.longitude))
-            }, {
-                handleError(true)
-            })*/
         }
 
         val spinner = binding.categoriesDropdown
@@ -84,7 +75,7 @@ class EditPockActivity : AppCompatActivity() {
     }
 
     private fun initializeObservers() {
-        //It will handle the behavior of the app when we try to insert a pock into DB
+        //It will handle the behavior of the app when we try to edit a pock
         viewModel.networkCallback.observe(
             this,
             Observer { value: Resource<Pock>? ->

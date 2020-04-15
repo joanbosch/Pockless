@@ -1,9 +1,6 @@
 package com.pes.pockles.data.api
 
-import com.pes.pockles.model.CreateUser
-import com.pes.pockles.model.NewPock
-import com.pes.pockles.model.Pock
-import com.pes.pockles.model.User
+import com.pes.pockles.model.*
 import io.reactivex.Single
 import retrofit2.http.*
 
@@ -40,6 +37,9 @@ interface ApiService {
 
     @GET("pock/{id}")
     fun viewPock(@Path("id") id: String): Single<Pock>
+
+    @PUT("pock/{id}")
+    fun editPock(@Path("id") id: String, @Body pock: EditedPock): Single<Pock>
 
     @GET("user")
     fun getUser(): Single<User>
