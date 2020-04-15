@@ -165,8 +165,10 @@ class NewPockActivity : BaseActivity() {
         viewModel.uploadMedia(bitmap).observe(this, Observer {
             when (it) {
                 is Resource.Loading -> {
-                    binding.loading.visibility = View.VISIBLE
                     binding.insertImageButton.visibility = View.GONE
+                    binding.changeImage.visibility = View.GONE
+                    binding.done.visibility = View.GONE
+                    binding.loading.visibility = View.VISIBLE
                 }
                 is Resource.Error -> {
                     binding.loading.visibility = View.GONE
@@ -178,10 +180,11 @@ class NewPockActivity : BaseActivity() {
                     ).show()
                 }
                 is Resource.Success<String> -> {
-                    //binding.insertImageButton.setImageBitmap(bitmap)
                     binding.insertImageButton.visibility = View.GONE
                     binding.loading.visibility = View.GONE
                     viewModel.setImageUrl(it.data)
+                    binding.done.visibility = View.VISIBLE
+                    binding.changeImage.visibility = View.VISIBLE
                 }
             }
         })

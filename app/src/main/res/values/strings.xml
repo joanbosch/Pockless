@@ -19,6 +19,7 @@
     <string name="profile_menu_item">Perfil</string>
     <string name="close_filter_button">Cerrar</string>
     <string name="filter_dialog_text">Marca las categorías de Pock que desees ver en tu mapa…</string>
+    <string name="change_image">Cambiar imagen</string>
 
     <string name="user_format">User: %s</string>
 
