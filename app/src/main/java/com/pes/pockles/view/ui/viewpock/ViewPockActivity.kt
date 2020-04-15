@@ -56,15 +56,14 @@ class ViewPockActivity : BaseActivity() {
                     when (value) {
                         is Resource.Success<Pock> -> {
                             this.pock = value.data
-                            binding.loading.visibility = View.GONE
-                            Glide.with(this)
-                                .load(pock.media)
-                                .into(binding.pockImage)
-                            Toast.makeText(this, value.data.media, Toast.LENGTH_SHORT).show()
-                            /*if (pock.media != null) {
-                                Toast.makeText(this, pock.message, Toast.LENGTH_SHORT).show()
-                            }*/
                             binding.pock = this.pock
+                            if (pock.media != null) {
+                                Glide.with(this)
+                                    .load(pock.media)
+                                    .into(binding.pockImage)
+                                binding.pockImage.visibility = View.VISIBLE
+                            }
+                            binding.loading.visibility = View.GONE
                         }
                         //else -> Toast.makeText(this, "Error loading the pock", Toast.LENGTH_SHORT).show()
                     }
