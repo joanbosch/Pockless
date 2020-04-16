@@ -1,6 +1,10 @@
 package com.pes.pockles.data.api
 
-import com.pes.pockles.model.*
+import com.pes.pockles.model.CreateUser
+import com.pes.pockles.model.EditedPock
+import com.pes.pockles.model.NewPock
+import com.pes.pockles.model.Pock
+import com.pes.pockles.model.User
 import io.reactivex.Single
 import retrofit2.http.*
 
