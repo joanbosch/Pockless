@@ -52,7 +52,7 @@ class EditPockViewModel @Inject constructor(
     fun fillFields(text: String, category: String, chatAccess: Boolean) {
         pockContent.value = text
         if (category != "General") pockCategory.value = category
-        chatEnabled.value = chatAccess
+        if (chatEnabled.value == null) chatEnabled.value = chatAccess
     }
 
     fun unselectCategory() {
