@@ -16,7 +16,7 @@ class EditPockViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _errorHandler = MutableLiveData<Boolean>()
-    private val _chatEnabled = MutableLiveData<Boolean>()
+    val chatEnabled = MutableLiveData<Boolean>()
     private val _pockToUpdate = MutableLiveData<EditedPock?>()
     val pockContent = MutableLiveData<String>()
     val pockCategory = MutableLiveData<String>()
@@ -30,7 +30,7 @@ class EditPockViewModel @Inject constructor(
         get() = _errorHandler
 
     init {
-        _chatEnabled.value = false
+        chatEnabled.value = false
     }
 
     fun updatePock() {
@@ -44,9 +44,18 @@ class EditPockViewModel @Inject constructor(
             _pockToUpdate.value = EditedPock(
                 message = pockContent.value!!,
                 category = category,
-                chatAccess = _chatEnabled.value!!
+                chatAccess = chatEnabled.value!!
             )
         }
     }
 
+    fun fillFields(text: String, category: String, chatAccess: Boolean) {
+        pockContent.value = text
+        if (category != "General") pockCategory.value = category
+        chatEnabled.value = chatAccess
+    }
+
+    fun unselectCategory() {
+        pockCategory.value = null
+    }
 }

@@ -39,6 +39,16 @@ class EditPockActivity : BaseActivity() {
             viewModel.updatePock()
         }
 
+        //Button to allow someone to set the category to General and to solve the problem with the dropdown
+        binding.emptyCategoryButton.setOnClickListener {
+            viewModel.unselectCategory()
+        }
+
+        val message = intent.getStringExtra("pock_message")
+        val category = intent.getStringExtra("pock_category")
+        val chatAccess = intent.getBooleanExtra("pock_chatAccess", true)
+        viewModel.fillFields(message!!, category!!, chatAccess)
+
         val spinner = binding.categoriesDropdown
         spinner.setAdapter(
             ArrayAdapter(

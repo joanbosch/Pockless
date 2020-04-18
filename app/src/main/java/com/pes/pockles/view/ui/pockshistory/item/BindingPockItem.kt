@@ -21,7 +21,12 @@ class BindingPockItem : AbstractBindingItem<PockHistoryItemBinding>() {
             binding.pock = it
         }
         binding.editButton.setOnClickListener {
-            it.context.startActivity(Intent(it.context, EditPockActivity::class.java))
+            val intent = Intent(it.context, EditPockActivity::class.java).apply {
+                putExtra("pock_message", pock?.message)
+                putExtra("pock_category", pock?.category)
+                putExtra("pock_chatAccess", pock?.chatAccess)
+            }
+            it.context.startActivity(intent)
         }
         if (System.currentTimeMillis() < pock!!.dateInserted + (20 * 60 * 1000)) {
             binding.editButton.visibility = View.VISIBLE
