@@ -82,6 +82,7 @@
     <string name="yes">Si</string>
     <string name="no">No</string>
     <string name="error_uploading_an_image">Ha ocurrido un error al subir la imagen</string>
+    <string name="error_uploading_images">Ha ocurrido un error al subir las imagenes</string>
     <string name="error_selecting_image">Ha ocurrido un error al seleccionar la imagen</string>
     <string name="upload_image_dialog_title">Subir imagen</string>
     <string name="take_photo_dialog_option">Tomar foto</string>

@@ -61,6 +61,7 @@ class ViewPockActivity : BaseActivity() {
                                 Glide.with(this)
                                     .load(pock.media)
                                     .into(binding.pockImage)
+
                                 binding.pockImage.visibility = View.VISIBLE
                             }
                             binding.loading.visibility = View.GONE

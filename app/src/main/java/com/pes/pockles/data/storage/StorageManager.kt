@@ -9,9 +9,12 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.pes.pockles.data.Resource
 import java.io.ByteArrayOutputStream
+import java.io.IOException
+import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Singleton
+
 
 @Singleton
 class StorageManager {
@@ -37,6 +40,7 @@ class StorageManager {
      * @param bitmap            The bitmap to upload
      * @param childReference    The path to upload the data on the server. Optional
      */
+
     fun uploadMedia(bitmap: Bitmap, childReference: String = "other"): LiveData<Resource<String>> {
         val result = MediatorLiveData<Resource<String>>()
 
@@ -74,4 +78,57 @@ class StorageManager {
 
         return result
     }
+
+    /*
+    @Throws(IOException::class)
+    fun InputStream.readAllBytes(): ByteArray {
+        val bufLen = 4 * 0x400 // 4KB
+        val buf = ByteArray(bufLen)
+        var readLen: Int = 0
+
+        ByteArrayOutputStream().use { o ->
+            this.use { i ->
+                while (i.read(buf, 0, bufLen).also { readLen = it } != -1)
+                    o.write(buf, 0, readLen)
+            }
+
+            return o.toByteArray()
+        }
+    }
+
+    fun uploadMediaGif(gif: InputStream, childReference: String = "other"): LiveData<Resource<String>> {
+        val result = MediatorLiveData<Resource<String>>()
+
+        val user = FirebaseAuth.getInstance().currentUser
+        user?.let {
+            result.value = Resource.Loading
+            val storageRef = storage.reference
+            val name = it.uid + "_" + SimpleDateFormat(
+                "dd/MM/yyyy-hh:mm:sss",
+                Locale.getDefault()
+            ).format(Calendar.getInstance().time)
+
+            val imageRef = storageRef.child("$childReference/$name.gif")
+
+            val data: ByteArray = gif.readAllBytes()
+
+            val uploadTask = imageRef.putBytes(data)
+            uploadTask.addOnSuccessListener {
+                imageRef.downloadUrl.addOnSuccessListener { uri ->
+                    result.value = Resource.Success(uri.toString())
+                }.addOnFailureListener { e ->
+                    result.value = Resource.Error(e)
+                }
+            }.addOnFailureListener { e ->
+                result.value = Resource.Error(e)
+            }
+
+        }
+
+        if (user == null) {
+            result.value = Resource.Error(RuntimeException("User not logged"))
+        }
+
+        return result
+    }*/
 }

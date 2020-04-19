@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
@@ -51,6 +52,7 @@ class NewPockActivity : BaseActivity() {
         }
 
         binding.pockButton.setOnClickListener {
+            setPhotos()
             getLastLocation(this, {
                 viewModel.insertPock(Location(it.latitude, it.longitude))
             }, {
@@ -73,6 +75,7 @@ class NewPockActivity : BaseActivity() {
     }
 
     private fun handleSuccess() {
+        Log.i("Set Pock", "Pock Creado")
         hideLoading()
         Toast.makeText(this, resources.getString(R.string.added_pock_message), Toast.LENGTH_SHORT)
             .show()
@@ -161,8 +164,57 @@ class NewPockActivity : BaseActivity() {
         }
     }
 
-    private fun setPhoto(bitmap: Bitmap) {
-        viewModel.uploadMedia(bitmap).observe(this, Observer {
+    private fun setImage(bm: Bitmap) {
+        if (viewModel.nImg.value != 4) setVisibility()
+        when (viewModel.actImg.value) {
+            1-> binding.image1.setImageBitmap(bm)
+            2-> binding.image2.setImageBitmap(bm)
+            3-> binding.image3.setImageBitmap(bm)
+            4-> binding.image4.setImageBitmap(bm)
+        }
+        /*
+        if (viewModel.bmList.value.isNullOrEmpty()) viewModel.bmList.value?.add(bm)
+        else if (viewModel.bmList.value!!.size == (viewModel.nImg.value?.minus(1))) viewModel.bmList.value?.add(bm)
+        else viewModel.bmList.value?.set(viewModel.nImg.value?.minus(1)!!, bm)*/
+        viewModel.setBm(bm)
+    }
+
+    private fun setVisibility() {
+        binding.image2.visibility = View.VISIBLE
+        if (viewModel.nImg.value == 2) binding.image3.visibility = View.VISIBLE
+        else if (viewModel.nImg.value == 3) binding.image4.visibility = View.VISIBLE
+    }
+
+    private fun setPhotos() {
+        Log.i("Enter Set Photos", "Enter Set Photos")
+        setPhoto(viewModel.image1.value!!, 1)
+        setPhoto(viewModel.image2.value!!, 2)
+        setPhoto(viewModel.image3.value!!, 3)
+        setPhoto(viewModel.image4.value!!, 4)
+    }
+    private fun setPhoto(bm: Bitmap, k: Int) {
+        Log.i("Enter Set Photo", "Enter Set Photo")
+        viewModel.uploadMedia(bm).observe(this, Observer {
+            when (it) {
+                is Resource.Loading -> {
+                }
+                is Resource.Error -> {
+                    Snackbar.make(
+                        binding.newPock,
+                        getString(R.string.error_uploading_images),
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+                is Resource.Success<String> -> {
+                    Log.i("Enter Set Photo", it.data)
+                    viewModel.setImageUrl(it.data, k)
+            }
+            }
+        })
+    }
+    /*
+    private fun setGif(gif: InputStream) {
+        viewModel.uploadGif(gif).observe(this, Observer {
             when (it) {
                 is Resource.Loading -> {
                     binding.insertImageButton.visibility = View.GONE
@@ -189,6 +241,7 @@ class NewPockActivity : BaseActivity() {
             }
         })
     }
+    */
 
     override fun onActivityResult(reqCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(reqCode, resultCode, data)
@@ -198,7 +251,11 @@ class NewPockActivity : BaseActivity() {
                     val imageUri: Uri? = data?.data
                     val imageStream: InputStream? = contentResolver.openInputStream(imageUri!!)
                     val selectedImage = BitmapFactory.decodeStream(imageStream)
-                    setPhoto(selectedImage)
+                    //setPhoto(selectedImage)
+                    /*if (imageStream != null) {
+                        setGif(imageStream)
+                    }*/
+                    setImage(selectedImage)
                 } catch (e: FileNotFoundException) {
                     e.printStackTrace()
                     Snackbar.make(
@@ -211,7 +268,10 @@ class NewPockActivity : BaseActivity() {
         } else if (reqCode == 112) {
             if (resultCode == Activity.RESULT_OK) {
                 val imageBitmap = data?.extras?.get("data") as Bitmap
-                setPhoto(imageBitmap)
+                //setPhoto(imageBitmap)
+                //val gif = data?.extras?.get("data") as InputStream
+                //setGif(gif)
+                setImage(imageBitmap)
             }
         }
     }
