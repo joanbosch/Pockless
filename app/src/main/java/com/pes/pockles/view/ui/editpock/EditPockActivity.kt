@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -39,9 +40,9 @@ class EditPockActivity : BaseActivity() {
             viewModel.updatePock()
         }
 
-        //Button to allow someone to set the category to General and to solve the problem with the dropdown
-        binding.emptyCategoryButton.setOnClickListener {
-            viewModel.unselectCategory()
+        binding.categoriesDropdown.onItemClickListener = AdapterView.OnItemClickListener {
+                parent,view,position,id->
+            viewModel.setCategory(binding.categoriesDropdown.text.toString())
         }
 
         val message = intent.getStringExtra("pock_message")
@@ -54,9 +55,11 @@ class EditPockActivity : BaseActivity() {
             ArrayAdapter(
                 this,
                 android.R.layout.simple_spinner_dropdown_item,
-                resources.getStringArray(R.array.categories)
+                arrayOf(resources.getString(R.string.general_category))+resources.getStringArray(R.array.categories)
             )
         )
+
+        spinner.setText(viewModel.getCategory(), false)
     }
 
     override fun onSupportNavigateUp(): Boolean {
