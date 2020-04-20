@@ -37,7 +37,7 @@ class StorageTask private constructor() {
     }
 
     @Inject
-    private lateinit var storageManager: StorageManager
+    lateinit var storageManager: StorageManager
     private val bitmaps: Deque<StorageTaskBitmap>
 
     init {

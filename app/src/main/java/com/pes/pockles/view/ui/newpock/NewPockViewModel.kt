@@ -1,12 +1,14 @@
 package com.pes.pockles.view.ui.newpock
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.pes.pockles.data.Resource
-import com.pes.pockles.data.storage.StorageManager
+import com.pes.pockles.data.storage.StorageTask
+import com.pes.pockles.data.storage.StorageTaskBitmap
 import com.pes.pockles.domain.usecases.NewPockUseCase
 import com.pes.pockles.model.Location
 import com.pes.pockles.model.NewPock
@@ -16,7 +18,7 @@ import java.io.InputStream
 import javax.inject.Inject
 
 class NewPockViewModel @Inject constructor(
-    private var useCase: NewPockUseCase, private val storageManager: StorageManager
+    private var useCase: NewPockUseCase, private val storageTask: StorageTask
 ) : ViewModel() {
 
     private val _errorHandler = MutableLiveData<Boolean>()
@@ -30,6 +32,7 @@ class NewPockViewModel @Inject constructor(
     private var _mediaURL2: String? = null
     private var _mediaURL3: String? = null
     private var _mediaURL4: String? = null
+    private var urlList: List<String>? = null
 
     private  val _image1 = MutableLiveData<Bitmap>()
     val image1: LiveData<Bitmap>
@@ -95,10 +98,7 @@ class NewPockViewModel @Inject constructor(
                 category = category,
                 chatAccess = _chatEnabled.value!!,
                 location = location,
-                media = _mediaURL1,
-                media2 = _mediaURL2,
-                media3 = _mediaURL3,
-                media4 = _mediaURL4
+                media = urlList
             )
         }
     }
@@ -141,13 +141,26 @@ class NewPockViewModel @Inject constructor(
         return imageBm[it]
     }
 
+    fun uploadImages(): LiveData<Resource<List<String>>> {
+        storageTask.addBitmap(StorageTaskBitmap(_image1.value!!))
+        storageTask.addBitmap(StorageTaskBitmap(_image2.value!!))
+        storageTask.addBitmap(StorageTaskBitmap(_image3.value!!))
+        storageTask.addBitmap(StorageTaskBitmap(_image4.value!!))
+        return storageTask.uploadAsLiveData("pockImages")
+    }
+/*
     fun uploadMedia(bitmap: Bitmap): LiveData<Resource<String>> {
         return storageManager.uploadMedia(bitmap, "pockImages")
-    }
+    }*/
 /*
     fun uploadGif(gif: InputStream): LiveData<Resource<String>> {
         return storageManager.uploadMediaGif(gif, "pockGifs")
     }*/
+
+    fun setUrlList (data: List<String>) {
+        urlList = data
+        Log.i("Enter Set Photo", "List Set")
+    }
 
     fun setImageUrl(data: String, k: Int) {
         when (k) {

@@ -30,6 +30,7 @@ import com.pes.pockles.model.Pock
 import com.pes.pockles.util.LocationUtils.Companion.getLastLocation
 import com.pes.pockles.view.ui.base.BaseActivity
 import java.io.FileNotFoundException
+import com.pes.pockles.data.storage.StorageTask
 import java.io.InputStream
 
 class NewPockActivity : BaseActivity() {
@@ -52,7 +53,23 @@ class NewPockActivity : BaseActivity() {
         }
 
         binding.pockButton.setOnClickListener {
-            setPhotos()
+            //setPhotos()
+            viewModel.uploadImages().observe( this, Observer {
+                when (it) {
+                    is Resource.Loading -> {
+                    }
+                    is Resource.Error -> {
+                        Snackbar.make(
+                            binding.newPock,
+                            getString(R.string.error_uploading_images),
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
+                    is Resource.Success<List<String>> -> {
+                        viewModel.setUrlList(it.data)
+                    }
+                }
+            })
             getLastLocation(this, {
                 viewModel.insertPock(Location(it.latitude, it.longitude))
             }, {
@@ -184,7 +201,7 @@ class NewPockActivity : BaseActivity() {
         if (viewModel.nImg.value == 2) binding.image3.visibility = View.VISIBLE
         else if (viewModel.nImg.value == 3) binding.image4.visibility = View.VISIBLE
     }
-
+/*
     private fun setPhotos() {
         Log.i("Enter Set Photos", "Enter Set Photos")
         setPhoto(viewModel.image1.value!!, 1)
@@ -211,7 +228,7 @@ class NewPockActivity : BaseActivity() {
             }
             }
         })
-    }
+    }*/
     /*
     private fun setGif(gif: InputStream) {
         viewModel.uploadGif(gif).observe(this, Observer {
