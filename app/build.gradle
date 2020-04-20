@@ -128,5 +128,9 @@ dependencies {
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.5'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.3.5'
+
+    //Pock list
+    implementation 'com.android.support:design:28.0.0'
+
 }
 apply plugin: 'com.google.gms.google-services'

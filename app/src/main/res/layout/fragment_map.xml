@@ -1,36 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
-    >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="MapViewModel"
             type="com.pes.pockles.view.ui.map.MapViewModel" />
-
     </data>
 
     <!--If android:name is changed to MapFragment, it will break the app-->
-    <FrameLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <fragment xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/mapView"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".view.ui.map.MapFragment" />
+            android:layout_height="match_parent">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/outlinedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:backgroundTint="@color/primary"
-            app:fabSize="mini"
-            app:srcCompat="@drawable/ic_filter_list_black_24dp"
-            app:useCompatPadding="true" />
-    </FrameLayout>
+            <fragment xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/mapView"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".view.ui.map.MapFragment" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/outlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:backgroundTint="@color/primary"
+                app:fabSize="mini"
+                app:srcCompat="@drawable/ic_filter_list_black_24dp"
+                app:useCompatPadding="true" />
+
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floatingActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="16dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_add_black_24dp"
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+
+
+        </FrameLayout>
+
+        <include layout="@layout/pock_list" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
