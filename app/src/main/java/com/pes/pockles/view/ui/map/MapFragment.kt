@@ -133,16 +133,17 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
 
             viewModel.getAllLatLngPocks().observe(
                 this,
-                Observer { value: Resource<List<Pock>>? ->
+                Observer { value: Resource<List<LatLng>>? ->
                     value?.let {
                         when (value) {
-                            is Resource.Success<*> -> handleSuccess(value as Resource.Success<List<Pock>>)
+                            is Resource.Success<*> -> handleSuccessHeatMap(value as Resource.Success<List<LatLng>>)
                             is Resource.Error -> handleError()
                         }
                     }
                 })
         }
     }
+
 
     private fun setupMap() {
         googleMap!!.isMyLocationEnabled = true
@@ -223,10 +224,11 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         )
     }
 
+
+
     /*Link to know how to customize markers
      *https://developers.google.com/maps/documentation/android-sdk/marker?hl=es*/
     private fun handleSuccess(list: Resource.Success<List<Pock>>) {
-        val locations: ArrayList<LatLng> = ArrayList<LatLng>()
         googleMap!!.clear()
         list.data.let {
             it.forEach { pock ->
@@ -237,13 +239,17 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
                 if (!heatMapEnabled) {
                     val marker: Marker = googleMap!!.addMarker(MarkerOptions().position(latLng))
                     marker.tag = pock.id
-                } else {
-                    locations.add(latLng)
                 }
             }
 
+        }
+    }
+
+    private fun handleSuccessHeatMap(pocksLocations: Resource.Success<List<LatLng>>) {
+        googleMap!!.clear()
+        pocksLocations.data.let {
             if(heatMapEnabled){
-                mProvider = HeatmapTileProvider.Builder().data(locations).build()
+                mProvider = HeatmapTileProvider.Builder().data(it).build()
                 mProvider!!.setRadius(30)
                 googleMap!!.addTileOverlay(TileOverlayOptions().tileProvider(mProvider))
 

@@ -1,9 +1,10 @@
 package com.pes.pockles.view.ui.map
 
 import androidx.lifecycle.*
+import com.google.android.gms.maps.model.LatLng
 import com.pes.pockles.data.Resource
 import com.pes.pockles.domain.usecases.GetNearestPocksUseCase
-import com.pes.pockles.domain.usecases.PocksHistoryUseCase
+import com.pes.pockles.domain.usecases.PocksLocationUseCase
 import com.pes.pockles.model.Location
 import com.pes.pockles.model.Pock
 import com.pes.pockles.util.livedata.AbsentLiveData
@@ -12,7 +13,7 @@ import javax.inject.Inject
 
 class MapViewModel @Inject constructor(
     private var useCaseNearestPocks: GetNearestPocksUseCase,
-    private var useCaseAllPocks: PocksHistoryUseCase
+    private var useCaseAllPocks: PocksLocationUseCase
 ) : ViewModel() {
 
     lateinit var categories :Array<String>
@@ -28,11 +29,12 @@ class MapViewModel @Inject constructor(
             if (value != null) useCaseNearestPocks.execute(value) else AbsentLiveData.create()
         }
 
-    private val _allPocks: LiveData<Resource<List<Pock>>>
+    private val _allPocksLocations: LiveData<Resource<List<LatLng>>>
         get() = useCaseAllPocks.execute()
 
 
     private val internalPocks: MediatorLiveData<Resource<List<Pock>>?> = MediatorLiveData()
+    private val latLngAllPocks: MediatorLiveData<Resource<List<LatLng>>?> = MediatorLiveData()
 
     fun getPocks(): LiveData<Resource<List<Pock>>?> {
         internalPocks.addSource(_pocks) { value ->
@@ -59,19 +61,10 @@ class MapViewModel @Inject constructor(
         internalPocks.forceRefresh()
     }
 
-    fun getAllLatLngPocks(): LiveData<Resource<List<Pock>>?> {
-        internalPocks.addSource(_allPocks) { value ->
-            internalPocks.value = value
+    fun getAllLatLngPocks(): LiveData<Resource<List<LatLng>>?> {
+        latLngAllPocks.addSource(_allPocksLocations) { value ->
+            latLngAllPocks.value = value
         }
-
-        return Transformations.map(internalPocks) { value: Resource<List<Pock>>? ->
-            if (value is Resource.Success<List<Pock>>) {
-                Resource.Success(value.data.filter {
-                    if (categories.contains(it.category)) {
-                        checkedItems[categories.indexOf(it.category)]
-                    } else true
-                })
-            } else value
-        }
+        return latLngAllPocks
     }
 }
