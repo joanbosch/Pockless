@@ -25,35 +25,18 @@ class NewPockViewModel @Inject constructor(
     private val _errorHandler = MutableLiveData<Boolean>()
     private val _chatEnabled = MutableLiveData<Boolean>()
     private val _pockToInsert = MutableLiveData<NewPock?>()
-    private var _mediaURL = Array<String?>(4){null}
-    private var imageBm = Array<Bitmap?>(4){null}
     val pockContent = MutableLiveData<String>()
     val pockCategory = MutableLiveData<String>()
-    private var _mediaURL1: String? = null
-    private var _mediaURL2: String? = null
-    private var _mediaURL3: String? = null
-    private var _mediaURL4: String? = null
     private var urlList: List<String>? = null
 
     private  val _image1 = MutableLiveData<Bitmap>()
-    val image1: LiveData<Bitmap>
-        get() = _image1
-
     private  val _image2 = MutableLiveData<Bitmap>()
-    val image2: LiveData<Bitmap>
-        get() = _image2
-
     private  val _image3 = MutableLiveData<Bitmap>()
-    val image3: LiveData<Bitmap>
-        get() = _image3
-
     private  val _image4 = MutableLiveData<Bitmap>()
-    val image4: LiveData<Bitmap>
-        get() = _image4
-    /*
-    private val _bmList = MutableLiveData<ArrayList<Bitmap>>()
-    val bmList: LiveData<ArrayList<Bitmap>>
-        get() = _bmList*/
+
+    private val _goSaveImages = MutableLiveData<Boolean>()
+    val goSaveImages: LiveData<Boolean>
+        get() = _goSaveImages
 
     private val _nImg = MutableLiveData<Int>()
     val nImg: LiveData<Int>
@@ -62,10 +45,6 @@ class NewPockViewModel @Inject constructor(
     private val _actImg = MutableLiveData<Int>()
     val actImg: LiveData<Int>
         get() = _actImg
-
-    private val _haveImages = MutableLiveData<Boolean>()
-    val haveImages: LiveData<Boolean>
-        get() = _haveImages
 
     private val _goUploadImage = MutableLiveData<Boolean>()
     val goUploadImage: LiveData<Boolean>
@@ -84,7 +63,6 @@ class NewPockViewModel @Inject constructor(
         _image2.value = null
         _image3.value = null
         _image4.value = null
-        _haveImages.value = false
         _actImg.value = 0
         _nImg.value = 0
         _chatEnabled.value = false
@@ -134,41 +112,26 @@ class NewPockViewModel @Inject constructor(
     }
 
     fun setBm(bm: Bitmap) {
-        _haveImages.value = true
         when (_actImg.value) {
             1 -> _image1.value = bm
             2 -> _image2.value = bm
             3 -> _image3.value = bm
             4 -> _image4.value = bm
         }
-        //imageBm[_actImg.value!!] = bm
     }
 
-    fun getBm(it: Int): Bitmap? {
-        return imageBm[it]
+    fun onSaveImages() {
+        _goSaveImages.value = true
     }
 
     fun uploadImages(): LiveData<Resource<List<String>>> {
-        Log.i("UploadImages", "Enter")
         val storageTask = StorageTask.create(storageManager)
-        Log.i("UploadImages", "Create")
         if (_image1.value != null) storageTask.addBitmap(StorageTaskBitmap(_image1.value!!))
-        Log.i("UploadImages", "Create1")
         if (_image2.value != null)storageTask.addBitmap(StorageTaskBitmap(_image2.value!!))
-        Log.i("UploadImages", "Create2")
         if (_image3.value != null)storageTask.addBitmap(StorageTaskBitmap(_image3.value!!))
-        Log.i("UploadImages", "Create3")
         if (_image4.value != null)storageTask.addBitmap(StorageTaskBitmap(_image4.value!!))
-        Log.i("UploadImages", "Create4")
-        val result = storageTask.uploadAsLiveData()
-        Log.i("UploadImages", "Result")
-        return result
+        return storageTask.uploadAsLiveData("pockImages")
     }
-
-/*
-    fun uploadMedia(bitmap: Bitmap): LiveData<Resource<String>> {
-        return storageManager.uploadMedia(bitmap, "pockImages")
-    }*/
 /*
     fun uploadGif(gif: InputStream): LiveData<Resource<String>> {
         return storageManager.uploadMediaGif(gif, "pockGifs")
@@ -177,17 +140,6 @@ class NewPockViewModel @Inject constructor(
     fun setUrlList (data: List<String>) {
         urlList = data
         Log.i("Enter Set Photo", "List Set")
-    }
-
-    fun setImageUrl(data: String, k: Int) {
-        when (k) {
-            1 -> _mediaURL1 = data
-            2 -> _mediaURL2 = data
-            3 -> _mediaURL3 = data
-            4 -> _mediaURL4 = data
-        }
-
-        //_mediaURL[k] = data
     }
 
 }

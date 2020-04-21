@@ -2,12 +2,12 @@ package com.pes.pockles.data.storage
 
 import android.graphics.Bitmap
 import android.os.Looper
+import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.pes.pockles.data.Resource
 import java.util.*
-import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 /**
@@ -20,24 +20,22 @@ import kotlin.collections.ArrayList
  * {error -> /* Optional, handle errors*/},
  * "childReference")  -  Optional
  */
-class StorageTask private constructor() {
+class StorageTask private constructor(private val manager: StorageManager) {
 
     companion object {
-        fun of(vararg list: StorageTaskBitmap): StorageTask {
-            return StorageTask().addBitmaps(*list)
+        fun of(manager: StorageManager, vararg list: StorageTaskBitmap): StorageTask {
+            return StorageTask(manager).addBitmaps(*list)
         }
 
-        fun of(bitmap: StorageTaskBitmap): StorageTask {
-            return StorageTask().addBitmap(bitmap)
+        fun of(manager: StorageManager,bitmap: StorageTaskBitmap): StorageTask {
+            return StorageTask(manager).addBitmap(bitmap)
         }
 
-        fun create(): StorageTask {
-            return StorageTask()
+        fun create(manager: StorageManager): StorageTask {
+            return StorageTask(manager)
         }
     }
 
-    @Inject
-    lateinit var storageManager: StorageManager
     private val bitmaps: Deque<StorageTaskBitmap>
 
     init {
@@ -64,19 +62,20 @@ class StorageTask private constructor() {
         failure: ((Throwable) -> Unit)? = null,
         childReference: String = "other"
     ) {
-        ensureThread()
-
+        Log.i("UploadImages", "1")
+        //ensureThread()
+        Log.i("UploadImages", "2")
         if (bitmaps.isEmpty()) {
             throw UnsupportedOperationException("Upload must be called with at least one bitmap to upload")
         }
-
+        Log.i("UploadImages", "3")
         val resources: MutableList<String> = ArrayList()
         val initialSize = bitmaps.size
-
+        Log.i("UploadImages", "4")
         do {
             val b: StorageTaskBitmap? = bitmaps.poll()
             b?.let {
-                storageManager.uploadMedia(it.bitmap, { uri ->
+                manager.uploadMedia(it.bitmap, { uri ->
                     run {
                         resources.add(uri)
                         if (initialSize == resources.size) {

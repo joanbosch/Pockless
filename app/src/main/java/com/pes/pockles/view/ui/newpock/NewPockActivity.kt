@@ -1,5 +1,6 @@
 package com.pes.pockles.view.ui.newpock
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -30,7 +31,6 @@ import com.pes.pockles.model.Pock
 import com.pes.pockles.util.LocationUtils.Companion.getLastLocation
 import com.pes.pockles.view.ui.base.BaseActivity
 import java.io.FileNotFoundException
-import com.pes.pockles.data.storage.StorageTask
 import java.io.InputStream
 
 class NewPockActivity : BaseActivity() {
@@ -53,25 +53,6 @@ class NewPockActivity : BaseActivity() {
         }
 
         binding.pockButton.setOnClickListener {
-            //setPhotos()
-            if (viewModel.haveImages.value!!)
-            viewModel.uploadImages().observe( this, Observer {
-                when (it) {
-                    is Resource.Loading -> {
-                    }
-                    is Resource.Error -> {
-                        Snackbar.make(
-                            binding.newPock,
-                            getString(R.string.error_uploading_images),
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                    }
-                    is Resource.Success<List<String>> -> {
-                        Log.i("UploadImages", "Created")
-                        viewModel.setUrlList(it.data)
-                    }
-                }
-            })
             getLastLocation(this, {
                 viewModel.insertPock(Location(it.latitude, it.longitude))
             }, {
@@ -91,10 +72,13 @@ class NewPockActivity : BaseActivity() {
         viewModel.goUploadImage.observe(this, Observer<Boolean> { uploadImageButtonPressed ->
             if (uploadImageButtonPressed) goUploadImage()
         })
+
+        viewModel.goSaveImages.observe(this, Observer<Boolean> { saveButtonPressed ->
+            if (saveButtonPressed) goSave()
+        })
     }
 
     private fun handleSuccess() {
-        Log.i("Set Pock", "Pock Creado")
         hideLoading()
         Toast.makeText(this, resources.getString(R.string.added_pock_message), Toast.LENGTH_SHORT)
             .show()
@@ -155,6 +139,44 @@ class NewPockActivity : BaseActivity() {
         binding.newPockProgressBar.visibility = View.GONE
     }
 
+    private fun errorUploadingImages() {
+        binding.image1.visibility = View.VISIBLE
+        binding.image2.visibility = View.VISIBLE
+        binding.image3.visibility = View.VISIBLE
+        binding.image4.visibility = View.VISIBLE
+        binding.saveButton.visibility = View.VISIBLE
+    }
+
+    @SuppressLint("ShowToast")
+    private fun goSave() {
+        binding.image1.visibility = View.GONE
+        binding.image2.visibility = View.GONE
+        binding.image3.visibility = View.GONE
+        binding.image4.visibility = View.GONE
+        binding.saveButton.visibility = View.GONE
+        viewModel.uploadImages().observe( this, Observer {
+            when (it) {
+                is Resource.Loading -> {
+                    showLoading()
+                    //binding.loadingSave.visibility = View.VISIBLE
+                }
+                is Resource.Error -> {
+                    hideLoading()
+                    errorUploadingImages()
+                    Toast.makeText(this, "Error saving images", Toast.LENGTH_SHORT).show()
+                }
+                is Resource.Success<List<String>> -> {
+                    hideLoading()
+                    binding.loadingSave.visibility = View.GONE
+                    Toast.makeText(this, "Images Saved", Toast.LENGTH_SHORT).show()
+                    viewModel.setUrlList(it.data)
+
+                }
+            }
+        })
+
+    }
+
     private fun goUploadImage() {
         val items = listOf(
             BasicGridItem(R.drawable.ic_icon_camera, getString(R.string.take_photo_dialog_option)),
@@ -191,46 +213,15 @@ class NewPockActivity : BaseActivity() {
             3-> binding.image3.setImageBitmap(bm)
             4-> binding.image4.setImageBitmap(bm)
         }
-        /*
-        if (viewModel.bmList.value.isNullOrEmpty()) viewModel.bmList.value?.add(bm)
-        else if (viewModel.bmList.value!!.size == (viewModel.nImg.value?.minus(1))) viewModel.bmList.value?.add(bm)
-        else viewModel.bmList.value?.set(viewModel.nImg.value?.minus(1)!!, bm)*/
         viewModel.setBm(bm)
     }
 
     private fun setVisibility() {
+        binding.saveButton.visibility = View.VISIBLE
         binding.image2.visibility = View.VISIBLE
         if (viewModel.nImg.value == 2) binding.image3.visibility = View.VISIBLE
         else if (viewModel.nImg.value == 3) binding.image4.visibility = View.VISIBLE
     }
-/*
-    private fun setPhotos() {
-        Log.i("Enter Set Photos", "Enter Set Photos")
-        setPhoto(viewModel.image1.value!!, 1)
-        setPhoto(viewModel.image2.value!!, 2)
-        setPhoto(viewModel.image3.value!!, 3)
-        setPhoto(viewModel.image4.value!!, 4)
-    }
-    private fun setPhoto(bm: Bitmap, k: Int) {
-        Log.i("Enter Set Photo", "Enter Set Photo")
-        viewModel.uploadMedia(bm).observe(this, Observer {
-            when (it) {
-                is Resource.Loading -> {
-                }
-                is Resource.Error -> {
-                    Snackbar.make(
-                        binding.newPock,
-                        getString(R.string.error_uploading_images),
-                        Snackbar.LENGTH_LONG
-                    ).show()
-                }
-                is Resource.Success<String> -> {
-                    Log.i("Enter Set Photo", it.data)
-                    viewModel.setImageUrl(it.data, k)
-            }
-            }
-        })
-    }*/
     /*
     private fun setGif(gif: InputStream) {
         viewModel.uploadGif(gif).observe(this, Observer {
@@ -270,10 +261,6 @@ class NewPockActivity : BaseActivity() {
                     val imageUri: Uri? = data?.data
                     val imageStream: InputStream? = contentResolver.openInputStream(imageUri!!)
                     val selectedImage = BitmapFactory.decodeStream(imageStream)
-                    //setPhoto(selectedImage)
-                    /*if (imageStream != null) {
-                        setGif(imageStream)
-                    }*/
                     setImage(selectedImage)
                 } catch (e: FileNotFoundException) {
                     e.printStackTrace()
@@ -287,9 +274,6 @@ class NewPockActivity : BaseActivity() {
         } else if (reqCode == 112) {
             if (resultCode == Activity.RESULT_OK) {
                 val imageBitmap = data?.extras?.get("data") as Bitmap
-                //setPhoto(imageBitmap)
-                //val gif = data?.extras?.get("data") as InputStream
-                //setGif(gif)
                 setImage(imageBitmap)
             }
         }
