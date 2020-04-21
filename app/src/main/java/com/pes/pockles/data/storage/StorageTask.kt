@@ -2,7 +2,6 @@ package com.pes.pockles.data.storage
 
 import android.graphics.Bitmap
 import android.os.Looper
-import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -62,16 +61,12 @@ class StorageTask private constructor(private val manager: StorageManager) {
         failure: ((Throwable) -> Unit)? = null,
         childReference: String = "other"
     ) {
-        Log.i("UploadImages", "1")
         //ensureThread()
-        Log.i("UploadImages", "2")
         if (bitmaps.isEmpty()) {
             throw UnsupportedOperationException("Upload must be called with at least one bitmap to upload")
         }
-        Log.i("UploadImages", "3")
         val resources: MutableList<String> = ArrayList()
         val initialSize = bitmaps.size
-        Log.i("UploadImages", "4")
         do {
             val b: StorageTaskBitmap? = bitmaps.poll()
             b?.let {
