@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.pes.pockles.data.Resource
+import com.pes.pockles.data.storage.StorageManager
 import com.pes.pockles.data.storage.StorageTask
 import com.pes.pockles.data.storage.StorageTaskBitmap
 import com.pes.pockles.domain.usecases.NewPockUseCase
@@ -18,7 +19,7 @@ import java.io.InputStream
 import javax.inject.Inject
 
 class NewPockViewModel @Inject constructor(
-    private var useCase: NewPockUseCase, private val storageTask: StorageTask
+    private var useCase: NewPockUseCase, private val storageManager: StorageManager
 ) : ViewModel() {
 
     private val _errorHandler = MutableLiveData<Boolean>()
@@ -62,6 +63,10 @@ class NewPockViewModel @Inject constructor(
     val actImg: LiveData<Int>
         get() = _actImg
 
+    private val _haveImages = MutableLiveData<Boolean>()
+    val haveImages: LiveData<Boolean>
+        get() = _haveImages
+
     private val _goUploadImage = MutableLiveData<Boolean>()
     val goUploadImage: LiveData<Boolean>
         get() = _goUploadImage
@@ -79,6 +84,7 @@ class NewPockViewModel @Inject constructor(
         _image2.value = null
         _image3.value = null
         _image4.value = null
+        _haveImages.value = false
         _actImg.value = 0
         _nImg.value = 0
         _chatEnabled.value = false
@@ -128,6 +134,7 @@ class NewPockViewModel @Inject constructor(
     }
 
     fun setBm(bm: Bitmap) {
+        _haveImages.value = true
         when (_actImg.value) {
             1 -> _image1.value = bm
             2 -> _image2.value = bm
@@ -142,12 +149,22 @@ class NewPockViewModel @Inject constructor(
     }
 
     fun uploadImages(): LiveData<Resource<List<String>>> {
-        storageTask.addBitmap(StorageTaskBitmap(_image1.value!!))
-        storageTask.addBitmap(StorageTaskBitmap(_image2.value!!))
-        storageTask.addBitmap(StorageTaskBitmap(_image3.value!!))
-        storageTask.addBitmap(StorageTaskBitmap(_image4.value!!))
-        return storageTask.uploadAsLiveData("pockImages")
+        Log.i("UploadImages", "Enter")
+        val storageTask = StorageTask.create(storageManager)
+        Log.i("UploadImages", "Create")
+        if (_image1.value != null) storageTask.addBitmap(StorageTaskBitmap(_image1.value!!))
+        Log.i("UploadImages", "Create1")
+        if (_image2.value != null)storageTask.addBitmap(StorageTaskBitmap(_image2.value!!))
+        Log.i("UploadImages", "Create2")
+        if (_image3.value != null)storageTask.addBitmap(StorageTaskBitmap(_image3.value!!))
+        Log.i("UploadImages", "Create3")
+        if (_image4.value != null)storageTask.addBitmap(StorageTaskBitmap(_image4.value!!))
+        Log.i("UploadImages", "Create4")
+        val result = storageTask.uploadAsLiveData()
+        Log.i("UploadImages", "Result")
+        return result
     }
+
 /*
     fun uploadMedia(bitmap: Bitmap): LiveData<Resource<String>> {
         return storageManager.uploadMedia(bitmap, "pockImages")

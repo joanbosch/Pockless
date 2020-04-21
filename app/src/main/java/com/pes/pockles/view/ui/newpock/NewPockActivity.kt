@@ -54,6 +54,7 @@ class NewPockActivity : BaseActivity() {
 
         binding.pockButton.setOnClickListener {
             //setPhotos()
+            if (viewModel.haveImages.value!!)
             viewModel.uploadImages().observe( this, Observer {
                 when (it) {
                     is Resource.Loading -> {
@@ -66,6 +67,7 @@ class NewPockActivity : BaseActivity() {
                         ).show()
                     }
                     is Resource.Success<List<String>> -> {
+                        Log.i("UploadImages", "Created")
                         viewModel.setUrlList(it.data)
                     }
                 }
