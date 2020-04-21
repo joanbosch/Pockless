@@ -57,22 +57,13 @@ class ViewPockActivity : BaseActivity() {
                         is Resource.Success<Pock> -> {
                             this.pock = value.data
                             binding.pock = this.pock
-                            if (pock.media != null) {
-                                Glide.with(this)
-                                    .load(pock.media)
-                                    .into(binding.pockImage)
-
-                                binding.pockImage.visibility = View.VISIBLE
-                            }
+                            downloadMedia()
                             binding.loading.visibility = View.GONE
                         }
                     }
                 }
             }
         )
-
-
-
         viewModel.goBack.observe(this, Observer<Boolean> { backButtonPressed ->
             if (backButtonPressed) goBack()
         })
@@ -89,6 +80,37 @@ class ViewPockActivity : BaseActivity() {
             if (chatButtonPressed) goChat()
         })
 
+    }
+
+    private fun downloadMedia() {
+        var k: Int = 0
+        if (pock.media != null) {
+            for (url in pock.media!!) {
+                insertImage(url, k)
+                k++
+            }
+        }
+    }
+
+    private fun insertImage(url: String, k: Int) {
+        when(k) {
+            0 -> {
+                Glide.with(this).load(url).into(binding.pockImage0)
+                binding.pockImage0.visibility = View.VISIBLE
+            }
+            1 -> {
+                Glide.with(this).load(url).into(binding.pockImage1)
+                binding.pockImage1.visibility = View.VISIBLE
+            }
+            2 -> {
+                Glide.with(this).load(url).into(binding.pockImage2)
+                binding.pockImage2.visibility = View.VISIBLE
+            }
+            3 -> {
+                Glide.with(this).load(url).into(binding.pockImage3)
+                binding.pockImage3.visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun goBack() {
