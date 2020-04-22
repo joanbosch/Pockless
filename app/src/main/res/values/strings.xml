@@ -86,6 +86,8 @@
     <string name="take_photo_dialog_option">Tomar foto</string>
     <string name="select_photo_dialog_option">Seleccionar foto</string>
     <string name="error_creating_profile">Ha ocurrido un error al crear el perfil. Intentelo de nuevo más tarde</string>
+    <string name="nearby_pocks">Nearby Pocks</string>
+    <string name="show_nearby_pocks">Show Nearby Pocks</string>
 
 
 </resources>

@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.pes.pockles.R
 import com.pes.pockles.data.repository.UserRepository
 import com.pes.pockles.databinding.ActivityMainBinding
@@ -30,4 +31,5 @@ class MainActivity : BaseActivity() {
             startActivity(Intent(this, NewPockActivity::class.java))
         }
     }
+
 }

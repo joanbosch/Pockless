@@ -10,10 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.assent.Permission
 import com.afollestad.assent.runWithPermissions
 import com.google.android.gms.location.LocationCallback
@@ -25,7 +26,6 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.FragmentMapBinding
@@ -33,8 +33,6 @@ import com.pes.pockles.model.Pock
 import com.pes.pockles.util.LocationUtils.Companion.getLastLocation
 import com.pes.pockles.view.ui.base.BaseFragment
 import com.pes.pockles.view.ui.viewpock.ViewPockActivity
-import kotlinx.android.synthetic.main.fragment_map.*
-import kotlinx.android.synthetic.main.pock_list.*
 import timber.log.Timber
 import kotlin.math.cos
 import kotlin.math.ln
@@ -61,6 +59,10 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         ViewModelProviders.of(this, viewModelFactory).get(MapViewModel::class.java)
     }
     private var googleMap: GoogleMap? = null
+    private lateinit var linearLayoutManager: LinearLayoutManager
+    private var recyclerView: RecyclerView? = null
+    private lateinit var pockList: MutableList<Pock>
+    private lateinit var bottomSheetFragment: BottomSheetsPocks
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -78,6 +80,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         binding.outlinedButton.setOnClickListener {
             showFilterDialog()
         }
+        pockList = mutableListOf<Pock>()
         return binding.root
     }
 
@@ -114,7 +117,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
             setupMap();
 
             startLocationUpdates()
-
+            bottomSheetFragment = BottomSheetsPocks()
             viewModel.getPocks().observe(
                 this,
                 Observer { value: Resource<List<Pock>>? ->
@@ -126,7 +129,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
                     }
                 })
         }
-        CreateBottomSheet()
+        createBottomSheet()
     }
 
     private fun setupMap() {
@@ -198,6 +201,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         googleMap!!.clear()
         list.data.let {
             it.forEach { pock ->
+                pockList.add(pock)
                 val latLng = LatLng(
                     pock.location.latitude,
                     pock.location.longitude
@@ -206,6 +210,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
                 marker.tag = pock.id
             }
         }
+        sendData(bottomSheetFragment)
     }
 
     private fun handleError() {
@@ -217,7 +222,8 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
     }
 
     //BOTTOM SHEET
-    private fun CreateBottomSheet() {
+    private fun createBottomSheet() {
+        /*
         val bottomSheetBehavior = BottomSheetBehavior.from(pock_list)
 
         floatingActionButton.setOnClickListener {
@@ -227,6 +233,24 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             }
         }
+        //RecyclerView of pocks
+        linearLayoutManager = LinearLayoutManager(context)
+        recyclerView = view?.findViewById(R.id.nearPockList);
+        recyclerView?.layoutManager = linearLayoutManager
+        adapter = PockListAdapter(pockList)
+        recyclerView?.adapter = adapter
+*/
+        binding.showSheetBtn.setOnClickListener {
+           // bottomSheetFragment = BottomSheetsPocks()
+            bottomSheetFragment.show(requireActivity().supportFragmentManager, "BottomSheetsPocks")
+        }
     }
 
+    private fun sendData(bs: BottomSheetsPocks) {
+        bs.setData(pockList)
+
+    }
 }
+
+
+
