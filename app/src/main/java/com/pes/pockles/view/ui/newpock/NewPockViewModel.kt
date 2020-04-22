@@ -35,17 +35,15 @@ class NewPockViewModel @Inject constructor(
     private  val _image3 = MutableLiveData<Bitmap>()
     private  val _image4 = MutableLiveData<Bitmap>()
 
+    //Number of images that the pock has
     private val _nImg = MutableLiveData<Int>()
     val nImg: LiveData<Int>
         get() = _nImg
 
+    //Image that the user wants to act on
     private val _actImg = MutableLiveData<Int>()
     val actImg: LiveData<Int>
         get() = _actImg
-
-    private val _goUploadImage = MutableLiveData<Boolean>()
-    val goUploadImage: LiveData<Boolean>
-        get() = _goUploadImage
 
     private val _errorSavingImages = MutableLiveData<Boolean>()
     val errorSavingImages: LiveData<Boolean>
@@ -67,7 +65,6 @@ class NewPockViewModel @Inject constructor(
         _actImg.value = 0
         _nImg.value = 0
         _chatEnabled.value = false
-        _goUploadImage.value = false
         _errorSavingImages.value = false
     }
 
@@ -80,7 +77,10 @@ class NewPockViewModel @Inject constructor(
             _errorHandler.value = true
         else {
             if (hasImages) {
+
+                //Store in storageTask the images saved locally
                 val storageTask = StorageTask.create(storageManager)
+
                 _image1.value?.let {
                     storageTask.addBitmap(StorageTaskBitmap(_image1.value!!))
                     hasImages = true
@@ -95,6 +95,7 @@ class NewPockViewModel @Inject constructor(
                     storageTask.addBitmap(StorageTaskBitmap(_image4.value!!))
                 }
 
+                //Try to insert a pock when the images are upload in firebase
                 storageTask.upload({
                     _pockToInsert.value = NewPock(
                         message = pockContent.value!!,
@@ -140,6 +141,7 @@ class NewPockViewModel @Inject constructor(
         if (_nImg.value == 3) _nImg.value = 4
     }
 
+    //Local storage of pock images
     fun setBm(bm: Bitmap) {
         when (_actImg.value) {
             1 -> _image1.value = bm

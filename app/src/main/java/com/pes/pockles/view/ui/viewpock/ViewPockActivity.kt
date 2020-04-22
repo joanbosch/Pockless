@@ -64,22 +64,22 @@ class ViewPockActivity : BaseActivity() {
                 }
             }
         )
-        viewModel.goBack.observe(this, Observer<Boolean> { backButtonPressed ->
-            if (backButtonPressed) goBack()
-        })
 
-        viewModel.goShare.observe(this, Observer<Boolean> { shareButtonPressed ->
-            if (shareButtonPressed) goShare()
-        })
+        binding.back.setOnClickListener {
+            goBack()
+        }
 
-        viewModel.goReport.observe(this, Observer<Boolean> { reportButtonPressed ->
-            if (reportButtonPressed) goReport()
-        })
+        binding.chat.setOnClickListener {
+            goChat()
+        }
 
-        viewModel.goChat.observe(this, Observer<Boolean> { chatButtonPressed ->
-            if (chatButtonPressed) goChat()
-        })
+        binding.share.setOnClickListener{
+            goShare()
+        }
 
+        binding.report.setOnClickListener {
+            goReport()
+        }
     }
 
     private fun downloadMedia() {

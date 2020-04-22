@@ -188,16 +188,20 @@ class NewPockActivity : BaseActivity() {
     }
 
     private fun setImage(bm: Bitmap) {
+        //Animation control
         if (viewModel.nImg.value != 4) setVisibilityButtons()
+        //Shows in the newPock the image that the user wants to upload
         when (viewModel.actImg.value) {
             1-> binding.image1.setImageBitmap(bm)
             2-> binding.image2.setImageBitmap(bm)
             3-> binding.image3.setImageBitmap(bm)
             4-> binding.image4.setImageBitmap(bm)
         }
+        //Store in the viewModel the image selected by the user
         viewModel.setBm(bm)
     }
 
+    //Function that controls the animations when the user inserts the images
     private fun setVisibilityButtons() {
         binding.image2button.visibility = View.VISIBLE
         binding.image1.visibility = View.VISIBLE
