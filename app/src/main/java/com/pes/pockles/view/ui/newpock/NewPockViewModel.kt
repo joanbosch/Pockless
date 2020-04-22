@@ -122,26 +122,22 @@ class NewPockViewModel @Inject constructor(
     fun onUploadImage1() {
         _actImg.value = 1
         if (_nImg.value == 0)  _nImg.value = 1
-        _goUploadImage.value = true
         hasImages = true
     }
 
     fun onUploadImage2() {
         _actImg.value = 2
         if (_nImg.value == 1) _nImg.value = 2
-        _goUploadImage.value = true
     }
 
     fun onUploadImage3() {
         _actImg.value = 3
         if (_nImg.value == 2) _nImg.value = 3
-        _goUploadImage.value = true
     }
 
     fun onUploadImage4() {
         _actImg.value = 4
         if (_nImg.value == 3) _nImg.value = 4
-        _goUploadImage.value = true
     }
 
     fun setBm(bm: Bitmap) {
@@ -152,26 +148,4 @@ class NewPockViewModel @Inject constructor(
             4 -> _image4.value = bm
         }
     }
-
-/*
-    fun uploadImages(): LiveData<Resource<List<String>>> {
-        val storageTask = StorageTask.create(storageManager)
-        if (_image1.value != null) storageTask.addBitmap(StorageTaskBitmap(_image1.value!!))
-        if (_image2.value != null)storageTask.addBitmap(StorageTaskBitmap(_image2.value!!))
-        if (_image3.value != null)storageTask.addBitmap(StorageTaskBitmap(_image3.value!!))
-        if (_image4.value != null)storageTask.addBitmap(StorageTaskBitmap(_image4.value!!))
-        return storageTask.uploadAsLiveData("pockImages")
-    }
-
-    fun uploadGif(gif: InputStream): LiveData<Resource<String>> {
-        return storageManager.uploadMediaGif(gif, "pockGifs")
-    }
-
-    fun setUrlList (data: List<String>) {
-        urlList = data
-        Log.i("Enter Set Photo", "List Set")
-    }
-
- */
-
 }

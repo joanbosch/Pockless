@@ -60,6 +60,26 @@ class NewPockActivity : BaseActivity() {
             })
         }
 
+        binding.image1button.setOnClickListener {
+            viewModel.onUploadImage1()
+            goUploadImage()
+        }
+
+        binding.image2button.setOnClickListener {
+            viewModel.onUploadImage2()
+            goUploadImage()
+        }
+
+        binding.image3button.setOnClickListener {
+            viewModel.onUploadImage3()
+            goUploadImage()
+        }
+
+        binding.image4button.setOnClickListener {
+            viewModel.onUploadImage4()
+            goUploadImage()
+        }
+
         val spinner = binding.categoriesDropdown
         spinner.setAdapter(
             ArrayAdapter(
@@ -68,14 +88,6 @@ class NewPockActivity : BaseActivity() {
                 resources.getStringArray(R.array.categories)
             )
         )
-
-        viewModel.goUploadImage.observe(this, Observer<Boolean> { uploadImageButtonPressed ->
-            if (uploadImageButtonPressed) goUploadImage()
-        })
-
-        viewModel.errorSavingImages.observe(this, Observer<Boolean> { saveButtonPressed ->
-            if (saveButtonPressed) errorImages()
-        })
     }
 
     private fun handleSuccess() {
@@ -122,6 +134,10 @@ class NewPockActivity : BaseActivity() {
                         handleError(false)
                 }
             })
+
+        viewModel.errorSavingImages.observe(this, Observer<Boolean> { saveButtonPressed ->
+            if (saveButtonPressed) errorImages()
+        })
     }
 
     private fun showLoading() {
@@ -142,45 +158,7 @@ class NewPockActivity : BaseActivity() {
     private fun errorImages() {
         Toast.makeText(this, "Error saving images", Toast.LENGTH_SHORT).show()
     }
-/*
-    private fun errorUploadingImages() {
-        binding.image1.visibility = View.VISIBLE
-        binding.image2.visibility = View.VISIBLE
-        binding.image3.visibility = View.VISIBLE
-        binding.image4.visibility = View.VISIBLE
-        binding.saveButton.visibility = View.VISIBLE
-    }
 
-    @SuppressLint("ShowToast")
-    private fun goSave() {
-        binding.image1.visibility = View.GONE
-        binding.image2.visibility = View.GONE
-        binding.image3.visibility = View.GONE
-        binding.image4.visibility = View.GONE
-        binding.saveButton.visibility = View.GONE
-        viewModel.uploadImages().observe( this, Observer {
-            when (it) {
-                is Resource.Loading -> {
-                    showLoading()
-                    //binding.loadingSave.visibility = View.VISIBLE
-                }
-                is Resource.Error -> {
-                    hideLoading()
-                    errorUploadingImages()
-                    Toast.makeText(this, "Error saving images", Toast.LENGTH_SHORT).show()
-                }
-                is Resource.Success<List<String>> -> {
-                    hideLoading()
-                    binding.loadingSave.visibility = View.GONE
-                    Toast.makeText(this, "Images Saved", Toast.LENGTH_SHORT).show()
-                    viewModel.setUrlList(it.data)
-
-                }
-            }
-        })
-
-    }
-*/
     private fun goUploadImage() {
         val items = listOf(
             BasicGridItem(R.drawable.ic_icon_camera, getString(R.string.take_photo_dialog_option)),
@@ -210,7 +188,7 @@ class NewPockActivity : BaseActivity() {
     }
 
     private fun setImage(bm: Bitmap) {
-        if (viewModel.nImg.value != 4) setVisibility()
+        if (viewModel.nImg.value != 4) setVisibilityButtons()
         when (viewModel.actImg.value) {
             1-> binding.image1.setImageBitmap(bm)
             2-> binding.image2.setImageBitmap(bm)
@@ -220,42 +198,19 @@ class NewPockActivity : BaseActivity() {
         viewModel.setBm(bm)
     }
 
-    private fun setVisibility() {
-        //binding.saveButton.visibility = View.VISIBLE
+    private fun setVisibilityButtons() {
+        binding.image2button.visibility = View.VISIBLE
+        binding.image1.visibility = View.VISIBLE
         binding.image2.visibility = View.VISIBLE
-        if (viewModel.nImg.value == 2) binding.image3.visibility = View.VISIBLE
-        else if (viewModel.nImg.value == 3) binding.image4.visibility = View.VISIBLE
+        if (viewModel.nImg.value == 2) {
+            binding.image3button.visibility = View.VISIBLE
+            binding.image3.visibility = View.VISIBLE
+        }
+        else if (viewModel.nImg.value == 3) {
+            binding.image4button.visibility = View.VISIBLE
+            binding.image4.visibility = View.VISIBLE
+        }
     }
-    /*
-    private fun setGif(gif: InputStream) {
-        viewModel.uploadGif(gif).observe(this, Observer {
-            when (it) {
-                is Resource.Loading -> {
-                    binding.insertImageButton.visibility = View.GONE
-                    binding.changeImage.visibility = View.GONE
-                    binding.done.visibility = View.GONE
-                    binding.loading.visibility = View.VISIBLE
-                }
-                is Resource.Error -> {
-                    binding.loading.visibility = View.GONE
-                    binding.insertImageButton.visibility = View.VISIBLE
-                    Snackbar.make(
-                        binding.newPock,
-                        getString(R.string.error_uploading_an_image),
-                        Snackbar.LENGTH_LONG
-                    ).show()
-                }
-                is Resource.Success<String> -> {
-                    binding.insertImageButton.visibility = View.GONE
-                    binding.loading.visibility = View.GONE
-                    viewModel.setImageUrl(it.data)
-                    binding.done.visibility = View.VISIBLE
-                    binding.changeImage.visibility = View.VISIBLE
-                }
-            }
-        })
-    }
-    */
 
     override fun onActivityResult(reqCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(reqCode, resultCode, data)
