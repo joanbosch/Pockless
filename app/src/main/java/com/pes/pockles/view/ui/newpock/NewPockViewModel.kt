@@ -83,7 +83,6 @@ class NewPockViewModel @Inject constructor(
 
                 _image1.value?.let {
                     storageTask.addBitmap(StorageTaskBitmap(_image1.value!!))
-                    hasImages = true
                 }
                 _image2.value?.let {
                     storageTask.addBitmap(StorageTaskBitmap(_image2.value!!))
