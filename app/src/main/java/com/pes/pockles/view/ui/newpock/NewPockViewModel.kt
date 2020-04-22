@@ -116,25 +116,10 @@ class NewPockViewModel @Inject constructor(
         }
     }
 
-    fun onUploadImage1() {
-        _actImg.value = 1
-        if (_nImg.value == 0)  _nImg.value = 1
+    fun onSaveImage(k: Int) {
+        _actImg.value = k
+        if (_nImg.value == k - 1) _nImg.value = k
         hasImages = true
-    }
-
-    fun onUploadImage2() {
-        _actImg.value = 2
-        if (_nImg.value == 1) _nImg.value = 2
-    }
-
-    fun onUploadImage3() {
-        _actImg.value = 3
-        if (_nImg.value == 2) _nImg.value = 3
-    }
-
-    fun onUploadImage4() {
-        _actImg.value = 4
-        if (_nImg.value == 3) _nImg.value = 4
     }
 
     //Local storage of pock images

@@ -81,33 +81,12 @@ class ViewPockActivity : BaseActivity() {
     }
 
     private fun downloadMedia() {
-        var k: Int = 0
-        if (pock.media != null) {
-            for (url in pock.media!!) {
-                insertImage(url, k)
-                k++
-            }
-        }
-    }
-
-    private fun insertImage(url: String, k: Int) {
-        when(k) {
-            0 -> {
-                Glide.with(this).load(url).into(binding.pockImage0)
-                binding.pockImage0.visibility = View.VISIBLE
-            }
-            1 -> {
-                Glide.with(this).load(url).into(binding.pockImage1)
-                binding.pockImage1.visibility = View.VISIBLE
-            }
-            2 -> {
-                Glide.with(this).load(url).into(binding.pockImage2)
-                binding.pockImage2.visibility = View.VISIBLE
-            }
-            3 -> {
-                Glide.with(this).load(url).into(binding.pockImage3)
-                binding.pockImage3.visibility = View.VISIBLE
-            }
+        val pockImages = listOf(binding.pockImage0, binding.pockImage1, binding.pockImage2, binding.pockImage3)
+        var k = 0
+        pock.media?.forEach { url ->
+            Glide.with(this).load(url).into(pockImages[k])
+            pockImages[k].visibility = View.VISIBLE
+            k++
         }
     }
 

@@ -59,22 +59,22 @@ class NewPockActivity : BaseActivity() {
         }
 
         binding.image1button.setOnClickListener {
-            viewModel.onUploadImage1()
+            viewModel.onSaveImage(1)
             goUploadImage()
         }
 
         binding.image2button.setOnClickListener {
-            viewModel.onUploadImage2()
+            viewModel.onSaveImage(2)
             goUploadImage()
         }
 
         binding.image3button.setOnClickListener {
-            viewModel.onUploadImage3()
+            viewModel.onSaveImage(3)
             goUploadImage()
         }
 
         binding.image4button.setOnClickListener {
-            viewModel.onUploadImage4()
+            viewModel.onSaveImage(4)
             goUploadImage()
         }
 
@@ -154,7 +154,11 @@ class NewPockActivity : BaseActivity() {
     }
 
     private fun errorImages() {
-        Toast.makeText(this, "Error saving images", Toast.LENGTH_SHORT).show()
+        Snackbar.make(
+            binding.newPock,
+            getString(R.string.error_uploading_images),
+            Snackbar.LENGTH_LONG
+        ).show()
     }
 
     private fun goUploadImage() {
