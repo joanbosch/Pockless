@@ -19,6 +19,7 @@
     <string name="profile_menu_item">Perfil</string>
     <string name="close_filter_button">Cerrar</string>
     <string name="filter_dialog_text">Marca las categorías de Pock que desees ver en tu mapa…</string>
+    <string name="change_image">Cambiar imagen</string>
 
     <string name="user_format">User: %s</string>
 
@@ -81,11 +82,13 @@
     <string name="yes">Si</string>
     <string name="no">No</string>
     <string name="error_uploading_an_image">Ha ocurrido un error al subir la imagen</string>
+    <string name="error_uploading_images">Ha ocurrido un error al subir las imagenes</string>
     <string name="error_selecting_image">Ha ocurrido un error al seleccionar la imagen</string>
     <string name="upload_image_dialog_title">Subir imagen</string>
     <string name="take_photo_dialog_option">Tomar foto</string>
     <string name="select_photo_dialog_option">Seleccionar foto</string>
     <string name="error_creating_profile">Ha ocurrido un error al crear el perfil. Intentelo de nuevo más tarde</string>
+    <string name="save">guardar</string>
 
 
 </resources>
