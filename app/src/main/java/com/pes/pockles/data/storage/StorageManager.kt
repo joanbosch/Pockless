@@ -59,15 +59,16 @@ class StorageManager {
         success: (String) -> Unit,
         failure: ((Throwable) -> Unit)? = null,
         fileExtension: String = "png",
-        childReference: String = "other"
+        childReference: String = "other",
+        sufix: String = "1"
     ) {
         val user = FirebaseAuth.getInstance().currentUser
         user?.let {
             val storageRef = storage.reference
 
-            val date = SimpleDateFormat("dd/MM/yyyy-hh:mm:sss", Locale.getDefault())
+            val date = SimpleDateFormat("dd_MM_yyyy-hh:mm:sss", Locale.getDefault())
                 .format(Calendar.getInstance().time)
-            val imageRef = storageRef.child("$childReference/${it.uid}_$date.$fileExtension")
+            val imageRef = storageRef.child("$childReference/${it.uid}_${date}_$sufix.$fileExtension")
 
             val baos = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)

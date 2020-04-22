@@ -2,6 +2,7 @@ package com.pes.pockles.view.ui.newpock
 
 import android.graphics.Bitmap
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -27,16 +28,12 @@ class NewPockViewModel @Inject constructor(
     private val _pockToInsert = MutableLiveData<NewPock?>()
     val pockContent = MutableLiveData<String>()
     val pockCategory = MutableLiveData<String>()
-    private var urlList: List<String>? = null
+    private var hasImages = false
 
     private  val _image1 = MutableLiveData<Bitmap>()
     private  val _image2 = MutableLiveData<Bitmap>()
     private  val _image3 = MutableLiveData<Bitmap>()
     private  val _image4 = MutableLiveData<Bitmap>()
-
-    private val _goSaveImages = MutableLiveData<Boolean>()
-    val goSaveImages: LiveData<Boolean>
-        get() = _goSaveImages
 
     private val _nImg = MutableLiveData<Int>()
     val nImg: LiveData<Int>
@@ -49,6 +46,10 @@ class NewPockViewModel @Inject constructor(
     private val _goUploadImage = MutableLiveData<Boolean>()
     val goUploadImage: LiveData<Boolean>
         get() = _goUploadImage
+
+    private val _errorSavingImages = MutableLiveData<Boolean>()
+    val errorSavingImages: LiveData<Boolean>
+        get() = _errorSavingImages
 
     val networkCallback: LiveData<Resource<Pock>?>
         get() = Transformations.switchMap(_pockToInsert) { value: NewPock? ->
@@ -67,6 +68,7 @@ class NewPockViewModel @Inject constructor(
         _nImg.value = 0
         _chatEnabled.value = false
         _goUploadImage.value = false
+        _errorSavingImages.value = false
     }
 
     fun insertPock(location: Location) {
@@ -77,13 +79,43 @@ class NewPockViewModel @Inject constructor(
         if (pockContent.value == null)
             _errorHandler.value = true
         else {
-            _pockToInsert.value = NewPock(
-                message = pockContent.value!!,
-                category = category,
-                chatAccess = _chatEnabled.value!!,
-                location = location,
-                media = urlList
-            )
+            if (hasImages) {
+                val storageTask = StorageTask.create(storageManager)
+                _image1.value?.let {
+                    storageTask.addBitmap(StorageTaskBitmap(_image1.value!!))
+                    hasImages = true
+                }
+                _image2.value?.let {
+                    storageTask.addBitmap(StorageTaskBitmap(_image2.value!!))
+                }
+                _image3.value?.let {
+                    storageTask.addBitmap(StorageTaskBitmap(_image3.value!!))
+                }
+                _image4.value?.let {
+                    storageTask.addBitmap(StorageTaskBitmap(_image4.value!!))
+                }
+
+                storageTask.upload({
+                    _pockToInsert.value = NewPock(
+                        message = pockContent.value!!,
+                        category = category,
+                        chatAccess = _chatEnabled.value!!,
+                        location = location,
+                        media = it
+                    )
+                }, {
+                    _errorSavingImages.value = true
+                }, "pockImages")
+            }
+            else {
+                _pockToInsert.value = NewPock(
+                    message = pockContent.value!!,
+                    category = category,
+                    chatAccess = _chatEnabled.value!!,
+                    location = location,
+                    media = null
+                )
+            }
         }
     }
 
@@ -91,6 +123,7 @@ class NewPockViewModel @Inject constructor(
         _actImg.value = 1
         if (_nImg.value == 0)  _nImg.value = 1
         _goUploadImage.value = true
+        hasImages = true
     }
 
     fun onUploadImage2() {
@@ -120,10 +153,7 @@ class NewPockViewModel @Inject constructor(
         }
     }
 
-    fun onSaveImages() {
-        _goSaveImages.value = true
-    }
-
+/*
     fun uploadImages(): LiveData<Resource<List<String>>> {
         val storageTask = StorageTask.create(storageManager)
         if (_image1.value != null) storageTask.addBitmap(StorageTaskBitmap(_image1.value!!))
@@ -132,14 +162,16 @@ class NewPockViewModel @Inject constructor(
         if (_image4.value != null)storageTask.addBitmap(StorageTaskBitmap(_image4.value!!))
         return storageTask.uploadAsLiveData("pockImages")
     }
-/*
+
     fun uploadGif(gif: InputStream): LiveData<Resource<String>> {
         return storageManager.uploadMediaGif(gif, "pockGifs")
-    }*/
+    }
 
     fun setUrlList (data: List<String>) {
         urlList = data
         Log.i("Enter Set Photo", "List Set")
     }
+
+ */
 
 }

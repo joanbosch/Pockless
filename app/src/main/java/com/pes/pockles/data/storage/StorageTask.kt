@@ -77,7 +77,7 @@ class StorageTask private constructor(private val manager: StorageManager) {
                             success(resources)
                         }
                     }
-                }, { t -> failure?.let { f -> f(t) } }, it.fileExtension, childReference)
+                }, { t -> failure?.let { f -> f(t) } }, it.fileExtension, childReference, bitmaps.size.toString())
             }
         } while (!bitmaps.isEmpty())
     }

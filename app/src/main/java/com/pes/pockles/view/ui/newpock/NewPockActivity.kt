@@ -73,8 +73,8 @@ class NewPockActivity : BaseActivity() {
             if (uploadImageButtonPressed) goUploadImage()
         })
 
-        viewModel.goSaveImages.observe(this, Observer<Boolean> { saveButtonPressed ->
-            if (saveButtonPressed) goSave()
+        viewModel.errorSavingImages.observe(this, Observer<Boolean> { saveButtonPressed ->
+            if (saveButtonPressed) errorImages()
         })
     }
 
@@ -139,6 +139,10 @@ class NewPockActivity : BaseActivity() {
         binding.newPockProgressBar.visibility = View.GONE
     }
 
+    private fun errorImages() {
+        Toast.makeText(this, "Error saving images", Toast.LENGTH_SHORT).show()
+    }
+/*
     private fun errorUploadingImages() {
         binding.image1.visibility = View.VISIBLE
         binding.image2.visibility = View.VISIBLE
@@ -176,7 +180,7 @@ class NewPockActivity : BaseActivity() {
         })
 
     }
-
+*/
     private fun goUploadImage() {
         val items = listOf(
             BasicGridItem(R.drawable.ic_icon_camera, getString(R.string.take_photo_dialog_option)),
@@ -217,7 +221,7 @@ class NewPockActivity : BaseActivity() {
     }
 
     private fun setVisibility() {
-        binding.saveButton.visibility = View.VISIBLE
+        //binding.saveButton.visibility = View.VISIBLE
         binding.image2.visibility = View.VISIBLE
         if (viewModel.nImg.value == 2) binding.image3.visibility = View.VISIBLE
         else if (viewModel.nImg.value == 3) binding.image4.visibility = View.VISIBLE
