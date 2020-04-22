@@ -1,7 +1,6 @@
 package com.pes.pockles.view.ui.viewpock
 
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -15,7 +14,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.pes.pockles.R
-import com.pes.pockles.R.*
 import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.ViewPockBinding
 import com.pes.pockles.model.Pock
@@ -42,7 +40,7 @@ class ViewPockActivity : BaseActivity() {
 
         setUpWindow()
 
-        binding = DataBindingUtil.setContentView(this, layout.view_pock)
+        binding = DataBindingUtil.setContentView(this, R.layout.view_pock)
 
         binding.loading.visibility = View.VISIBLE
 

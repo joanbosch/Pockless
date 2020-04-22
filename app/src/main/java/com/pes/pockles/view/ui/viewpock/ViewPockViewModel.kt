@@ -1,7 +1,6 @@
 package com.pes.pockles.view.ui.viewpock
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.pes.pockles.data.Resource
 import com.pes.pockles.domain.usecases.ViewPockUseCase

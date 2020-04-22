@@ -1,8 +1,6 @@
 package com.pes.pockles.view.ui.newpock
 
 import android.graphics.Bitmap
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -16,7 +14,6 @@ import com.pes.pockles.model.Location
 import com.pes.pockles.model.NewPock
 import com.pes.pockles.model.Pock
 import com.pes.pockles.util.livedata.AbsentLiveData
-import java.io.InputStream
 import javax.inject.Inject
 
 class NewPockViewModel @Inject constructor(
