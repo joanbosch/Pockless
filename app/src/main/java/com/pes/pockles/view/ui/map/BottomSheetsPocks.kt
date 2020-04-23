@@ -19,6 +19,7 @@ class BottomSheetsPocks : BottomSheetDialogFragment() {
     private val itemAdapter = ItemAdapter<BindingPockItem>()
     private lateinit var data: List<Pock>
     private lateinit var binding: PockListBinding
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -27,23 +28,26 @@ class BottomSheetsPocks : BottomSheetDialogFragment() {
         val inflaters = context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         binding = PockListBinding.inflate(inflaters, container, true)
         binding.lifecycleOwner = this
-        var recyclerView: RecyclerView? = view?.findViewById(R.id.nearPockList)
-        binding.nearPockList.let {
-            it.layoutManager = LinearLayoutManager(activity!!.applicationContext)
-            it.adapter = FastAdapter.with(itemAdapter)
-        }
-/*
-        if (recyclerView != null) {
-            recyclerView.layoutManager = LinearLayoutManager((activity?.applicationContext))
-            recyclerView.adapter = FastAdapter.with(itemAdapter)
-        }*/
         return inflater.inflate(R.layout.pock_list, container, false)
     }
-   fun setData(list :List<Pock>)   {
-       data=list
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        val recyclerView: RecyclerView? = view?.findViewById(R.id.nearPockList)
+        if (recyclerView != null) {
+            recyclerView.layoutManager = LinearLayoutManager(activity)
+            recyclerView.adapter = FastAdapter.with(itemAdapter)
+        }
+
+    }
+
+    fun setData(list: List<Pock>) {
+        data = list
         updateList()
-   }
-    private fun updateList(){
+    }
+
+    private fun updateList() {
         val pockListBinding: List<BindingPockItem> = data.map { pock ->
             val binding =
                 BindingPockItem()
