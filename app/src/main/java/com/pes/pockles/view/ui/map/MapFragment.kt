@@ -249,8 +249,6 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
                 if (!heatMapEnabled) {
                     val marker: Marker = googleMap!!.addMarker(MarkerOptions().position(latLng))
                     marker.tag = pock.id
-                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_mail))
-
                 }
             }
 
@@ -288,7 +286,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
     //BOTTOM SHEET
     private fun createBottomSheet() {
         val behaviour = BottomSheetBehavior.from(binding.bottomSheet)
-        behaviour.peekHeight = dp2px(context!!, 80f).roundToInt()
+        behaviour.peekHeight = dp2px(context!!, 120f).roundToInt()
         val fastAdapter = FastAdapter.with(itemAdapter)
         binding.nearPockList.apply {
             layoutManager = LinearLayoutManager(activity)
