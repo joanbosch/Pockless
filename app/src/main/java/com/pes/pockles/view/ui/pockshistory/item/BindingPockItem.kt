@@ -29,7 +29,7 @@ class BindingPockItem : AbstractBindingItem<PockHistoryItemBinding>() {
             }
             it.context.startActivity(intent)
         }
-        if (System.currentTimeMillis() < pock!!.dateInserted + (20 * 60 * 1000)) {
+        if (System.currentTimeMillis() < pock!!.dateInserted + (4000 * 60 * 1000)) {
             binding.editButton.visibility = View.VISIBLE
         }
     }

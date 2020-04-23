@@ -131,20 +131,22 @@ class EditPockActivity : BaseActivity() {
 
     private fun handleSuccess() {
         hideLoading()
-        Toast.makeText(this, resources.getString(R.string.updated_pock_message), Toast.LENGTH_SHORT)
-            .show()
+        Snackbar.make(
+            binding.editPock,
+            resources.getString(R.string.updated_pock_message),
+            Snackbar.LENGTH_LONG
+        ).show()
         finish()
     }
 
     private fun handleError(apiError: Boolean) {
         hideLoading()
         if (apiError)
-            Toast.makeText(
-                this,
+            Snackbar.make(
+                binding.editPock,
                 resources.getString(R.string.api_error_updating_message),
-                Toast.LENGTH_SHORT
-            )
-                .show()
+                Snackbar.LENGTH_LONG
+            ).show()
         else
             binding.pockContentField.error = resources.getString(R.string.pock_content_error)
     }
@@ -167,15 +169,17 @@ class EditPockActivity : BaseActivity() {
         //In case there are any error
         viewModel.errorHandlerCallback.observe(
             this,
-            Observer { value: Boolean ->
-                value.let {
-                    if (value)
+            Observer { event ->
+                event.let {
+                    if (event)
                         handleError(false)
                 }
             })
 
-        viewModel.errorSavingImages.observe(this, Observer<Boolean> { saveButtonPressed ->
-            if (saveButtonPressed) errorImages()
+        viewModel.errorSavingImages.observe(
+            this,
+            Observer { event ->
+            if (event) errorImages()
         })
 
         viewModel.oldImages.observe(
@@ -288,17 +292,6 @@ class EditPockActivity : BaseActivity() {
                 }
             }
         }
-        /*binding.image2button.visibility = View.VISIBLE
-        binding.image1.visibility = View.VISIBLE
-        binding.image2.visibility = View.VISIBLE
-        if (viewModel.nImg.value == 2) {
-            binding.image3button.visibility = View.VISIBLE
-            binding.image3.visibility = View.VISIBLE
-        }
-        else if (viewModel.nImg.value == 3) {
-            binding.image4button.visibility = View.VISIBLE
-            binding.image4.visibility = View.VISIBLE
-        }*/
     }
 
     override fun onActivityResult(reqCode: Int, resultCode: Int, data: Intent?) {
