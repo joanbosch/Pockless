@@ -59,8 +59,6 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         ViewModelProviders.of(this, viewModelFactory).get(MapViewModel::class.java)
     }
     private var googleMap: GoogleMap? = null
-    private lateinit var linearLayoutManager: LinearLayoutManager
-    private var recyclerView: RecyclerView? = null
     private lateinit var pockList: MutableList<Pock>
     private lateinit var bottomSheetFragment: BottomSheetsPocks
 
@@ -223,23 +221,6 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
 
     //BOTTOM SHEET
     private fun createBottomSheet() {
-        /*
-        val bottomSheetBehavior = BottomSheetBehavior.from(pock_list)
-
-        floatingActionButton.setOnClickListener {
-            if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            } else {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            }
-        }
-        //RecyclerView of pocks
-        linearLayoutManager = LinearLayoutManager(context)
-        recyclerView = view?.findViewById(R.id.nearPockList);
-        recyclerView?.layoutManager = linearLayoutManager
-        adapter = PockListAdapter(pockList)
-        recyclerView?.adapter = adapter
-*/
         binding.showSheetBtn.setOnClickListener {
            // bottomSheetFragment = BottomSheetsPocks()
             bottomSheetFragment.show(requireActivity().supportFragmentManager, "BottomSheetsPocks")

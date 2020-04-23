@@ -12,11 +12,13 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.Glide
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.ViewPockBinding
 import com.pes.pockles.model.Pock
 import com.pes.pockles.view.ui.base.BaseActivity
+
 
 class ViewPockActivity : BaseActivity() {
 
@@ -52,30 +54,40 @@ class ViewPockActivity : BaseActivity() {
                     when (value) {
                         is Resource.Success<Pock> -> {
                             this.pock = value.data
-                            binding.loading.visibility = View.GONE
                             binding.pock = this.pock
+                            downloadMedia()
+                            binding.loading.visibility = View.GONE
                         }
                     }
                 }
             }
         )
 
-        viewModel.goBack.observe(this, Observer<Boolean> { backButtonPressed ->
-            if (backButtonPressed) goBack()
-        })
+        binding.back.setOnClickListener {
+            goBack()
+        }
 
-        viewModel.goShare.observe(this, Observer<Boolean> { shareButtonPressed ->
-            if (shareButtonPressed) goShare()
-        })
+        binding.chat.setOnClickListener {
+            goChat()
+        }
 
-        viewModel.goReport.observe(this, Observer<Boolean> { reportButtonPressed ->
-            if (reportButtonPressed) goReport()
-        })
+        binding.share.setOnClickListener{
+            goShare()
+        }
 
-        viewModel.goChat.observe(this, Observer<Boolean> { chatButtonPressed ->
-            if (chatButtonPressed) goChat()
-        })
+        binding.report.setOnClickListener {
+            goReport()
+        }
+    }
 
+    private fun downloadMedia() {
+        val pockImages = listOf(binding.pockImage0, binding.pockImage1, binding.pockImage2, binding.pockImage3)
+        var k = 0
+        pock.media?.forEach { url ->
+            Glide.with(this).load(url).into(pockImages[k])
+            pockImages[k].visibility = View.VISIBLE
+            k++
+        }
     }
 
     private fun goBack() {
