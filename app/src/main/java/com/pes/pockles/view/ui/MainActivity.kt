@@ -1,6 +1,9 @@
 package com.pes.pockles.view.ui
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
@@ -36,7 +39,7 @@ class MainActivity : BaseActivity() {
         retrieveRegisterToken()
     }
 
-    private fun retrieveRegisterToken(){
+    private fun retrieveRegisterToken() {
         FirebaseInstanceId.getInstance().instanceId
             .addOnCompleteListener(OnCompleteListener { task ->
                 if (!task.isSuccessful) {

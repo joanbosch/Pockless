@@ -1,4 +1,4 @@
-package com.pes.pockles.data
+package com.pes.pockles.data.messaging
 
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -16,6 +16,13 @@ class PocklesMessagingService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
+        remoteMessage.data.get("mensaje")
+        when(remoteMessage.messageType){
+
+        }
+    }
+
+    override fun onDeletedMessages() {
         var a : Int = 5+5
     }
 
