@@ -21,6 +21,7 @@ import com.afollestad.materialdialogs.bottomsheets.BasicGridItem
 import com.afollestad.materialdialogs.bottomsheets.BottomSheet
 import com.afollestad.materialdialogs.bottomsheets.gridItems
 import com.afollestad.materialdialogs.bottomsheets.setPeekHeight
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
@@ -60,6 +61,30 @@ class EditPockActivity : BaseActivity() {
             viewModel.setCategory(binding.categoriesDropdown.text.toString())
         }
 
+        binding.deleteOldImg1Button.setOnClickListener {
+            binding.deleteOldImg1Button.visibility = View.GONE
+            binding.oldImage1.visibility = View.GONE
+            viewModel.deleteOldImage(1)
+        }
+
+        binding.deleteOldImg2Button.setOnClickListener {
+            binding.deleteOldImg2Button.visibility = View.GONE
+            binding.oldImage2.visibility = View.GONE
+            viewModel.deleteOldImage(2)
+        }
+
+        binding.deleteOldImg3Button.setOnClickListener {
+            binding.deleteOldImg3Button.visibility = View.GONE
+            binding.oldImage3.visibility = View.GONE
+            viewModel.deleteOldImage(3)
+        }
+
+        binding.deleteOldImg4Button.setOnClickListener {
+            binding.deleteOldImg4Button.visibility = View.GONE
+            binding.oldImage4.visibility = View.GONE
+            viewModel.deleteOldImage(4)
+        }
+
         binding.image1button.setOnClickListener {
             viewModel.onSaveImage(1)
             goUploadImage()
@@ -91,9 +116,12 @@ class EditPockActivity : BaseActivity() {
 
         val id = intent.getStringExtra("pockId")
         val editableContent = intent.extras?.get("editableContent") as EditedPock
-        viewModel.fillFieldsIfEmpty(id!!, editableContent)
 
+        viewModel.fillFieldsIfEmpty(id!!, editableContent)
         spinner.setText(viewModel.getCategory(), false)
+        downloadMedia(editableContent.media)
+
+        setVisibilityButtons()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -149,6 +177,12 @@ class EditPockActivity : BaseActivity() {
         viewModel.errorSavingImages.observe(this, Observer<Boolean> { saveButtonPressed ->
             if (saveButtonPressed) errorImages()
         })
+
+        viewModel.oldImages.observe(
+            this,
+            Observer { value: MutableList<String> ->
+                setVisibilityButtons()
+            })
     }
 
     private fun showLoading() {
@@ -218,7 +252,33 @@ class EditPockActivity : BaseActivity() {
 
     //Function that controls the animations when the user inserts the images
     private fun setVisibilityButtons() {
-        binding.image2button.visibility = View.VISIBLE
+        when (viewModel.nImg.value) {
+            1 -> {
+                binding.image1button.visibility = View.GONE
+                binding.image1.visibility = View.VISIBLE
+            }
+            2 -> {
+                binding.image2button.visibility = View.GONE
+                binding.image2.visibility = View.VISIBLE
+            }
+            3 -> {
+                binding.image3button.visibility = View.GONE
+                binding.image3.visibility = View.VISIBLE
+            }
+            4 -> {
+                binding.image4button.visibility = View.GONE
+                binding.image4.visibility = View.VISIBLE
+            }
+        }
+        if (viewModel.nImg.value!! <= viewModel.availableImgSpace) {
+            when (viewModel.nImg.value) {
+                0 -> binding.image1button.visibility = View.VISIBLE
+                1 -> binding.image2button.visibility = View.VISIBLE
+                2 -> binding.image3button.visibility = View.VISIBLE
+                3 -> binding.image4button.visibility = View.VISIBLE
+            }
+        }
+        /*binding.image2button.visibility = View.VISIBLE
         binding.image1.visibility = View.VISIBLE
         binding.image2.visibility = View.VISIBLE
         if (viewModel.nImg.value == 2) {
@@ -228,7 +288,7 @@ class EditPockActivity : BaseActivity() {
         else if (viewModel.nImg.value == 3) {
             binding.image4button.visibility = View.VISIBLE
             binding.image4.visibility = View.VISIBLE
-        }
+        }*/
     }
 
     override fun onActivityResult(reqCode: Int, resultCode: Int, data: Intent?) {
@@ -254,6 +314,18 @@ class EditPockActivity : BaseActivity() {
                 val imageBitmap = data?.extras?.get("data") as Bitmap
                 setImage(imageBitmap)
             }
+        }
+    }
+
+    private fun downloadMedia(media: List<String>?) {
+        val pockImages = listOf(binding.oldImage1, binding.oldImage2, binding.oldImage3, binding.oldImage4)
+        val deleteButtons = listOf(binding.deleteOldImg1Button, binding.deleteOldImg2Button, binding.deleteOldImg3Button, binding.deleteOldImg4Button)
+        var k = 0
+        media?.forEach { url ->
+            Glide.with(this).load(url).into(pockImages[k])
+            pockImages[k].visibility = View.VISIBLE
+            deleteButtons[k].visibility = View.VISIBLE
+            k++
         }
     }
 

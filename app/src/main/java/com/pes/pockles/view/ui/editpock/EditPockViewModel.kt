@@ -27,6 +27,8 @@ class EditPockViewModel @Inject constructor(
     val pockCategory = MutableLiveData<String>()
     private var pockId: String = ""
     private var hasImages = false
+    private var allOldImages: List<String> = listOf()
+    private val _oldImages = MutableLiveData<MutableList<String>>()
 
     private val _image1 = MutableLiveData<Bitmap>()
     private val _image2 = MutableLiveData<Bitmap>()
@@ -42,6 +44,16 @@ class EditPockViewModel @Inject constructor(
     private val _actImg = MutableLiveData<Int>()
     val actImg: LiveData<Int>
         get() = _actImg
+
+    //Number of images that the user could add at that moment
+    val availableImgSpace: Int
+        get() {
+            return if (_oldImages.value != null) 4 - _oldImages.value!!.size
+            else 4
+        }
+
+    val oldImages: MutableLiveData<MutableList<String>>
+        get() = _oldImages
 
     private val _errorSavingImages = MutableLiveData<Boolean>()
     val errorSavingImages: LiveData<Boolean>
@@ -62,7 +74,7 @@ class EditPockViewModel @Inject constructor(
         _image4.value = null
         _actImg.value = 0
         _nImg.value = 0
-        chatEnabled.value = false
+        //chatEnabled.value = false
         _errorSavingImages.value = false
     }
 
@@ -93,11 +105,13 @@ class EditPockViewModel @Inject constructor(
 
                 //Try to insert a pock when the images are upload in firebase
                 storageTask.upload({
+                    var newMedia = it
+                    if (_oldImages.value != null && _oldImages.value!!.isNotEmpty()) newMedia = _oldImages.value!! + newMedia
                     _pockToUpdate.value = EditedPock(
                         message = pockContent.value!!,
                         category = category,
                         chatAccess = chatEnabled.value!!,
-                        media = it
+                        media = newMedia
                     )
                 }, {
                     _errorSavingImages.value = true
@@ -108,7 +122,7 @@ class EditPockViewModel @Inject constructor(
                     message = pockContent.value!!,
                     category = category,
                     chatAccess = chatEnabled.value!!,
-                    media = null
+                    media = _oldImages.value
                 )
             }
         }
@@ -130,12 +144,20 @@ class EditPockViewModel @Inject constructor(
         }
     }
 
+    fun deleteOldImage (imgNumber: Int) {
+        _oldImages.value!!.remove(allOldImages[imgNumber-1])
+    }
+
     fun fillFieldsIfEmpty(id: String, editableContent: EditedPock) {
         if (pockId == "") {
             pockId = id
             pockContent.value = editableContent.message
             pockCategory.value = editableContent.category
             chatEnabled.value = editableContent.chatAccess
+            if (editableContent.media != null) {
+                allOldImages = editableContent.media
+                _oldImages.value = editableContent.media.toMutableList()
+            }
         }
     }
 

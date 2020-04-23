@@ -77,6 +77,108 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/oldImgLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="16dp">
+
+                    <ImageView
+                        android:id="@+id/oldImage1"
+                        android:layout_width="@dimen/add_image_size"
+                        android:layout_height="@dimen/add_image_size"
+                        android:contentDescription="@null"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/oldImage2"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/deleteOldImg1Button"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/small_round_button"
+                        android:contentDescription="@null"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toTopOf="@id/oldImage1"
+                        app:layout_constraintEnd_toEndOf="@id/oldImage1"
+                        app:srcCompat="@drawable/ic_close_black_24dp" />
+
+                    <ImageView
+                        android:id="@+id/oldImage2"
+                        android:layout_width="@dimen/add_image_size"
+                        android:layout_height="@dimen/add_image_size"
+                        android:contentDescription="@null"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/oldImage3"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/oldImage1"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <ImageButton
+                        android:id="@+id/deleteOldImg2Button"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/small_round_button"
+                        android:contentDescription="@null"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toTopOf="@id/oldImage2"
+                        app:layout_constraintEnd_toEndOf="@id/oldImage2"
+                        app:srcCompat="@drawable/ic_close_black_24dp" />
+
+                    <ImageView
+                        android:id="@+id/oldImage3"
+                        android:layout_width="@dimen/add_image_size"
+                        android:layout_height="@dimen/add_image_size"
+                        android:contentDescription="@null"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/oldImage4"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/oldImage2"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/deleteOldImg3Button"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/small_round_button"
+                        android:contentDescription="@null"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toTopOf="@id/oldImage3"
+                        app:layout_constraintEnd_toEndOf="@id/oldImage3"
+                        app:srcCompat="@drawable/ic_close_black_24dp" />
+
+                    <ImageView
+                        android:id="@+id/oldImage4"
+                        android:layout_width="@dimen/add_image_size"
+                        android:layout_height="@dimen/add_image_size"
+                        android:contentDescription="@null"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/oldImage3"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/deleteOldImg4Button"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/small_round_button"
+                        android:contentDescription="@null"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toTopOf="@id/oldImage4"
+                        app:layout_constraintEnd_toEndOf="@id/oldImage4"
+                        app:srcCompat="@drawable/ic_close_black_24dp" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/imagesLinearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -94,6 +196,7 @@
                         android:paddingEnd="@dimen/add_image_padding"
                         android:paddingBottom="@dimen/add_image_padding"
                         android:scaleType="centerCrop"
+                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/image2button"
                         app:layout_constraintHorizontal_bias="0.5"
