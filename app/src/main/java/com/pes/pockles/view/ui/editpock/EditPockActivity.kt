@@ -180,7 +180,7 @@ class EditPockActivity : BaseActivity() {
 
         viewModel.oldImages.observe(
             this,
-            Observer { value: MutableList<String> ->
+            Observer { value: List<String> ->
                 setVisibilityButtons()
             })
     }
@@ -254,28 +254,38 @@ class EditPockActivity : BaseActivity() {
     private fun setVisibilityButtons() {
         when (viewModel.nImg.value) {
             1 -> {
-                binding.image1button.visibility = View.GONE
+                binding.image1button.visibility = View.VISIBLE
                 binding.image1.visibility = View.VISIBLE
             }
             2 -> {
-                binding.image2button.visibility = View.GONE
+                binding.image2button.visibility = View.VISIBLE
                 binding.image2.visibility = View.VISIBLE
             }
             3 -> {
-                binding.image3button.visibility = View.GONE
+                binding.image3button.visibility = View.VISIBLE
                 binding.image3.visibility = View.VISIBLE
             }
             4 -> {
-                binding.image4button.visibility = View.GONE
+                binding.image4button.visibility = View.VISIBLE
                 binding.image4.visibility = View.VISIBLE
             }
         }
-        if (viewModel.nImg.value!! <= viewModel.availableImgSpace) {
+        if (viewModel.nImg.value!! < viewModel.availableImgSpace) {
             when (viewModel.nImg.value) {
                 0 -> binding.image1button.visibility = View.VISIBLE
-                1 -> binding.image2button.visibility = View.VISIBLE
-                2 -> binding.image3button.visibility = View.VISIBLE
-                3 -> binding.image4button.visibility = View.VISIBLE
+                1 -> {
+                    binding.image2button.visibility = View.VISIBLE
+                    binding.image1.visibility = View.VISIBLE
+                    binding.image2.visibility = View.VISIBLE
+                }
+                2 -> {
+                    binding.image3button.visibility = View.VISIBLE
+                    binding.image3.visibility = View.VISIBLE
+                }
+                3 -> {
+                    binding.image4button.visibility = View.VISIBLE
+                    binding.image4.visibility = View.VISIBLE
+                }
             }
         }
         /*binding.image2button.visibility = View.VISIBLE

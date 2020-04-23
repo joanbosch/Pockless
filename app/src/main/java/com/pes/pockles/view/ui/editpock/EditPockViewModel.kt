@@ -24,11 +24,9 @@ class EditPockViewModel @Inject constructor(
     val chatEnabled = MutableLiveData<Boolean>()
     private val _pockToUpdate = MutableLiveData<EditedPock?>()
     val pockContent = MutableLiveData<String>()
-    val pockCategory = MutableLiveData<String>()
+    private val _pockCategory = MutableLiveData<String>()
     private var pockId: String = ""
     private var hasImages = false
-    private var allOldImages: List<String> = listOf()
-    private val _oldImages = MutableLiveData<MutableList<String>>()
 
     private val _image1 = MutableLiveData<Bitmap>()
     private val _image2 = MutableLiveData<Bitmap>()
@@ -52,7 +50,9 @@ class EditPockViewModel @Inject constructor(
             else 4
         }
 
-    val oldImages: MutableLiveData<MutableList<String>>
+    private var allOldImages: List<String> = listOf()
+    private val _oldImages = MutableLiveData<List<String>>()
+    val oldImages: LiveData<List<String>>
         get() = _oldImages
 
     private val _errorSavingImages = MutableLiveData<Boolean>()
@@ -79,9 +79,9 @@ class EditPockViewModel @Inject constructor(
     }
 
     fun updatePock() {
-        val category: String = if (pockCategory.value == null)
+        val category: String = if (_pockCategory.value == null)
             "General"
-        else pockCategory.value.toString()
+        else _pockCategory.value.toString()
 
         if (pockContent.value == null)
             _errorHandler.value = true
@@ -145,14 +145,17 @@ class EditPockViewModel @Inject constructor(
     }
 
     fun deleteOldImage (imgNumber: Int) {
-        _oldImages.value!!.remove(allOldImages[imgNumber-1])
+        //Deleting image from list is done in this way to force a change on oldImages and execute the code associated to the observer
+        val temp: MutableList<String> = _oldImages.value!!.toMutableList()
+        temp.remove(allOldImages[imgNumber-1])
+        _oldImages.value = temp.toList()
     }
 
     fun fillFieldsIfEmpty(id: String, editableContent: EditedPock) {
         if (pockId == "") {
             pockId = id
             pockContent.value = editableContent.message
-            pockCategory.value = editableContent.category
+            _pockCategory.value = editableContent.category
             chatEnabled.value = editableContent.chatAccess
             if (editableContent.media != null) {
                 allOldImages = editableContent.media
@@ -162,10 +165,10 @@ class EditPockViewModel @Inject constructor(
     }
 
     fun setCategory(cat: String) {
-        pockCategory.value = cat
+        _pockCategory.value = cat
     }
 
     fun getCategory(): String {
-        return pockCategory.value!!
+        return _pockCategory.value!!
     }
 }
