@@ -25,17 +25,18 @@ class BottomSheetsPocks : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val inflaters = context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        binding = PockListBinding.inflate(inflaters, container, true)
+        // val inflaters = context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        binding = PockListBinding.inflate(inflater, container, true)
         binding.lifecycleOwner = this
-        return inflater.inflate(R.layout.pock_list, container, false)
+        // return inflater.inflate(R.layout.pock_list, container, false)
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         val recyclerView: RecyclerView? = view?.findViewById(R.id.nearPockList)
-        if (recyclerView != null) {
+        recyclerView?.let {
             recyclerView.layoutManager = LinearLayoutManager(activity)
             recyclerView.adapter = FastAdapter.with(itemAdapter)
         }

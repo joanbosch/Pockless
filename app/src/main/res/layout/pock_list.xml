@@ -16,7 +16,7 @@
         android:padding="50dp"
         tools:context=".view.ui.map.BottomSheetsPocks">
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             style="@style/TextAppearance.AppCompat.Headline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

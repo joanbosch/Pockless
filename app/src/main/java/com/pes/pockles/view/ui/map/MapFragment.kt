@@ -82,7 +82,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         binding.outlinedButton.setOnClickListener {
             showFilterDialog()
         }
-        pockList = mutableListOf<Pock>()
+        pockList = mutableListOf()
         return binding.root
     }
 
@@ -228,9 +228,10 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
      *https://developers.google.com/maps/documentation/android-sdk/marker?hl=es*/
     private fun handleSuccess(list: Resource.Success<List<Pock>>) {
         googleMap!!.clear()
+        pockList.clear()
         list.data.let {
+            pockList.addAll(it)
             it.forEach { pock ->
-                pockList.add(pock)
                 val latLng = LatLng(
                     pock.location.latitude,
                     pock.location.longitude
@@ -266,7 +267,6 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
     //BOTTOM SHEET
     private fun createBottomSheet() {
         binding.showSheetBtn.setOnClickListener {
-            // bottomSheetFragment = BottomSheetsPocks()
             bottomSheetFragment.show(
                 requireActivity().supportFragmentManager,
                 "BottomSheetsPocks"
