@@ -2,6 +2,8 @@ package com.pes.pockles.view.ui.map
 
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.os.Bundle
 import android.os.Looper
 import android.util.DisplayMetrics
@@ -10,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -30,11 +33,13 @@ import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.FragmentMapBinding
 import com.pes.pockles.model.Pock
 import com.pes.pockles.util.LocationUtils.Companion.getLastLocation
+import com.pes.pockles.util.dp2px
 import com.pes.pockles.view.ui.base.BaseFragment
 import com.pes.pockles.view.ui.viewpock.ViewPockActivity
 import timber.log.Timber
 import kotlin.math.cos
 import kotlin.math.ln
+import kotlin.math.roundToInt
 
 
 /**
@@ -65,6 +70,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
 
     // Add Listener to change this variable when zoom is in x number
     private var heatMapEnabled: Boolean = true
+    private lateinit var images: Map<String, BitmapDescriptor>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -119,7 +125,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
             setupMap();
 
             startLocationUpdates()
-
+            loadImages()
             viewModel.getPocks().observe(
                 this,
                 Observer { value: Resource<List<Pock>>? ->
@@ -168,10 +174,10 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         }
 
         googleMap!!.setOnCameraIdleListener {
-            if (heatMapEnabled != (googleMap!!.cameraPosition.zoom < HM_ZOOM)){
+            if (heatMapEnabled != (googleMap!!.cameraPosition.zoom < HM_ZOOM)) {
                 heatMapEnabled = (googleMap!!.cameraPosition.zoom < HM_ZOOM)
                 // If HeatMap Enabled (true) and zoomIN -> Put HeatMap
-                if(heatMapEnabled){
+                if (heatMapEnabled) {
                     viewModel.getAllLatLngPocks()
                     googleMap!!.uiSettings.isScrollGesturesEnabled = true
                 }
@@ -225,7 +231,6 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
     }
 
 
-
     /*Link to know how to customize markers
      *https://developers.google.com/maps/documentation/android-sdk/marker?hl=es*/
     private fun handleSuccess(list: Resource.Success<List<Pock>>) {
@@ -239,16 +244,29 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
                 if (!heatMapEnabled) {
                     val marker: Marker = googleMap!!.addMarker(MarkerOptions().position(latLng))
                     marker.tag = pock.id
+                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_mail))
+
                 }
             }
 
         }
     }
 
+    private fun bitmapDescriptorFromVector(vectorResId: Int): BitmapDescriptor? {
+        val height = dp2px(context!!, 100f).roundToInt()
+        return ContextCompat.getDrawable(context!!, vectorResId)?.run {
+            setBounds(0, 0, height, height)
+            val bitmap =
+                Bitmap.createBitmap(height, height, Bitmap.Config.ARGB_8888)
+            draw(Canvas(bitmap))
+            BitmapDescriptorFactory.fromBitmap(bitmap)
+        }
+    }
+
     private fun handleSuccessHeatMap(pocksLocations: Resource.Success<List<LatLng>>) {
         googleMap!!.clear()
         pocksLocations.data.let {
-            if(heatMapEnabled){
+            if (heatMapEnabled) {
                 mProvider = HeatmapTileProvider.Builder().data(it).build()
                 mProvider!!.setRadius(30)
                 googleMap!!.addTileOverlay(TileOverlayOptions().tileProvider(mProvider))
@@ -264,4 +282,11 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         val toast = Toast.makeText(context, text, duration)
         toast.show()
     }
+
+    private fun loadImages() {
+        val iconoTurismo = BitmapDescriptorFactory.fromResource(R.raw.icono_turismo)
+        val bit = bitmapDescriptorFromVector(R.drawable.ic_achievement)
+        images = mapOf("Turismo" to iconoTurismo, "Varios" to bit) as Map<String, BitmapDescriptor>
+    }
 }
+
