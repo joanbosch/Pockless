@@ -24,6 +24,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.maps.android.heatmaps.HeatmapTileProvider
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.FragmentMapBinding
@@ -51,13 +52,19 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         const val FASTEST_INTERVAL: Long = 10 * 1000 //this is when it need higher precision
         const val RADIUS = 500 //In m
         const val MIN_DISPLACEMENT = 10f //In m
+        const val HM_ZOOM = 15 // Max Zoom Lever for HeatMap
     }
+
 
     private val viewModel: MapViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(MapViewModel::class.java)
     }
 
     private var googleMap: GoogleMap? = null
+    private var mProvider: HeatmapTileProvider? = null
+
+    // Add Listener to change this variable when zoom is in x number
+    private var heatMapEnabled: Boolean = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -123,8 +130,20 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
                         }
                     }
                 })
+
+            viewModel.getAllLatLngPocks().observe(
+                this,
+                Observer { value: Resource<List<LatLng>>? ->
+                    value?.let {
+                        when (value) {
+                            is Resource.Success<*> -> handleSuccessHeatMap(value as Resource.Success<List<LatLng>>)
+                            is Resource.Error -> handleError()
+                        }
+                    }
+                })
         }
     }
+
 
     private fun setupMap() {
         googleMap!!.isMyLocationEnabled = true
@@ -146,6 +165,22 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
             intent.putExtra("markerId", marker.tag as String)
             startActivity(intent)
             true
+        }
+
+        googleMap!!.setOnCameraIdleListener {
+            if (heatMapEnabled != (googleMap!!.cameraPosition.zoom < HM_ZOOM)){
+                heatMapEnabled = (googleMap!!.cameraPosition.zoom < HM_ZOOM)
+                // If HeatMap Enabled (true) and zoomIN -> Put HeatMap
+                if(heatMapEnabled){
+                    viewModel.getAllLatLngPocks()
+                    googleMap!!.uiSettings.isScrollGesturesEnabled = true
+                }
+                //If HeatMap Disabled (false) and ZoomOut -> Put Markers
+                else {
+                    viewModel.getPocks()
+                    googleMap!!.uiSettings.isScrollGesturesEnabled = false
+                }
+            }
         }
     }
 
@@ -190,48 +225,35 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
     }
 
 
+
     /*Link to know how to customize markers
      *https://developers.google.com/maps/documentation/android-sdk/marker?hl=es*/
     private fun handleSuccess(list: Resource.Success<List<Pock>>) {
-        var cat: String
         googleMap!!.clear()
         list.data.let {
             it.forEach { pock ->
-                cat = pock.category
                 val latLng = LatLng(
                     pock.location.latitude,
                     pock.location.longitude
-
                 )
-                val marker: Marker = googleMap!!.addMarker(
-                    MarkerOptions().position(latLng)
-                )
-                if (cat == "+18") {
-                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_18))
-                } else if (cat == "Anuncios") {
-                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_anunci))
-                } else if (cat == "Compra y Venta") {
-                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_mail))
-                } else if (cat == "Deportes") {
-                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_deportes))
-                } else if (cat == "Entretenimiento") {
-                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_entre))
-                } else if (cat == "Mascotas") {
-                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_mail))
-                } else if (cat == "Salud") {
-                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_salud))
-                } else if (cat == "Tecnología") {
-                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_tecnologia))
-                } else if (cat == "Turismo") {
-                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_turismo))
-                } else if (cat == "Varios") {
-                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_mail))
-                } else marker.setIcon(BitmapDescriptorFactory.fromResource(R.raw.icono_mail))
-
-                marker.tag = pock.id
+                if (!heatMapEnabled) {
+                    val marker: Marker = googleMap!!.addMarker(MarkerOptions().position(latLng))
+                    marker.tag = pock.id
+                }
             }
 
+        }
+    }
 
+    private fun handleSuccessHeatMap(pocksLocations: Resource.Success<List<LatLng>>) {
+        googleMap!!.clear()
+        pocksLocations.data.let {
+            if(heatMapEnabled){
+                mProvider = HeatmapTileProvider.Builder().data(it).build()
+                mProvider!!.setRadius(30)
+                googleMap!!.addTileOverlay(TileOverlayOptions().tileProvider(mProvider))
+
+            }
         }
     }
 

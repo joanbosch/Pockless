@@ -38,7 +38,6 @@
                 android:layout_height="56dp"
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@null"
-                android:onClick="@{() -> pockViewModel.onShare()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/username"
@@ -70,7 +69,6 @@
                 android:layout_height="56dp"
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@null"
-                android:onClick="@{() -> pockViewModel.onBack()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/username"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -119,6 +117,58 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     tools:text="Pock message" />
 
+                <ImageView
+                    android:id="@+id/pockImage0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="4dp"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@null"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_image" />
+
+                <ImageView
+                    android:id="@+id/pockImage1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="4dp"
+                    android:contentDescription="@null"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_image" />
+
+                <ImageView
+                    android:id="@+id/pockImage2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="4dp"
+                    android:contentDescription="@null"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_image" />
+
+                <ImageView
+                    android:id="@+id/pockImage3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="4dp"
+                    android:contentDescription="@null"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_image" />
+
             </LinearLayout>
         </ScrollView>
 
@@ -136,8 +186,7 @@
                 android:layout_height="56dp"
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@null"
-                android:onClick="@{() -> pockViewModel.onReport()}"
-                android:tint="@color/md_black_1000"
+                android:tint="@color/secondaryButtons"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/chat"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -153,8 +202,7 @@
                 android:layout_height="56dp"
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@null"
-                android:onClick="@{() -> pockViewModel.onChat()}"
-                android:tint="@color/md_black_1000"
+                android:tint="@color/secondaryButtons"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"

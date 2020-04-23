@@ -1,5 +1,6 @@
 package com.pes.pockles.data.api
 
+import com.google.android.gms.maps.model.LatLng
 import com.pes.pockles.model.CreateUser
 import com.pes.pockles.model.NewPock
 import com.pes.pockles.model.Pock
@@ -26,7 +27,7 @@ interface ApiService {
     - ReturnType    -> The type of the object the API returns, it can be a List (List<ReturnType)
 
      */
-    @GET("pock/history")
+    @GET("users/history")
     fun pocksHistory(): Single<List<Pock>>
 
     @POST("pock")
@@ -49,4 +50,7 @@ interface ApiService {
 
     @POST("user")
     fun createUser(@Body createUser: CreateUser): Single<User>
+
+    @GET("pock/all/locations")
+    fun pocksLocation(): Single<List<LatLng>>
 }

@@ -20,7 +20,9 @@ class TokenAuthenticator @Inject constructor(
     override fun authenticate(route: Route?, response: Response): Request? {
         Timber.d("Intercepted authenticate call with code: %d", response.code())
         if (response.code() == 401) {
-            tokenManager.refreshToken()
+            Timber.d("Start refresh token with token ${tokenManager.token}")
+            tokenManager.refreshTokenSync().await()
+            Timber.d("Lock released with token ${tokenManager.token}")
         }
         return response
             .request()
