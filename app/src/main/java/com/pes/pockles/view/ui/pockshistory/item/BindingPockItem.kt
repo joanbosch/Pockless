@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
 import com.pes.pockles.R
 import com.pes.pockles.databinding.PockHistoryItemBinding
+import com.pes.pockles.model.EditedPock
 import com.pes.pockles.model.Pock
 import com.pes.pockles.view.ui.editpock.EditPockActivity
+import java.io.Serializable
 
 class BindingPockItem : AbstractBindingItem<PockHistoryItemBinding>() {
     var pock: Pock? = null
@@ -22,9 +24,8 @@ class BindingPockItem : AbstractBindingItem<PockHistoryItemBinding>() {
         }
         binding.editButton.setOnClickListener {
             val intent = Intent(it.context, EditPockActivity::class.java).apply {
-                putExtra("pock_message", pock?.message)
-                putExtra("pock_category", pock?.category)
-                putExtra("pock_chatAccess", pock?.chatAccess)
+                putExtra("pockId", pock?.id)
+                putExtra("editableContent", EditedPock(pock!!.message, pock!!.category, pock!!.chatAccess, pock?.media) as Serializable)
             }
             it.context.startActivity(intent)
         }

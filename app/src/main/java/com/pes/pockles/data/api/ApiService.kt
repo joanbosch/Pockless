@@ -28,7 +28,7 @@ interface ApiService {
     - ReturnType    -> The type of the object the API returns, it can be a List (List<ReturnType)
 
      */
-    @GET("users/history")
+    @GET("user/history")
     fun pocksHistory(): Single<List<Pock>>
 
     @POST("pock")
@@ -43,7 +43,7 @@ interface ApiService {
     @GET("pock/{id}")
     fun viewPock(@Path("id") id: String): Single<Pock>
 
-    @PUT("pock/{id}")
+    @PATCH("pock/{id}")
     fun editPock(@Path("id") id: String, @Body pock: EditedPock): Single<Pock>
 
     @GET("user")
