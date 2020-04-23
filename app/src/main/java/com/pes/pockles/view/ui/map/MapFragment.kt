@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.assent.Permission
 import com.afollestad.assent.runWithPermissions
 import com.google.android.gms.location.LocationCallback
@@ -24,17 +25,23 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.maps.android.heatmaps.HeatmapTileProvider
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.FragmentMapBinding
 import com.pes.pockles.model.Pock
 import com.pes.pockles.util.LocationUtils.Companion.getLastLocation
+import com.pes.pockles.util.dp2px
 import com.pes.pockles.view.ui.base.BaseFragment
+import com.pes.pockles.view.ui.pockshistory.item.BindingPockItem
 import com.pes.pockles.view.ui.viewpock.ViewPockActivity
 import timber.log.Timber
 import kotlin.math.cos
 import kotlin.math.ln
+import kotlin.math.roundToInt
 
 
 /**
@@ -63,8 +70,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
 
     // Add Listener to change this variable when zoom is in x number
     private var heatMapEnabled: Boolean = true
-    private lateinit var pockList: MutableList<Pock>
-    private lateinit var bottomSheetFragment: BottomSheetsPocks
+    private val pockList = mutableListOf<Pock>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -82,7 +88,6 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         binding.outlinedButton.setOnClickListener {
             showFilterDialog()
         }
-        pockList = mutableListOf()
         return binding.root
     }
 
@@ -119,7 +124,6 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
             setupMap();
 
             startLocationUpdates()
-            bottomSheetFragment = BottomSheetsPocks()
             viewModel.getPocks().observe(
                 this,
                 Observer { value: Resource<List<Pock>>? ->
@@ -228,9 +232,9 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
      *https://developers.google.com/maps/documentation/android-sdk/marker?hl=es*/
     private fun handleSuccess(list: Resource.Success<List<Pock>>) {
         googleMap!!.clear()
-        pockList.clear()
+       // pockList.clear()
         list.data.let {
-            pockList.addAll(it)
+          //  pockList.addAll(it)
             it.forEach { pock ->
                 val latLng = LatLng(
                     pock.location.latitude,
@@ -241,8 +245,16 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
                     marker.tag = pock.id
                 }
             }
+
+            val pockListBinding: List<BindingPockItem> = it.map { pock ->
+                val binding =
+                    BindingPockItem()
+                binding.pock = pock
+                binding
+            }
+            //Fill and set the items to the ItemAdapter
+            itemAdapter.setNewList(pockListBinding)
         }
-        sendData(bottomSheetFragment)
     }
 
     private fun handleSuccessHeatMap(pocksLocations: Resource.Success<List<LatLng>>) {
@@ -264,21 +276,28 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         toast.show()
     }
 
+    private val itemAdapter = ItemAdapter<BindingPockItem>()
+
     //BOTTOM SHEET
     private fun createBottomSheet() {
-        binding.showSheetBtn.setOnClickListener {
-            bottomSheetFragment.show(
-                requireActivity().supportFragmentManager,
-                "BottomSheetsPocks"
-            )
+        val behaviour = BottomSheetBehavior.from(binding.bottomSheet)
+        behaviour.peekHeight = dp2px(context!!, 80f).roundToInt()
+        val fastAdapter = FastAdapter.with(itemAdapter)
+        binding.nearPockList.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = fastAdapter
+        }
+
+        fastAdapter.onClickListener = { _, _, item, position ->
+            val intent = Intent(activity, ViewPockActivity::class.java)
+            intent.putExtra("markerId", item.pock?.id as String)
+            startActivity(intent)
+            true
         }
     }
-
-    private fun sendData(bs: BottomSheetsPocks) {
-        bs.setData(pockList)
-
-    }
 }
+
+
 
 
 

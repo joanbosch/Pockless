@@ -34,18 +34,35 @@
                 app:fabSize="mini"
                 app:srcCompat="@drawable/ic_filter_list_black_24dp"
                 app:useCompatPadding="true" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/showSheetBtn"
-                style="@style/Base.Widget.AppCompat.Button.Colored"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="300dp"
-                android:layout_marginTop="490dp"
-                app:fabSize="mini"
-                app:backgroundTint="@color/primary"
-                app:srcCompat="@drawable/ic_more_vert_black_24dp" />
         </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/bottomSheet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_launcher_background"
+            android:backgroundTint="@color/profile_light_background"
+            android:orientation="vertical"
+            app:layout_behavior="@string/bottom_sheet_behavior"
+            tools:context=".view.ui.map.BottomSheetsPocks">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_bold"
+                android:padding="16dp"
+                android:text="@string/nearby_pocks"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/md_black_1000" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/nearPockList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white" />
+
+        </LinearLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
