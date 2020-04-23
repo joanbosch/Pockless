@@ -30,4 +30,5 @@ class MainActivity : BaseActivity() {
             startActivity(Intent(this, NewPockActivity::class.java))
         }
     }
+
 }
