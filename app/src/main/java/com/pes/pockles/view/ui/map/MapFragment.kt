@@ -240,15 +240,19 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
      *https://developers.google.com/maps/documentation/android-sdk/marker?hl=es*/
     private fun handleSuccess(list: Resource.Success<List<Pock>>) {
         googleMap!!.clear()
+        var cat:String
         list.data.let {
             it.forEach { pock ->
+
                 val latLng = LatLng(
                     pock.location.latitude,
                     pock.location.longitude
                 )
+                cat = pock.category
                 if (!heatMapEnabled) {
                     val marker: Marker = googleMap!!.addMarker(MarkerOptions().position(latLng))
                     marker.tag = pock.id
+                    marker.setIcon(images[cat])
                 }
             }
 
@@ -303,10 +307,21 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
 
     private fun loadImages() {
         val iconoTurismo = BitmapDescriptorFactory.fromResource(R.raw.icono_turismo)
-        val bit = bitmapDescriptorFromVector(R.drawable.ic_achievement)
-        images = mapOf("Turismo" to iconoTurismo, "Varios" to bit) as Map<String, BitmapDescriptor>
+        val iconoDeportes = BitmapDescriptorFactory.fromResource(R.raw.icono_deportes)
+        val iconoEntre = BitmapDescriptorFactory.fromResource(R.raw.icono_entre)
+        val iconoVarios = BitmapDescriptorFactory.fromResource(R.raw.icono_mail)
+        val iconoTec = BitmapDescriptorFactory.fromResource(R.raw.icono_tecnologia)
+        val icono18 = BitmapDescriptorFactory.fromResource(R.raw.icono_18)
+        val iconoSalud = BitmapDescriptorFactory.fromResource(R.raw.icono_salud)
+        val iconoAnuncio = BitmapDescriptorFactory.fromResource(R.raw.icono_anunci)
+        val iconoGeneral = BitmapDescriptorFactory.fromResource(R.raw.icono_mail)
+        val iconoMascotas = BitmapDescriptorFactory.fromResource(R.raw.icono_mail)
+        images = mapOf("Turismo" to iconoTurismo, "Varios" to iconoVarios, "Salud" to iconoSalud,
+            "Entretenimiento" to iconoEntre, "Tecnologia" to iconoTec, "+18" to icono18, "Compra y Venta" to iconoVarios,
+        "Anuncios" to iconoAnuncio, "Deportes" to iconoDeportes, "General" to iconoGeneral, "Mascotas" to iconoMascotas) as Map<String, BitmapDescriptor>
     }
 
+    //useless fun for now, it will become useful when the .svg are delivered
     private fun bitmapDescriptorFromVector(vectorResId: Int): BitmapDescriptor? {
         val height = dp2px(context!!, 100f).roundToInt()
         return ContextCompat.getDrawable(context!!, vectorResId)?.run {
