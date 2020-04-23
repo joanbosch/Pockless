@@ -2,9 +2,9 @@ package com.pes.pockles.data
 
 import android.content.Context
 import android.preference.PreferenceManager
-import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.internal.InternalTokenResult
+import java.util.concurrent.CountDownLatch
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -37,6 +37,20 @@ class TokenManager @Inject constructor(val context: Context) {
         user?.let {
             user.getIdToken(true)
         }
+    }
+
+    fun refreshTokenSync(): CountDownLatch {
+        val user = FirebaseAuth.getInstance().currentUser
+        val lock = CountDownLatch(1)
+        user?.getIdToken(true)?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                task.result?.token?.let { token ->
+                    this.saveToken(token)
+                }
+            }
+            lock.countDown()
+        }
+        return lock
     }
 
     private fun loadToken() {
