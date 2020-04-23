@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.pes.pockles.di.util.ViewModelFactory
 import com.pes.pockles.di.util.ViewModelKey
+import com.pes.pockles.view.ui.editpock.EditPockViewModel
 import com.pes.pockles.view.ui.login.LaunchActivityViewModel
 import com.pes.pockles.view.ui.login.register.RegisterActivityViewModel
 import com.pes.pockles.view.ui.login.register.RegisterIconViewModel
@@ -46,6 +47,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ViewPockViewModel::class)
     abstract fun viewPockViewModel(viewModel: ViewPockViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(EditPockViewModel::class)
+    abstract fun editPockViewModel(viewModel: EditPockViewModel): ViewModel
 
     @Binds
     @IntoMap

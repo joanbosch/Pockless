@@ -5,6 +5,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.pes.pockles.data.Resource
 import com.pes.pockles.data.api.ApiService
 import com.pes.pockles.data.database.AppDatabase
+import com.pes.pockles.model.EditedPock
 import com.pes.pockles.model.Location
 import com.pes.pockles.model.NewPock
 import com.pes.pockles.model.Pock
@@ -37,5 +38,9 @@ class PockRepository @Inject constructor(
 
     fun getPocksLocation(): LiveData<Resource<List<LatLng>>> {
         return callApi(Function { apiService -> apiService.pocksLocation() })
+    }
+
+    fun editPock(id: String, pock: EditedPock): LiveData<Resource<Pock>> {
+        return callApi(Function { apiService -> apiService.editPock(id, pock) })
     }
 }
