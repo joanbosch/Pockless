@@ -2,6 +2,8 @@ package com.pes.pockles.view.ui.map
 
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.os.Bundle
 import android.os.Looper
 import android.util.DisplayMetrics
@@ -10,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -62,14 +65,17 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         const val HM_ZOOM = 15 // Max Zoom Lever for HeatMap
     }
 
+
     private val viewModel: MapViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(MapViewModel::class.java)
     }
+
     private var googleMap: GoogleMap? = null
     private var mProvider: HeatmapTileProvider? = null
 
     // Add Listener to change this variable when zoom is in x number
     private var heatMapEnabled: Boolean = true
+    private lateinit var images: Map<String, BitmapDescriptor>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -87,6 +93,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         binding.outlinedButton.setOnClickListener {
             showFilterDialog()
         }
+
         return binding.root
     }
 
@@ -123,6 +130,8 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
             setupMap();
 
             startLocationUpdates()
+            loadImages()
+
             viewModel.getPocks().observe(
                 this,
                 Observer { value: Resource<List<Pock>>? ->
@@ -240,6 +249,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
                 if (!heatMapEnabled) {
                     val marker: Marker = googleMap!!.addMarker(MarkerOptions().position(latLng))
                     marker.tag = pock.id
+                    marker.setIcon(images[pock.category])
                 }
             }
 
@@ -268,7 +278,6 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
     private fun handleError() {
         val text = getString(R.string.failed_loc)
         val duration = Toast.LENGTH_SHORT
-
         val toast = Toast.makeText(context, text, duration)
         toast.show()
     }
@@ -278,7 +287,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
     //BOTTOM SHEET
     private fun createBottomSheet() {
         val behaviour = BottomSheetBehavior.from(binding.bottomSheet)
-        behaviour.peekHeight = dp2px(context!!, 80f).roundToInt()
+        behaviour.peekHeight = dp2px(context!!, 120f).roundToInt()
         val fastAdapter = FastAdapter.with(itemAdapter)
         binding.nearPockList.apply {
             layoutManager = LinearLayoutManager(activity)
@@ -292,9 +301,42 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
             true
         }
     }
+
+    private fun loadImages() {
+        val iconTuri = BitmapDescriptorFactory.fromResource(R.raw.icono_turismo)
+        val iconDep = BitmapDescriptorFactory.fromResource(R.raw.icono_deportes)
+        val iconEntre = BitmapDescriptorFactory.fromResource(R.raw.icono_entre)
+        val iconVar = BitmapDescriptorFactory.fromResource(R.raw.icono_mail)
+        val iconTec = BitmapDescriptorFactory.fromResource(R.raw.icono_tecnologia)
+        val icon18 = BitmapDescriptorFactory.fromResource(R.raw.icono_18)
+        val iconSal = BitmapDescriptorFactory.fromResource(R.raw.icono_salud)
+        val iconAn = BitmapDescriptorFactory.fromResource(R.raw.icono_anunci)
+        val iconGen = BitmapDescriptorFactory.fromResource(R.raw.icono_mail)
+        val iconMas = BitmapDescriptorFactory.fromResource(R.raw.icono_mail)
+        images = mapOf(
+            "Turismo" to iconTuri,
+            "Varios" to iconVar,
+            "Salud" to iconSal,
+            "Entretenimiento" to iconEntre,
+            "Tecnologia" to iconTec,
+            "+18" to icon18,
+            "Compra y Venta" to iconVar,
+            "Anuncios" to iconAn,
+            "Deportes" to iconDep,
+            "General" to iconGen,
+            "Mascotas" to iconMas
+        ) as Map<String, BitmapDescriptor>
+    }
+
+    //useless fun for now, it will become useful when the .svg are delivered
+    private fun bitmapDescriptorFromVector(vectorResId: Int): BitmapDescriptor? {
+        val height = dp2px(context!!, 100f).roundToInt()
+        return ContextCompat.getDrawable(context!!, vectorResId)?.run {
+            setBounds(0, 0, height, height)
+            val bitmap =
+                Bitmap.createBitmap(height, height, Bitmap.Config.ARGB_8888)
+            draw(Canvas(bitmap))
+            BitmapDescriptorFactory.fromBitmap(bitmap)
+        }
+    }
 }
-
-
-
-
-
