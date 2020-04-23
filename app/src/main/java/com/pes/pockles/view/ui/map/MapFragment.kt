@@ -240,19 +240,16 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
      *https://developers.google.com/maps/documentation/android-sdk/marker?hl=es*/
     private fun handleSuccess(list: Resource.Success<List<Pock>>) {
         googleMap!!.clear()
-        var cat:String
         list.data.let {
             it.forEach { pock ->
-
                 val latLng = LatLng(
                     pock.location.latitude,
                     pock.location.longitude
                 )
-                cat = pock.category
                 if (!heatMapEnabled) {
                     val marker: Marker = googleMap!!.addMarker(MarkerOptions().position(latLng))
                     marker.tag = pock.id
-                    marker.setIcon(images[cat])
+                    marker.setIcon(images[pock.category])
                 }
             }
 
@@ -266,6 +263,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
             itemAdapter.setNewList(pockListBinding)
         }
     }
+
     private fun handleSuccessHeatMap(pocksLocations: Resource.Success<List<LatLng>>) {
         googleMap!!.clear()
         pocksLocations.data.let {
@@ -280,7 +278,6 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
     private fun handleError() {
         val text = getString(R.string.failed_loc)
         val duration = Toast.LENGTH_SHORT
-
         val toast = Toast.makeText(context, text, duration)
         toast.show()
     }
@@ -306,19 +303,29 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
     }
 
     private fun loadImages() {
-        val iconoTurismo = BitmapDescriptorFactory.fromResource(R.raw.icono_turismo)
-        val iconoDeportes = BitmapDescriptorFactory.fromResource(R.raw.icono_deportes)
-        val iconoEntre = BitmapDescriptorFactory.fromResource(R.raw.icono_entre)
-        val iconoVarios = BitmapDescriptorFactory.fromResource(R.raw.icono_mail)
-        val iconoTec = BitmapDescriptorFactory.fromResource(R.raw.icono_tecnologia)
-        val icono18 = BitmapDescriptorFactory.fromResource(R.raw.icono_18)
-        val iconoSalud = BitmapDescriptorFactory.fromResource(R.raw.icono_salud)
-        val iconoAnuncio = BitmapDescriptorFactory.fromResource(R.raw.icono_anunci)
-        val iconoGeneral = BitmapDescriptorFactory.fromResource(R.raw.icono_mail)
-        val iconoMascotas = BitmapDescriptorFactory.fromResource(R.raw.icono_mail)
-        images = mapOf("Turismo" to iconoTurismo, "Varios" to iconoVarios, "Salud" to iconoSalud,
-            "Entretenimiento" to iconoEntre, "Tecnologia" to iconoTec, "+18" to icono18, "Compra y Venta" to iconoVarios,
-        "Anuncios" to iconoAnuncio, "Deportes" to iconoDeportes, "General" to iconoGeneral, "Mascotas" to iconoMascotas) as Map<String, BitmapDescriptor>
+        val iconTuri = BitmapDescriptorFactory.fromResource(R.raw.icono_turismo)
+        val iconDep = BitmapDescriptorFactory.fromResource(R.raw.icono_deportes)
+        val iconEntre = BitmapDescriptorFactory.fromResource(R.raw.icono_entre)
+        val iconVar = BitmapDescriptorFactory.fromResource(R.raw.icono_mail)
+        val iconTec = BitmapDescriptorFactory.fromResource(R.raw.icono_tecnologia)
+        val icon18 = BitmapDescriptorFactory.fromResource(R.raw.icono_18)
+        val iconSal = BitmapDescriptorFactory.fromResource(R.raw.icono_salud)
+        val iconAn = BitmapDescriptorFactory.fromResource(R.raw.icono_anunci)
+        val iconGen = BitmapDescriptorFactory.fromResource(R.raw.icono_mail)
+        val iconMas = BitmapDescriptorFactory.fromResource(R.raw.icono_mail)
+        images = mapOf(
+            "Turismo" to iconTuri,
+            "Varios" to iconVar,
+            "Salud" to iconSal,
+            "Entretenimiento" to iconEntre,
+            "Tecnologia" to iconTec,
+            "+18" to icon18,
+            "Compra y Venta" to iconVar,
+            "Anuncios" to iconAn,
+            "Deportes" to iconDep,
+            "General" to iconGen,
+            "Mascotas" to iconMas
+        ) as Map<String, BitmapDescriptor>
     }
 
     //useless fun for now, it will become useful when the .svg are delivered
