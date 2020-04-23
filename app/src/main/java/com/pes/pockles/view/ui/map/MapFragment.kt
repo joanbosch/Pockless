@@ -70,7 +70,6 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
 
     // Add Listener to change this variable when zoom is in x number
     private var heatMapEnabled: Boolean = true
-    private val pockList = mutableListOf<Pock>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -232,9 +231,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
      *https://developers.google.com/maps/documentation/android-sdk/marker?hl=es*/
     private fun handleSuccess(list: Resource.Success<List<Pock>>) {
         googleMap!!.clear()
-       // pockList.clear()
         list.data.let {
-          //  pockList.addAll(it)
             it.forEach { pock ->
                 val latLng = LatLng(
                     pock.location.latitude,

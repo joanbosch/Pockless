@@ -40,7 +40,7 @@
             android:id="@+id/bottomSheet"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/ic_launcher_background"
+            android:background="@drawable/view_pock_header_bg"
             android:backgroundTint="@color/profile_light_background"
             android:orientation="vertical"
             app:layout_behavior="@string/bottom_sheet_behavior"
