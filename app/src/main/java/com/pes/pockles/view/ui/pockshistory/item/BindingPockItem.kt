@@ -8,7 +8,7 @@ import com.pes.pockles.databinding.PockHistoryItemBinding
 import com.pes.pockles.model.Pock
 
 class BindingPockItem : AbstractBindingItem<PockHistoryItemBinding>() {
-    var pock: Pock? = null
+    public var pock: Pock? = null
 
     override val type: Int
         get() = R.id.card

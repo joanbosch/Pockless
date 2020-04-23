@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.assent.Permission
 import com.afollestad.assent.runWithPermissions
 import com.google.android.gms.location.LocationCallback
@@ -24,17 +25,23 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.maps.android.heatmaps.HeatmapTileProvider
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.FragmentMapBinding
 import com.pes.pockles.model.Pock
 import com.pes.pockles.util.LocationUtils.Companion.getLastLocation
+import com.pes.pockles.util.dp2px
 import com.pes.pockles.view.ui.base.BaseFragment
+import com.pes.pockles.view.ui.pockshistory.item.BindingPockItem
 import com.pes.pockles.view.ui.viewpock.ViewPockActivity
 import timber.log.Timber
 import kotlin.math.cos
 import kotlin.math.ln
+import kotlin.math.roundToInt
 
 
 /**
@@ -55,11 +62,9 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         const val HM_ZOOM = 15 // Max Zoom Lever for HeatMap
     }
 
-
     private val viewModel: MapViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(MapViewModel::class.java)
     }
-
     private var googleMap: GoogleMap? = null
     private var mProvider: HeatmapTileProvider? = null
 
@@ -82,7 +87,6 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         binding.outlinedButton.setOnClickListener {
             showFilterDialog()
         }
-
         return binding.root
     }
 
@@ -119,7 +123,6 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
             setupMap();
 
             startLocationUpdates()
-
             viewModel.getPocks().observe(
                 this,
                 Observer { value: Resource<List<Pock>>? ->
@@ -142,8 +145,8 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
                     }
                 })
         }
+        createBottomSheet()
     }
-
 
     private fun setupMap() {
         googleMap!!.isMyLocationEnabled = true
@@ -168,10 +171,10 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         }
 
         googleMap!!.setOnCameraIdleListener {
-            if (heatMapEnabled != (googleMap!!.cameraPosition.zoom < HM_ZOOM)){
+            if (heatMapEnabled != (googleMap!!.cameraPosition.zoom < HM_ZOOM)) {
                 heatMapEnabled = (googleMap!!.cameraPosition.zoom < HM_ZOOM)
                 // If HeatMap Enabled (true) and zoomIN -> Put HeatMap
-                if(heatMapEnabled){
+                if (heatMapEnabled) {
                     viewModel.getAllLatLngPocks()
                     googleMap!!.uiSettings.isScrollGesturesEnabled = true
                 }
@@ -224,8 +227,6 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         )
     }
 
-
-
     /*Link to know how to customize markers
      *https://developers.google.com/maps/documentation/android-sdk/marker?hl=es*/
     private fun handleSuccess(list: Resource.Success<List<Pock>>) {
@@ -242,17 +243,24 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
                 }
             }
 
+            val pockListBinding: List<BindingPockItem> = it.map { pock ->
+                val binding =
+                    BindingPockItem()
+                binding.pock = pock
+                binding
+            }
+            //Fill and set the items to the ItemAdapter
+            itemAdapter.setNewList(pockListBinding)
         }
     }
 
     private fun handleSuccessHeatMap(pocksLocations: Resource.Success<List<LatLng>>) {
         googleMap!!.clear()
         pocksLocations.data.let {
-            if(heatMapEnabled){
+            if (heatMapEnabled) {
                 mProvider = HeatmapTileProvider.Builder().data(it).build()
                 mProvider!!.setRadius(30)
                 googleMap!!.addTileOverlay(TileOverlayOptions().tileProvider(mProvider))
-
             }
         }
     }
@@ -264,4 +272,29 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         val toast = Toast.makeText(context, text, duration)
         toast.show()
     }
+
+    private val itemAdapter = ItemAdapter<BindingPockItem>()
+
+    //BOTTOM SHEET
+    private fun createBottomSheet() {
+        val behaviour = BottomSheetBehavior.from(binding.bottomSheet)
+        behaviour.peekHeight = dp2px(context!!, 80f).roundToInt()
+        val fastAdapter = FastAdapter.with(itemAdapter)
+        binding.nearPockList.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = fastAdapter
+        }
+
+        fastAdapter.onClickListener = { _, _, item, position ->
+            val intent = Intent(activity, ViewPockActivity::class.java)
+            intent.putExtra("markerId", item.pock?.id as String)
+            startActivity(intent)
+            true
+        }
+    }
 }
+
+
+
+
+

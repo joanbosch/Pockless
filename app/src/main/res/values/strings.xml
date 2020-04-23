@@ -89,6 +89,7 @@
     <string name="select_photo_dialog_option">Seleccionar foto</string>
     <string name="error_creating_profile">Ha ocurrido un error al crear el perfil. Intentelo de nuevo más tarde</string>
     <string name="save">guardar</string>
+    <string name="nearby_pocks">Pocks a tu alrededor</string>
 
 
 </resources>
