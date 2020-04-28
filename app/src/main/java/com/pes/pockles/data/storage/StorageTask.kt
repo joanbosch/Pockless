@@ -26,7 +26,7 @@ class StorageTask private constructor(private val manager: StorageManager) {
             return StorageTask(manager).addBitmaps(*list)
         }
 
-        fun of(manager: StorageManager,bitmap: StorageTaskBitmap): StorageTask {
+        fun of(manager: StorageManager, bitmap: StorageTaskBitmap): StorageTask {
             return StorageTask(manager).addBitmap(bitmap)
         }
 
@@ -55,7 +55,6 @@ class StorageTask private constructor(private val manager: StorageManager) {
      * Uploads the given [StorageTaskBitmap] and posts the results once all of them has been
      * uploaded
      */
-    @WorkerThread
     fun upload(
         success: (List<String>) -> Unit,
         failure: ((Throwable) -> Unit)? = null,
@@ -70,14 +69,21 @@ class StorageTask private constructor(private val manager: StorageManager) {
         do {
             val b: StorageTaskBitmap? = bitmaps.poll()
             b?.let {
-                manager.uploadMedia(it.bitmap, { uri ->
-                    run {
-                        resources.add(uri)
-                        if (initialSize == resources.size) {
-                            success(resources)
+                manager.uploadMedia(
+                    it.bitmap,
+                    { uri ->
+                        run {
+                            resources.add(uri)
+                            if (initialSize == resources.size) {
+                                success(resources)
+                            }
                         }
-                    }
-                }, { t -> failure?.let { f -> f(t) } }, it.fileExtension, childReference, bitmaps.size.toString())
+                    },
+                    { t -> failure?.let { f -> f(t) } },
+                    it.fileExtension,
+                    childReference,
+                    bitmaps.size.toString()
+                )
             }
         } while (!bitmaps.isEmpty())
     }
@@ -85,12 +91,11 @@ class StorageTask private constructor(private val manager: StorageManager) {
     /**
      * Wraps the [StorageTask] into a [LiveData]
      */
-    @WorkerThread
     fun uploadAsLiveData(
         childReference: String = "other"
     ): LiveData<Resource<List<String>>> {
         val result = MutableLiveData<Resource<List<String>>>()
-        result.value = Resource.Loading
+        result.value = Resource.Loading<Nothing>()
 
         upload({
             result.value = Resource.Success(it)

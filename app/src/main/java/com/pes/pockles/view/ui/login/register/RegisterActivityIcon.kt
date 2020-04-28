@@ -139,7 +139,7 @@ class RegisterActivityIcon : BaseActivity() {
                 is Resource.Success<String> -> {
                     binding.circularImageView.setImageBitmap(bitmap)
                     binding.loadingView.visibility = View.GONE
-                    viewModel.setImageUrl(it.data)
+                    viewModel.setImageUrl(it.data!!)
                 }
             }
         })

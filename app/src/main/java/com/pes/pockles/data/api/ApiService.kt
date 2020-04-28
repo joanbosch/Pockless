@@ -53,4 +53,10 @@ interface ApiService {
 
     @GET("pock/all/locations")
     fun pocksLocation(): Single<List<LatLng>>
+
+    @POST("pock/{id}/like")
+    fun like(@Path("id") id: String): Single<Pock>
+
+    @DELETE("pock/{id}/like")
+    fun undoLike(@Path("id") id: String): Single<Pock>
 }

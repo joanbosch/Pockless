@@ -53,7 +53,7 @@ class PocksHistoryActivity : BaseActivity() {
             Observer { value: Resource<List<Pock>>? ->
                 value?.let {
                     when (value) {
-                        is Resource.Success<List<Pock>> -> setDataRecyclerView(value.data)
+                        is Resource.Success<List<Pock>> -> setDataRecyclerView(value.data!!)
                         is Resource.Error -> binding.swipePocksHistory.isRefreshing = false
                     }
                 }

@@ -40,7 +40,7 @@ class StorageManager {
         childReference: String = "other"
     ): LiveData<Resource<String>> {
         val result = MediatorLiveData<Resource<String>>()
-        result.value = Resource.Loading
+        result.value = Resource.Loading<Nothing>()
 
         uploadMedia(bitmap, {
             result.value = Resource.Success(it)
@@ -68,7 +68,8 @@ class StorageManager {
 
             val date = SimpleDateFormat("dd_MM_yyyy-hh:mm:sss", Locale.getDefault())
                 .format(Calendar.getInstance().time)
-            val imageRef = storageRef.child("$childReference/${it.uid}_${date}_$sufix.$fileExtension")
+            val imageRef =
+                storageRef.child("$childReference/${it.uid}_${date}_$sufix.$fileExtension")
 
             val baos = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
