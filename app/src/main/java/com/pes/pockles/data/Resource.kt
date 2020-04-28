@@ -29,3 +29,6 @@ val Resource<*>.succeeded
 
 val Resource<*>.loading
     get() = this is Resource.Loading<*>
+
+val Resource<*>.failed
+    get() = this is Resource.Error

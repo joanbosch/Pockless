@@ -5,7 +5,6 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
-import com.pes.pockles.R
 import com.pes.pockles.data.Resource
 import com.pes.pockles.data.loading
 import com.pes.pockles.view.widget.ContentLoadingProgressBar
@@ -34,12 +33,12 @@ fun srcUrl(imageView: ImageView, url: String?) {
     }
 }
 
-@BindingAdapter("app:resourceErrorHandler")
-fun resourceErrorHandler(view: View, res: Resource<*>) {
-    if (res is Resource.Error) {
+@BindingAdapter("app:snackbarError", "app:snackbarErrorEnabled")
+fun snackbarError(view: View, idString: Int, enabled: Boolean) {
+    if (enabled) {
         Snackbar.make(
             view,
-            res.exception.localizedMessage ?: view.context.getString(R.string.error_try_later),
+            idString,
             Snackbar.LENGTH_SHORT
         ).show()
     }

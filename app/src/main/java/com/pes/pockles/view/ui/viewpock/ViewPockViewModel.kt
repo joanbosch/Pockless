@@ -2,9 +2,11 @@ package com.pes.pockles.view.ui.viewpock
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.pes.pockles.R
 import com.pes.pockles.data.Resource
-import com.pes.pockles.data.loading
+import com.pes.pockles.data.failed
 import com.pes.pockles.data.repository.PockRepository
 import com.pes.pockles.data.succeeded
 import com.pes.pockles.domain.usecases.ViewPockUseCase
@@ -21,13 +23,21 @@ class ViewPockViewModel @Inject constructor(
     val pock: LiveData<Resource<Pock>>
         get() = _internalPock
 
+    private val _errorMsg = MutableLiveData<Int>()
+    val errorMsg: LiveData<Int>
+        get() = _errorMsg
+
     init {
         _internalPock.value = Resource.Loading<Nothing>()
+        _errorMsg.value = null
     }
 
     fun loadPock(pockId: String) {
         _internalPock.addSource(useCase.execute(pockId)) {
             _internalPock.value = it
+            if (it.failed) {
+                _errorMsg.value = R.string.error_no_pock
+            }
         }
     }
 
@@ -49,6 +59,7 @@ class ViewPockViewModel @Inject constructor(
                 // wrong on the API the action will be reverted automatically as the last
                 // data available would be the one from the API
 
+                val copy = it.copy()
                 it.likes += if (it.liked) -1 else 1
                 it.liked = !it.liked
                 _internalPock.value = Resource.Success(it)
@@ -56,8 +67,13 @@ class ViewPockViewModel @Inject constructor(
                 _internalPock.addSource(source) { res ->
                     // Do not update the livedata with loading states when a like action has been
                     // performed, it is a silent call
-                    if (!res.loading) {
+                    if (res.succeeded) {
                         _internalPock.value = res
+                    } else if (res.failed) {
+                        // Revert to last state in case there was an error (error resource
+                        // does not carry any information of the pock)
+                        _internalPock.value = Resource.Success(copy)
+                        _errorMsg.value = R.string.error_general_like
                     }
                 }
             }

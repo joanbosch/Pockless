@@ -90,6 +90,8 @@
     <string name="error_creating_profile">Ha ocurrido un error al crear el perfil. Intentelo de nuevo más tarde</string>
     <string name="save">guardar</string>
     <string name="nearby_pocks">Pocks a tu alrededor</string>
+    <string name="error_general_like">Ha ocurrido un error con el like</string>
+    <string name="error_no_pock">No se ha podido obtener el pock</string>
 
 
 </resources>
