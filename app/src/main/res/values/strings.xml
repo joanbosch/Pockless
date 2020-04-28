@@ -27,6 +27,7 @@
     <string name="pocks_history_button">Historial de Pocks</string>
     <string name="title_activity_pocks_history">NewPocksHistory</string>
     <string name="message">Message</string>
+    <string name="edit_button">Editar</string>
 
     <string-array name="categories">
         <item>Anuncios</item>
@@ -94,4 +95,12 @@
     <string name="error_no_pock">No se ha podido obtener el pock</string>
 
 
+    <!-- Edit Pock Resources -->
+    <string name="title_activity_edit_pock">EditPockActivity</string>
+    <string name="title_toolbar_edit_pock">Editar Pock</string>
+    <string name="correct_pock_hint">Corrige tu Pock</string>
+    <string name="general_category">General</string>
+    <string name="update_pock_button">Guardar cambios</string>
+    <string name="updated_pock_message">Se ha actualizado el contenido de tu pock</string>
+    <string name="api_error_updating_message">Ha habido algún problema actualizando el contenido de tu pock</string>
 </resources>

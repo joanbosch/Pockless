@@ -2,6 +2,7 @@ package com.pes.pockles.data.api
 
 import com.google.android.gms.maps.model.LatLng
 import com.pes.pockles.model.CreateUser
+import com.pes.pockles.model.EditedPock
 import com.pes.pockles.model.NewPock
 import com.pes.pockles.model.Pock
 import com.pes.pockles.model.User
@@ -41,6 +42,9 @@ interface ApiService {
 
     @GET("pock/{id}")
     fun viewPock(@Path("id") id: String): Single<Pock>
+
+    @PATCH("pock/{id}")
+    fun editPock(@Path("id") id: String, @Body pock: EditedPock): Single<Pock>
 
     @GET("user")
     fun getUser(): Single<User>
