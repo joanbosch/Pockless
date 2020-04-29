@@ -3,6 +3,7 @@ package com.pes.pockles.view.bindings
 import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.pes.pockles.data.Resource
@@ -42,4 +43,9 @@ fun snackbarError(view: View, idString: Int, enabled: Boolean) {
             Snackbar.LENGTH_SHORT
         ).show()
     }
+}
+
+@BindingAdapter("app:refreshingResource")
+fun refreshingResource(view: SwipeRefreshLayout, res: Resource<*>) {
+    view.isRefreshing = res.loading
 }

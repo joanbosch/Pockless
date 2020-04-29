@@ -1,11 +1,7 @@
 package com.pes.pockles.data.api
 
 import com.google.android.gms.maps.model.LatLng
-import com.pes.pockles.model.CreateUser
-import com.pes.pockles.model.EditedPock
-import com.pes.pockles.model.NewPock
-import com.pes.pockles.model.Pock
-import com.pes.pockles.model.User
+import com.pes.pockles.model.*
 import io.reactivex.Single
 import retrofit2.http.*
 
@@ -63,4 +59,7 @@ interface ApiService {
 
     @DELETE("pock/{id}/like")
     fun undoLike(@Path("id") id: String): Single<Pock>
+
+    @GET("user/likes")
+    fun likedPocks(): Single<List<Pock>>
 }

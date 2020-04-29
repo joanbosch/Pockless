@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
 import com.pes.pockles.data.Resource
 import com.pes.pockles.data.api.ApiService
-import com.pes.pockles.data.database.AppDatabase
 import com.pes.pockles.model.EditedPock
 import com.pes.pockles.model.Location
 import com.pes.pockles.model.NewPock
@@ -19,7 +18,7 @@ import javax.inject.Singleton
 
 @Singleton
 class PockRepository @Inject constructor(
-    val apiService: ApiService
+    private val apiService: ApiService
 ) : BaseRepository(apiService) {
 
     companion object {
