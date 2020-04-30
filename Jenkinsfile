@@ -24,11 +24,6 @@ pipeline {
     }
 
     stages {
-        stage("Prepare") {
-            steps {
-                sh 'chmod +x gradlew'
-            }
-        }
 
 //        stage('Test') {
 //            steps {
@@ -42,7 +37,7 @@ pipeline {
 
         stage("Build") {
             steps {
-               sh './gradlew clean assembleDebug' // builds app/build/outputs/apk/app-debug.apk
+               bat 'gradlew clean assembleDebug' // builds app/build/outputs/apk/app-debug.apk
             }
         }
 
