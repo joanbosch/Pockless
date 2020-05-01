@@ -16,6 +16,7 @@ import com.pes.pockles.data.Resource
 import com.pes.pockles.view.ui.MainActivity
 import com.pes.pockles.view.ui.base.BaseActivity
 import com.pes.pockles.view.ui.login.register.RegisterActivity
+import kotlinx.android.synthetic.main.activity_register.*
 
 class LaunchActivity : BaseActivity() {
 
@@ -85,6 +86,7 @@ class LaunchActivity : BaseActivity() {
             is Resource.Success<Boolean> -> {
                 if (value.data!!) {
                     viewModel.loadUser()
+                    viewModel.saveFCMToken()
                     startActivity(Intent(this, MainActivity::class.java))
                 } else {
                     startActivity(Intent(this, RegisterActivity::class.java))

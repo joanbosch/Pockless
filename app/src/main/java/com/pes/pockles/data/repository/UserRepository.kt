@@ -5,6 +5,7 @@ import com.pes.pockles.data.Resource
 import com.pes.pockles.data.api.ApiService
 import com.pes.pockles.data.database.AppDatabase
 import com.pes.pockles.model.CreateUser
+import com.pes.pockles.model.InsertToken
 import com.pes.pockles.model.Pock
 import com.pes.pockles.model.User
 import com.pes.pockles.util.AppExecutors
@@ -53,6 +54,10 @@ class UserRepository @Inject constructor(
 
     fun getLikedPocks(): LiveData<Resource<List<Pock>>> {
         return callApi(Function { apiService -> apiService.likedPocks() })
+    }
+
+    fun insertFCMToken(token: String): LiveData<Resource<Boolean>> {
+        return callApi(Function { apiService -> apiService.insertFCMToken(InsertToken(token = token)) })
     }
 
 }

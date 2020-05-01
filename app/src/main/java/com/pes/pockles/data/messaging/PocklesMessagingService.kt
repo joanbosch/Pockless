@@ -8,13 +8,17 @@ import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.pes.pockles.R
 import com.pes.pockles.data.FCMTokenManager
+import com.pes.pockles.data.repository.UserRepository
 import com.pes.pockles.view.ui.MainActivity
+import javax.inject.Inject
 
-class PocklesMessagingService : FirebaseMessagingService() {
+class PocklesMessagingService @Inject constructor(val userRepository: UserRepository) :
+    FirebaseMessagingService() {
 
     /**
      * Called if InstanceID token is updated. This may occur if the security of
@@ -23,30 +27,33 @@ class PocklesMessagingService : FirebaseMessagingService() {
      */
     override fun onNewToken(token: String) {
         //Send token to PAPI
+        FirebaseAuth.getInstance().currentUser?.let { userRepository.insertFCMToken(token) }
 
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         remoteMessage.data.get("mensaje")
         sendNotification("Viva España", "VIVA FRANCO")
-        when(remoteMessage.messageType){
+        when (remoteMessage.messageType) {
 
         }
     }
 
     override fun onDeletedMessages() {
-        var a : Int = 5+5
+        var a: Int = 5 + 5
     }
 
-    private fun sendRegistrationToServer(token: String){
+    private fun sendRegistrationToServer(token: String) {
         //TODO
     }
 
     private fun sendNotification(messageBody: String, title: String) {
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-            PendingIntent.FLAG_ONE_SHOT)
+        val pendingIntent = PendingIntent.getActivity(
+            this, 0 /* Request code */, intent,
+            PendingIntent.FLAG_ONE_SHOT
+        )
 
         val channelId = "PocklesChanel"
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
@@ -58,7 +65,8 @@ class PocklesMessagingService : FirebaseMessagingService() {
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
 
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

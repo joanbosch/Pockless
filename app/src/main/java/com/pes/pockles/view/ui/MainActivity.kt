@@ -36,22 +36,6 @@ class MainActivity : BaseActivity() {
         binding.fab.setOnClickListener {
             startActivity(Intent(this, NewPockActivity::class.java))
         }
-        FirebaseMessaging.getInstance().isAutoInitEnabled = true
-        retrieveRegisterToken()
-    }
-
-    private fun retrieveRegisterToken() {
-        FirebaseInstanceId.getInstance().instanceId
-            .addOnCompleteListener(OnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    return@OnCompleteListener
-                }
-
-                // Get new Instance ID token
-                val token = task.result?.token
-                Timber.i(token)
-
-            })
     }
 
 }
