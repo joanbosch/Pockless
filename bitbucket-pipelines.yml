@@ -5,11 +5,15 @@ pipelines:
     '**':
       - step:
           script:
+            - unset ANDROID_NDK_HOME
+            - echo "Build"
             - ./build.sh
   branches:
     develop:
       - step:
           script:
+            - unset ANDROID_NDK_HOME
+            - echo "Build"
             - ./build.sh
           artifacts:
             - pockles-app/build/outputs/apk/debug/*.apk
