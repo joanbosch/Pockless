@@ -19,6 +19,7 @@
     <string name="profile_menu_item">Perfil</string>
     <string name="close_filter_button">Cerrar</string>
     <string name="filter_dialog_text">Marca las categorías de Pock que desees ver en tu mapa…</string>
+    <string name="change_image">Cambiar imagen</string>
 
     <string name="user_format">User: %s</string>
 
@@ -26,6 +27,7 @@
     <string name="pocks_history_button">Historial de Pocks</string>
     <string name="title_activity_pocks_history">NewPocksHistory</string>
     <string name="message">Message</string>
+    <string name="edit_button">Editar</string>
 
     <string-array name="categories">
         <item>Anuncios</item>
@@ -81,11 +83,27 @@
     <string name="yes">Si</string>
     <string name="no">No</string>
     <string name="error_uploading_an_image">Ha ocurrido un error al subir la imagen</string>
+    <string name="error_uploading_images">Ha ocurrido un error al subir las imagenes</string>
     <string name="error_selecting_image">Ha ocurrido un error al seleccionar la imagen</string>
     <string name="upload_image_dialog_title">Subir imagen</string>
     <string name="take_photo_dialog_option">Tomar foto</string>
     <string name="select_photo_dialog_option">Seleccionar foto</string>
     <string name="error_creating_profile">Ha ocurrido un error al crear el perfil. Intentelo de nuevo más tarde</string>
+    <string name="save">guardar</string>
+    <string name="nearby_pocks">Pocks a tu alrededor</string>
+    <string name="error_general_like">Ha ocurrido un error con el like</string>
+    <string name="error_no_pock">No se ha podido obtener el pock</string>
 
 
+    <!-- Edit Pock Resources -->
+    <string name="title_activity_edit_pock">EditPockActivity</string>
+    <string name="title_toolbar_edit_pock">Editar Pock</string>
+    <string name="correct_pock_hint">Corrige tu Pock</string>
+    <string name="general_category">General</string>
+    <string name="update_pock_button">Guardar cambios</string>
+    <string name="updated_pock_message">Se ha actualizado el contenido de tu pock</string>
+    <string name="api_error_updating_message">Ha habido algún problema actualizando el contenido de tu pock</string>
+    <string name="liked_pock_activity_title">Me gusta</string>
+    <string name="error_obtaining_liked_pocks">Ha ocurrido un error al obtener los pocks gustados</string>
+    <string name="error_removing_like">Ha ocurrido un error al eliminar el me gusta del pock</string>
 </resources>

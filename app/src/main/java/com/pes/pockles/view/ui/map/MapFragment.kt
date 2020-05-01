@@ -2,6 +2,8 @@ package com.pes.pockles.view.ui.map
 
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.os.Bundle
 import android.os.Looper
 import android.util.DisplayMetrics
@@ -10,9 +12,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.assent.Permission
 import com.afollestad.assent.runWithPermissions
 import com.google.android.gms.location.LocationCallback
@@ -24,16 +28,23 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.maps.android.heatmaps.HeatmapTileProvider
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.FragmentMapBinding
 import com.pes.pockles.model.Pock
 import com.pes.pockles.util.LocationUtils.Companion.getLastLocation
+import com.pes.pockles.util.dp2px
 import com.pes.pockles.view.ui.base.BaseFragment
+import com.pes.pockles.view.ui.pockshistory.item.BindingPockItem
 import com.pes.pockles.view.ui.viewpock.ViewPockActivity
 import timber.log.Timber
 import kotlin.math.cos
 import kotlin.math.ln
+import kotlin.math.roundToInt
 
 
 /**
@@ -51,13 +62,20 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         const val FASTEST_INTERVAL: Long = 10 * 1000 //this is when it need higher precision
         const val RADIUS = 500 //In m
         const val MIN_DISPLACEMENT = 10f //In m
+        const val HM_ZOOM = 15 // Max Zoom Lever for HeatMap
     }
+
 
     private val viewModel: MapViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(MapViewModel::class.java)
     }
 
     private var googleMap: GoogleMap? = null
+    private var mProvider: HeatmapTileProvider? = null
+
+    // Add Listener to change this variable when zoom is in x number
+    private var heatMapEnabled: Boolean = false
+    private lateinit var images: Map<String, BitmapDescriptor>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -105,13 +123,14 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
                 MapStyleOptions.loadRawResourceStyle(
                     context, R.raw.map_style
                 )
-            );
+            )
             googleMap.setMaxZoomPreference(19.0f);
             val uiSettings = googleMap.uiSettings
             uiSettings.isScrollGesturesEnabled = false
             setupMap();
 
             startLocationUpdates()
+            loadImages()
 
             viewModel.getPocks().observe(
                 this,
@@ -123,7 +142,19 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
                         }
                     }
                 })
+
+            viewModel.latLngAllPocks.observe(
+                this,
+                Observer { value: Resource<List<LatLng>>? ->
+                    value?.let {
+                        when (value) {
+                            is Resource.Success<*> -> handleSuccessHeatMap(value as Resource.Success<List<LatLng>>)
+                            is Resource.Error -> handleError()
+                        }
+                    }
+                })
         }
+        createBottomSheet()
     }
 
     private fun setupMap() {
@@ -146,6 +177,17 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
             intent.putExtra("markerId", marker.tag as String)
             startActivity(intent)
             true
+        }
+
+        googleMap!!.setOnCameraIdleListener {
+            val oldHeatMap = heatMapEnabled
+            heatMapEnabled = (googleMap!!.cameraPosition.zoom < HM_ZOOM)
+            // If HeatMap Enabled (true) and zoomIN -> Put HeatMap
+            googleMap!!.uiSettings.isScrollGesturesEnabled = heatMapEnabled
+
+            if (heatMapEnabled != oldHeatMap) {
+                viewModel.onUpdateHeatMap(heatMapEnabled)
+            }
         }
     }
 
@@ -193,14 +235,37 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
      *https://developers.google.com/maps/documentation/android-sdk/marker?hl=es*/
     private fun handleSuccess(list: Resource.Success<List<Pock>>) {
         googleMap!!.clear()
-        list.data.let {
+        list.data?.let {
             it.forEach { pock ->
                 val latLng = LatLng(
                     pock.location.latitude,
                     pock.location.longitude
                 )
-                val marker: Marker = googleMap!!.addMarker(MarkerOptions().position(latLng))
-                marker.tag = pock.id
+                if (!heatMapEnabled) {
+                    val marker: Marker = googleMap!!.addMarker(MarkerOptions().position(latLng))
+                    marker.tag = pock.id
+                    marker.setIcon(images[pock.category])
+                }
+            }
+
+            val pockListBinding: List<BindingPockItem> = it.map { pock ->
+                val binding =
+                    BindingPockItem()
+                binding.pock = pock
+                binding
+            }
+            //Fill and set the items to the ItemAdapter
+            itemAdapter.setNewList(pockListBinding)
+        }
+    }
+
+    private fun handleSuccessHeatMap(pocksLocations: Resource.Success<List<LatLng>>) {
+        googleMap!!.clear()
+        pocksLocations.data.let {
+            if (heatMapEnabled) {
+                mProvider = HeatmapTileProvider.Builder().data(it).build()
+                mProvider!!.setRadius(30)
+                googleMap!!.addTileOverlay(TileOverlayOptions().tileProvider(mProvider))
             }
         }
     }
@@ -208,8 +273,65 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
     private fun handleError() {
         val text = getString(R.string.failed_loc)
         val duration = Toast.LENGTH_SHORT
-
         val toast = Toast.makeText(context, text, duration)
         toast.show()
+    }
+
+    private val itemAdapter = ItemAdapter<BindingPockItem>()
+
+    //BOTTOM SHEET
+    private fun createBottomSheet() {
+        val behaviour = BottomSheetBehavior.from(binding.bottomSheet)
+        behaviour.peekHeight = dp2px(context!!, 120f).roundToInt()
+        val fastAdapter = FastAdapter.with(itemAdapter)
+        binding.nearPockList.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = fastAdapter
+        }
+
+        fastAdapter.onClickListener = { _, _, item, position ->
+            val intent = Intent(activity, ViewPockActivity::class.java)
+            intent.putExtra("markerId", item.pock?.id as String)
+            startActivity(intent)
+            true
+        }
+    }
+
+    private fun loadImages() {
+        val iconTuri = BitmapDescriptorFactory.fromResource(R.raw.icono_turismo)
+        val iconDep = BitmapDescriptorFactory.fromResource(R.raw.icono_deportes)
+        val iconEntre = BitmapDescriptorFactory.fromResource(R.raw.icono_entre)
+        val iconVar = BitmapDescriptorFactory.fromResource(R.raw.icono_mail)
+        val iconTec = BitmapDescriptorFactory.fromResource(R.raw.icono_tecnologia)
+        val icon18 = BitmapDescriptorFactory.fromResource(R.raw.icono_18)
+        val iconSal = BitmapDescriptorFactory.fromResource(R.raw.icono_salud)
+        val iconAn = BitmapDescriptorFactory.fromResource(R.raw.icono_anunci)
+        val iconGen = BitmapDescriptorFactory.fromResource(R.raw.icono_mail)
+        val iconMas = BitmapDescriptorFactory.fromResource(R.raw.icono_mail)
+        images = mapOf(
+            "Turismo" to iconTuri,
+            "Varios" to iconVar,
+            "Salud" to iconSal,
+            "Entretenimiento" to iconEntre,
+            "Tecnologia" to iconTec,
+            "+18" to icon18,
+            "Compra y Venta" to iconVar,
+            "Anuncios" to iconAn,
+            "Deportes" to iconDep,
+            "General" to iconGen,
+            "Mascotas" to iconMas
+        ) as Map<String, BitmapDescriptor>
+    }
+
+    //useless fun for now, it will become useful when the .svg are delivered
+    private fun bitmapDescriptorFromVector(vectorResId: Int): BitmapDescriptor? {
+        val height = dp2px(context!!, 100f).roundToInt()
+        return ContextCompat.getDrawable(context!!, vectorResId)?.run {
+            setBounds(0, 0, height, height)
+            val bitmap =
+                Bitmap.createBitmap(height, height, Bitmap.Config.ARGB_8888)
+            draw(Canvas(bitmap))
+            BitmapDescriptorFactory.fromBitmap(bitmap)
+        }
     }
 }

@@ -2,9 +2,9 @@ package com.pes.pockles.data
 
 import android.content.Context
 import android.preference.PreferenceManager
-import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.internal.InternalTokenResult
+import java.util.concurrent.CountDownLatch
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,27 +25,32 @@ class TokenManager @Inject constructor(val context: Context) {
     init {
         //https://firebase.google.com/docs/reference/android/com/google/firebase/auth/FirebaseAuth.IdTokenListener#public-method-summary
         loadToken()
-        FirebaseAuth.getInstance()
-            .addIdTokenListener { i: InternalTokenResult ->
-                run {
-                    this.token?.let { t ->
-                        {
-                            this.saveToken(t)
-                        }
-                    }
-                }
+        FirebaseAuth.getInstance().addIdTokenListener { i: InternalTokenResult ->
+            i.token?.let {
+                this.saveToken(it)
             }
+        }
     }
 
-    fun refreshToken(): String? {
+    fun refreshToken() {
         val user = FirebaseAuth.getInstance().currentUser
-        return if (user != null) {
-            val token = Tasks.await(user.getIdToken(true))
-            if (token != null && token.token != null) {
-                saveToken(token.token!!)
+        user?.let {
+            user.getIdToken(true)
+        }
+    }
+
+    fun refreshTokenSync(): CountDownLatch {
+        val user = FirebaseAuth.getInstance().currentUser
+        val lock = CountDownLatch(1)
+        user?.getIdToken(true)?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                task.result?.token?.let { token ->
+                    this.saveToken(token)
+                }
             }
-            token.token
-        } else null
+            lock.countDown()
+        }
+        return lock
     }
 
     private fun loadToken() {

@@ -31,25 +31,45 @@ class StorageManager {
      * To upload a file just treat this like a backend api call, observe the changes in the resource
      * and when it is success, the public URL of the uploaded image will be in the data.
      *
-     * TODO: Resize image, for not uploading full 4k hd knife at 1kºC images that could take
-     * all the available storage.
-     *
      * @param bitmap            The bitmap to upload
      * @param childReference    The path to upload the data on the server. Optional
      */
-    fun uploadMedia(bitmap: Bitmap, childReference: String = "other"): LiveData<Resource<String>> {
+    fun uploadMedia(
+        bitmap: Bitmap,
+        fileExtension: String = "png",
+        childReference: String = "other"
+    ): LiveData<Resource<String>> {
         val result = MediatorLiveData<Resource<String>>()
+        result.value = Resource.Loading<Nothing>()
 
+        uploadMedia(bitmap, {
+            result.value = Resource.Success(it)
+        }, {
+            result.value = Resource.Error(it)
+        }, fileExtension, childReference)
+
+        return result
+    }
+
+    /**
+     * The same as [uploadMedia] but it emits the results on the given callbacks
+     */
+    fun uploadMedia(
+        bitmap: Bitmap,
+        success: (String) -> Unit,
+        failure: ((Throwable) -> Unit)? = null,
+        fileExtension: String = "png",
+        childReference: String = "other",
+        sufix: String = "1"
+    ) {
         val user = FirebaseAuth.getInstance().currentUser
         user?.let {
-            result.value = Resource.Loading
             val storageRef = storage.reference
-            val name = it.uid + "_" + SimpleDateFormat(
-                "dd/MM/yyyy-hh:mm:sss",
-                Locale.getDefault()
-            ).format(Calendar.getInstance().time)
 
-            val imageRef = storageRef.child("$childReference/$name.png")
+            val date = SimpleDateFormat("dd_MM_yyyy-hh:mm:sss", Locale.getDefault())
+                .format(Calendar.getInstance().time)
+            val imageRef =
+                storageRef.child("$childReference/${it.uid}_${date}_$sufix.$fileExtension")
 
             val baos = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
@@ -58,20 +78,18 @@ class StorageManager {
             val uploadTask = imageRef.putBytes(data)
             uploadTask.addOnSuccessListener {
                 imageRef.downloadUrl.addOnSuccessListener { uri ->
-                    result.value = Resource.Success(uri.toString())
+                    success(uri.toString())
                 }.addOnFailureListener { e ->
-                    result.value = Resource.Error(e)
+                    failure?.let { f -> f(e) }
                 }
             }.addOnFailureListener { e ->
-                result.value = Resource.Error(e)
+                failure?.let { f -> f(e) }
             }
-
         }
 
         if (user == null) {
-            result.value = Resource.Error(RuntimeException("User not logged"))
+            failure?.let { f -> f(RuntimeException("User not logged")) }
         }
-
-        return result
     }
+
 }

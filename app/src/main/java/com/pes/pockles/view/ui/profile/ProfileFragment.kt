@@ -40,6 +40,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         )
 
         viewModel.navigateToLogin.observe(this, EventObserver(::navigateToLogin))
+        binding.likeButton.setOnClickListener {
+            findNavController().navigate(R.id.action_userProfileFragment_to_likedPocksActivity)
+        }
     }
 
     private fun navigateToHistory(bool: Boolean) {

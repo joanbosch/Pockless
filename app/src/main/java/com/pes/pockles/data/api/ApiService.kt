@@ -1,9 +1,7 @@
 package com.pes.pockles.data.api
 
-import com.pes.pockles.model.CreateUser
-import com.pes.pockles.model.NewPock
-import com.pes.pockles.model.Pock
-import com.pes.pockles.model.User
+import com.google.android.gms.maps.model.LatLng
+import com.pes.pockles.model.*
 import io.reactivex.Single
 import retrofit2.http.*
 
@@ -26,7 +24,7 @@ interface ApiService {
     - ReturnType    -> The type of the object the API returns, it can be a List (List<ReturnType)
 
      */
-    @GET("pock/history")
+    @GET("user/history")
     fun pocksHistory(): Single<List<Pock>>
 
     @POST("pock")
@@ -41,6 +39,9 @@ interface ApiService {
     @GET("pock/{id}")
     fun viewPock(@Path("id") id: String): Single<Pock>
 
+    @PATCH("pock/{id}")
+    fun editPock(@Path("id") id: String, @Body pock: EditedPock): Single<Pock>
+
     @GET("user")
     fun getUser(): Single<User>
 
@@ -49,4 +50,16 @@ interface ApiService {
 
     @POST("user")
     fun createUser(@Body createUser: CreateUser): Single<User>
+
+    @GET("pock/all/locations")
+    fun pocksLocation(): Single<List<LatLng>>
+
+    @POST("pock/{id}/like")
+    fun like(@Path("id") id: String): Single<Pock>
+
+    @DELETE("pock/{id}/like")
+    fun undoLike(@Path("id") id: String): Single<Pock>
+
+    @GET("user/likes")
+    fun likedPocks(): Single<List<Pock>>
 }

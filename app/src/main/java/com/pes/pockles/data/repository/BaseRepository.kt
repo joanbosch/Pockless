@@ -58,7 +58,7 @@ open class BaseRepository constructor(private var apiService: ApiService) {
     fun <T : Any> callApi(@NonNull apiCall: Function<ApiService, Single<T>>): LiveData<Resource<T>> {
         val mutableLiveData: MutableLiveData<Resource<T>> = MutableLiveData()
 
-        mutableLiveData.value = Resource.Loading
+        mutableLiveData.value = Resource.Loading<Nothing>()
 
         disposable.add(
             apiCall.apply(apiService)

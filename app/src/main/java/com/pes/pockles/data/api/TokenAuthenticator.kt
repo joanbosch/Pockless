@@ -18,25 +18,17 @@ class TokenAuthenticator @Inject constructor(
     }
 
     override fun authenticate(route: Route?, response: Response): Request? {
-        Timber.d("Intercepted authenticate call with code: %d", response.code())
-        return if (response.code() == 401) {
-            val token = tokenManager.refreshToken()
-            return if (token != null) response
-                .request()
-                .newBuilder()
-                .header(AUTH_HEADER_NAME, wrapToken(token))
-                .build()
-            else null
-        } else {
-            response
-                .request()
-                .newBuilder()
-                .header(AUTH_HEADER_NAME, wrapToken(tokenManager.token))
-                .build()
+        if (response.code() == 401) {
+            tokenManager.refreshTokenSync().await()
         }
+        return response
+            .request()
+            .newBuilder()
+            .header(AUTH_HEADER_NAME, wrapToken())
+            .build()
     }
 
-    private fun wrapToken(token: String?): String {
+    fun wrapToken(token: String? = tokenManager.token): String {
         return "Bearer $token"
     }
 

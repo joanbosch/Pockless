@@ -32,7 +32,7 @@ class RegisterIconViewModel @Inject constructor(
             mediatorLiveData.addSource(userRepository.createUser(it)) { resource ->
                 when (resource) {
                     is Resource.Success<User> -> {
-                        userRepository.saveUser(resource.data)
+                        userRepository.saveUser(resource.data!!)
                         mediatorLiveData.value = Event(true)
                     }
                     is Resource.Error -> {
