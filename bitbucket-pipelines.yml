@@ -1,0 +1,15 @@
+image: uber/android-build-environment:latest
+
+pipelines:
+  pull-requests:
+    '**':
+      - step:
+          script:
+            - ./build.sh
+  branches:
+    develop:
+      - step:
+          script:
+            - ./build.sh
+          artifacts:
+            - pockles-app/build/outputs/apk/debug/*.apk
