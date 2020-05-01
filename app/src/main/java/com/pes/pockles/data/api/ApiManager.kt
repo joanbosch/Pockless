@@ -15,7 +15,7 @@ class ApiManager constructor(
 
     companion object {
         const val PROD_URL = "https://us-central1-pockles.cloudfunctions.net/api/"
-        const val DEV_URL = "http://localhost:5001/pockles/us-central1/api/"
+        const val DEV_URL = "http://10.0.2.2:5001/pockles/us-central1/api/"
 
         const val APP_CLIENT_HEADER_NAME = "AppClient"
         const val APP_CLIENT_VALUE = "PockleS"
@@ -33,6 +33,10 @@ class ApiManager constructor(
         val appClientInterceptor = Interceptor { chain: Interceptor.Chain ->
             val requestBuilder = chain.request().newBuilder()
             requestBuilder.addHeader(APP_CLIENT_HEADER_NAME, APP_CLIENT_VALUE)
+            requestBuilder.addHeader(
+                TokenAuthenticator.AUTH_HEADER_NAME,
+                tokenAuthenticator.wrapToken()
+            )
             chain.proceed(requestBuilder.build())
         }
 

@@ -74,7 +74,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
     private var mProvider: HeatmapTileProvider? = null
 
     // Add Listener to change this variable when zoom is in x number
-    private var heatMapEnabled: Boolean = true
+    private var heatMapEnabled: Boolean = false
     private lateinit var images: Map<String, BitmapDescriptor>
 
     override fun onCreateView(
@@ -123,7 +123,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
                 MapStyleOptions.loadRawResourceStyle(
                     context, R.raw.map_style
                 )
-            );
+            )
             googleMap.setMaxZoomPreference(19.0f);
             val uiSettings = googleMap.uiSettings
             uiSettings.isScrollGesturesEnabled = false
@@ -143,7 +143,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
                     }
                 })
 
-            viewModel.getAllLatLngPocks().observe(
+            viewModel.latLngAllPocks.observe(
                 this,
                 Observer { value: Resource<List<LatLng>>? ->
                     value?.let {
@@ -180,18 +180,13 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         }
 
         googleMap!!.setOnCameraIdleListener {
-            if (heatMapEnabled != (googleMap!!.cameraPosition.zoom < HM_ZOOM)) {
-                heatMapEnabled = (googleMap!!.cameraPosition.zoom < HM_ZOOM)
-                // If HeatMap Enabled (true) and zoomIN -> Put HeatMap
-                if (heatMapEnabled) {
-                    viewModel.getAllLatLngPocks()
-                    googleMap!!.uiSettings.isScrollGesturesEnabled = true
-                }
-                //If HeatMap Disabled (false) and ZoomOut -> Put Markers
-                else {
-                    viewModel.getPocks()
-                    googleMap!!.uiSettings.isScrollGesturesEnabled = false
-                }
+            val oldHeatMap = heatMapEnabled
+            heatMapEnabled = (googleMap!!.cameraPosition.zoom < HM_ZOOM)
+            // If HeatMap Enabled (true) and zoomIN -> Put HeatMap
+            googleMap!!.uiSettings.isScrollGesturesEnabled = heatMapEnabled
+
+            if (heatMapEnabled != oldHeatMap) {
+                viewModel.onUpdateHeatMap(heatMapEnabled)
             }
         }
     }
@@ -240,7 +235,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
      *https://developers.google.com/maps/documentation/android-sdk/marker?hl=es*/
     private fun handleSuccess(list: Resource.Success<List<Pock>>) {
         googleMap!!.clear()
-        list.data.let {
+        list.data?.let {
             it.forEach { pock ->
                 val latLng = LatLng(
                     pock.location.latitude,

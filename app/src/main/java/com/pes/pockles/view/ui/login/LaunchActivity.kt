@@ -83,7 +83,7 @@ class LaunchActivity : BaseActivity() {
         when (value) {
             is Resource.Loading -> dialog.show()
             is Resource.Success<Boolean> -> {
-                if (value.data) {
+                if (value.data!!) {
                     viewModel.loadUser()
                     startActivity(Intent(this, MainActivity::class.java))
                 } else {
