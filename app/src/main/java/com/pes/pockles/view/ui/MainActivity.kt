@@ -10,6 +10,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
 import com.pes.pockles.R
 import com.pes.pockles.data.repository.UserRepository
 import com.pes.pockles.databinding.ActivityMainBinding
@@ -35,7 +36,7 @@ class MainActivity : BaseActivity() {
         binding.fab.setOnClickListener {
             startActivity(Intent(this, NewPockActivity::class.java))
         }
-
+        FirebaseMessaging.getInstance().isAutoInitEnabled = true
         retrieveRegisterToken()
     }
 
