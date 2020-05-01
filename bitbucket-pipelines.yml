@@ -1,0 +1,18 @@
+image: uber/android-build-environment:latest
+
+pipelines:
+  pull-requests:
+    '**':
+      - step:
+          script:
+            - echo "Start default step"
+            - ./build.sh
+  branches:
+    develop:
+      - step:
+          script:
+            - echo "Start default step"
+            - ./accept-licenses.sh
+            - ./build.sh
+          artifacts:
+            - pockles-app/build/outputs/apk/debug/*.apk
