@@ -1,6 +1,8 @@
 package com.pes.pockles.data.repository
 
 import androidx.lifecycle.LiveData
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
 import com.pes.pockles.data.Resource
 import com.pes.pockles.data.api.ApiService
 import com.pes.pockles.data.database.AppDatabase
@@ -60,4 +62,16 @@ class UserRepository @Inject constructor(
         return callApi(Function { apiService -> apiService.insertFCMToken(InsertToken(token = token)) })
     }
 
+    fun saveFCMToken() {
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    return@OnCompleteListener
+                }
+
+                // Get new Instance ID token
+                val token = task.result?.token
+                insertFCMToken(token!!)
+            })
+    }
 }

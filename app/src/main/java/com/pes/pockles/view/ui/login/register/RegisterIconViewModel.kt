@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.iid.FirebaseInstanceId
 import com.pes.pockles.data.Resource
 import com.pes.pockles.data.repository.UserRepository
 import com.pes.pockles.data.storage.StorageManager
@@ -33,6 +34,7 @@ class RegisterIconViewModel @Inject constructor(
                 when (resource) {
                     is Resource.Success<User> -> {
                         userRepository.saveUser(resource.data!!)
+                        userRepository.saveFCMToken()
                         mediatorLiveData.value = Event(true)
                     }
                     is Resource.Error -> {
@@ -56,4 +58,5 @@ class RegisterIconViewModel @Inject constructor(
             user.value = it
         }
     }
+
 }
