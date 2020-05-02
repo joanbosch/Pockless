@@ -1,36 +1,44 @@
 package com.pes.pockles.data.messaging
 
 enum class Notification {
-    CHAT() {
-        override fun onMessageRecieved() {
-            TODO("not implemented")
+    CHAT {
+        override fun onMessageReceived(messageBody: String?, title: String?): Boolean {
+            return false
         }
 
     },
-    TRENDING() {
-        override fun onMessageRecieved() {
-            TODO("not implemented")
+    TRENDING {
+        override fun onMessageReceived(messageBody: String?, title: String?): Boolean {
+            return false
         }
 
     },
-    REPORTS() {
-        override fun onMessageRecieved() {
-            TODO("not implemented")
+    REPORTS {
+        override fun onMessageReceived(messageBody: String?, title: String?): Boolean {
+            return false
         }
 
     },
-    ACHIEVEMENT() {
-        override fun onMessageRecieved() {
-            TODO("not implemented")
+    ACHIEVEMENT {
+        override fun onMessageReceived(messageBody: String?, title: String?): Boolean {
+            return false
         }
 
     },
-    BAN() {
-        override fun onMessageRecieved() {
-            TODO("not implemented")
+    BAN {
+        override fun onMessageReceived(messageBody: String?, title: String?): Boolean {
+            return false
+        }
+
+    },
+    DEFAULT {
+        override fun onMessageReceived(messageBody: String?, title: String?): Boolean {
+            return false
         }
 
     };
 
-    abstract fun onMessageRecieved()
+    abstract fun onMessageReceived(messageBody: String?, title: String?): Boolean
+
+
 }

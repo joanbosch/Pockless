@@ -12,13 +12,20 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.pes.pockles.R
-import com.pes.pockles.data.FCMTokenManager
 import com.pes.pockles.data.repository.UserRepository
 import com.pes.pockles.view.ui.MainActivity
+import dagger.android.AndroidInjection
 import javax.inject.Inject
 
-class PocklesMessagingService @Inject constructor(val userRepository: UserRepository) :
-    FirebaseMessagingService() {
+class PocklesMessagingService : FirebaseMessagingService() {
+
+    @Inject
+    lateinit var userRepository: UserRepository
+
+    override fun onCreate() {
+        AndroidInjection.inject(this)
+        super.onCreate()
+    }
 
     /**
      * Called if InstanceID token is updated. This may occur if the security of
@@ -32,22 +39,26 @@ class PocklesMessagingService @Inject constructor(val userRepository: UserReposi
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        remoteMessage.data.get("mensaje")
-        sendNotification("Viva España", "VIVA FRANCO")
-        when (remoteMessage.messageType) {
-
+        var notification: Notification =
+            mapAPIMessageTypeToNotificationType(remoteMessage.data["category"]?.toInt())
+        /*In some cases this method will do nothing, it is added because in some yes,
+        * and maybe in the future we want to add functionality at receiving this notifications
+        * that actually we don't want an special treatment on it*/
+        val handled = notification.onMessageReceived(
+            remoteMessage?.data["body"],
+            remoteMessage?.data["title"]
+        )
+        if (!handled) {
+            sendNotification(remoteMessage?.data["body"], remoteMessage?.data["title"])
         }
     }
 
+    /*It must be overridden although it is empty*/
     override fun onDeletedMessages() {
-        var a: Int = 5 + 5
+
     }
 
-    private fun sendRegistrationToServer(token: String) {
-        //TODO
-    }
-
-    private fun sendNotification(messageBody: String, title: String) {
+    private fun sendNotification(messageBody: String?, title: String?) {
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(
@@ -84,4 +95,16 @@ class PocklesMessagingService @Inject constructor(val userRepository: UserReposi
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
     }
+
+    private fun mapAPIMessageTypeToNotificationType(messageType: Int?): Notification {
+        when (messageType) {
+            0 -> return Notification.CHAT
+            1 -> return Notification.TRENDING
+            2 -> return Notification.REPORTS
+            3 -> return Notification.ACHIEVEMENT
+            4 -> return Notification.BAN
+        }
+        return Notification.DEFAULT
+    }
+
 }
