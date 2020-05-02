@@ -2,7 +2,6 @@ package com.pes.pockles.data.storage
 
 import android.graphics.Bitmap
 import android.os.Looper
-import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.pes.pockles.data.Resource

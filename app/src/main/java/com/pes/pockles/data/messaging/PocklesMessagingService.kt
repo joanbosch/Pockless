@@ -66,7 +66,7 @@ class PocklesMessagingService : FirebaseMessagingService() {
             PendingIntent.FLAG_ONE_SHOT
         )
 
-        val channelId = "PocklesChanel"
+        val channelId = "PocklesChannel"
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.ic_pock_icon)
@@ -81,15 +81,13 @@ class PocklesMessagingService : FirebaseMessagingService() {
 
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel =
                 NotificationChannel(
                     channelId,
-                    "Channel human readable title",
+                    "PocklesChannel",
                     NotificationManager.IMPORTANCE_DEFAULT
                 )
-            } else {
-                TODO("VERSION.SDK_INT < O")
-            }
+
             notificationManager.createNotificationChannel(channel)
         }
 
