@@ -11,6 +11,7 @@ import com.pes.pockles.R
 import com.pes.pockles.databinding.FragmentProfileBinding
 import com.pes.pockles.util.livedata.EventObserver
 import com.pes.pockles.view.ui.base.BaseFragment
+import com.pes.pockles.view.ui.editprofile.EditProfileActivity
 import com.pes.pockles.view.ui.login.LaunchActivity
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
@@ -42,6 +43,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         viewModel.navigateToLogin.observe(this, EventObserver(::navigateToLogin))
         binding.likeButton.setOnClickListener {
             findNavController().navigate(R.id.action_userProfileFragment_to_likedPocksActivity)
+        }
+
+        binding.editProfileButton.setOnClickListener {
+            val intent = Intent(it.context, EditProfileActivity::class.java)
+            it.context.startActivity(intent)
         }
     }
 

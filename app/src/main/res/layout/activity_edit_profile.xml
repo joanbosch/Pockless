@@ -69,10 +69,43 @@
                 android:orientation="vertical" >
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/imageLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:backgroundTint="@color/md_white_1000"
+                        app:elevation="16dp"
+                        app:fabSize="mini"
+                        app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+                        app:layout_constraintEnd_toEndOf="@+id/profile_image"
+                        app:maxImageSize="20dp"
+                        app:srcCompat="@drawable/ic_icon_camera"
+                        app:tint="@color/profile_camera_color" />
+
+                    <com.mikhaellopez.circularimageview.CircularImageView
+                        android:id="@+id/profile_image"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="40dp"
+                        android:elevation="8dp"
+                        android:scaleType="centerCrop"
+                        app:civ_border_width="0dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.501"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/UsernameLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp">
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:id="@+id/username"
@@ -99,66 +132,6 @@
                         app:layout_constraintStart_toEndOf="@+id/username"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="username" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/passwordLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp">
-
-                    <TextView
-                        android:id="@+id/changePassword"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:fontFamily="@font/montserrat"
-                        android:text="@string/change_password"
-                        android:textColor="@color/md_black_1000"
-                        app:layout_constraintBottom_toBottomOf="@+id/newPasswordInfo"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/newPasswordInfo" />
-
-                    <TextView
-                        android:id="@+id/confirmPassword"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:fontFamily="@font/montserrat"
-                        android:text="@string/confirm_password"
-                        android:textColor="@color/md_black_1000"
-                        app:layout_constraintBottom_toBottomOf="@+id/textInputEditText"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/textInputEditText" />
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/newPasswordInfo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="4dp"
-                        android:fontFamily="@font/montserrat"
-                        android:hint="@string/new_password"
-                        android:inputType="textPassword"
-                        android:textSize="14sp"
-                        app:layout_constraintStart_toEndOf="@+id/changePassword"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/textInputEditText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginBottom="4dp"
-                        android:fontFamily="@font/montserrat"
-                        android:hint="@string/repeat_password"
-                        android:inputType="textPassword"
-                        android:textSize="14sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/confirmPassword"
-                        app:layout_constraintTop_toBottomOf="@+id/newPasswordInfo" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -268,7 +241,6 @@
                         android:layout_height="40dp"
                         android:layout_marginEnd="16dp"
                         android:background="@drawable/circle_register_color_picker"
-                        android:backgroundTint="@{Color.parseColor(viewModel.user.accentColor)}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -298,7 +270,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
                         android:fontFamily="@font/montserrat_bold"
-                        android:text="@{@string/visibility_register_format(viewModel.user.radiusVisibility)}"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/appCompatTextView4"
