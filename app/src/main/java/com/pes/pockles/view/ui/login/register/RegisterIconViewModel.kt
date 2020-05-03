@@ -33,6 +33,7 @@ class RegisterIconViewModel @Inject constructor(
                 when (resource) {
                     is Resource.Success<User> -> {
                         userRepository.saveUser(resource.data!!)
+                        userRepository.saveFCMToken()
                         mediatorLiveData.value = Event(true)
                     }
                     is Resource.Error -> {
@@ -56,4 +57,5 @@ class RegisterIconViewModel @Inject constructor(
             user.value = it
         }
     }
+
 }

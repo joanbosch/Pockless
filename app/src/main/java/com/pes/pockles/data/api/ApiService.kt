@@ -62,4 +62,7 @@ interface ApiService {
 
     @GET("user/likes")
     fun likedPocks(): Single<List<Pock>>
+
+    @PUT("user/token")
+    fun insertFCMToken(@Body insertToken: InsertToken): Single<Boolean>
 }

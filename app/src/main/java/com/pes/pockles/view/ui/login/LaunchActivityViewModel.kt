@@ -23,4 +23,9 @@ class LaunchActivityViewModel @Inject constructor(
     fun saveToken() {
         tokenManager.refreshToken()
     }
+
+    fun saveFCMToken() {
+        userRepository.saveFCMToken()
+    }
+
 }

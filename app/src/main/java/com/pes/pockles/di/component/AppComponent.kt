@@ -2,10 +2,7 @@ package com.pes.pockles.di.component
 
 import android.app.Application
 import com.pes.pockles.PocklesApplication
-import com.pes.pockles.di.modules.ActivitiesModule
-import com.pes.pockles.di.modules.AppModule
-import com.pes.pockles.di.modules.DaoModule
-import com.pes.pockles.di.modules.ViewModelModule
+import com.pes.pockles.di.modules.*
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
@@ -25,7 +22,8 @@ import javax.inject.Singleton
         DaoModule::class,
         AndroidInjectionModule::class,
         ActivitiesModule::class,
-        ViewModelModule::class
+        ViewModelModule::class,
+        ServiceModule::class
     ]
 )
 interface AppComponent : AndroidInjector<PocklesApplication> {

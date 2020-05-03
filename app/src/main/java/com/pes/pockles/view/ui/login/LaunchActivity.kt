@@ -85,6 +85,7 @@ class LaunchActivity : BaseActivity() {
             is Resource.Success<Boolean> -> {
                 if (value.data!!) {
                     viewModel.loadUser()
+                    viewModel.saveFCMToken()
                     startActivity(Intent(this, MainActivity::class.java))
                 } else {
                     startActivity(Intent(this, RegisterActivity::class.java))
