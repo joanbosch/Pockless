@@ -4,6 +4,9 @@ pipelines:
   pull-requests:
     '**':
       - step:
+          caches:
+            - gradle
+            - android-sdk
           script:
             - echo "Setting up"
             - unset ANDROID_NDK_HOME
@@ -12,10 +15,17 @@ pipelines:
   branches:
     develop:
       - step:
+          caches:
+            - gradle
+            - android-sdk
           script:
             - echo "Setting up"
             - unset ANDROID_NDK_HOME
             - echo "Build"
             - ./gradlew assembleDebug
           artifacts:
-            - pockles-app/build/outputs/apk/debug/*.apk
+            - app/build/outputs/apk/debug/*.apk
+
+definitions:
+  caches:
+    android-sdk: android-sdk
