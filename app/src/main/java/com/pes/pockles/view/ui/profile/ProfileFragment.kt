@@ -9,10 +9,13 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.pes.pockles.R
 import com.pes.pockles.databinding.FragmentProfileBinding
+import com.pes.pockles.model.EditedPock
+import com.pes.pockles.model.EditedUser
 import com.pes.pockles.util.livedata.EventObserver
 import com.pes.pockles.view.ui.base.BaseFragment
 import com.pes.pockles.view.ui.editprofile.EditProfileActivity
 import com.pes.pockles.view.ui.login.LaunchActivity
+import java.io.Serializable
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
@@ -30,7 +33,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                 Glide.with(this)
                     .load(user.profileImage)
                     .into(binding.profileImage)
-
+                viewModel.userdata = user
                 binding.user = user
             }
         })
@@ -46,7 +49,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         }
 
         binding.editProfileButton.setOnClickListener {
-            val intent = Intent(it.context, EditProfileActivity::class.java)
+            val intent = Intent(it.context, EditProfileActivity::class.java).apply {
+                putExtra("mail", viewModel.userdata.mail)
+                putExtra("birthDate", viewModel.userdata.birthDate)
+                putExtra("editableContent", EditedUser(viewModel.userdata.name, viewModel.userdata.profileImage, viewModel.userdata.radiusVisibility, viewModel.userdata.accentColor) as Serializable)
+            }
             it.context.startActivity(intent)
         }
     }

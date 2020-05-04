@@ -3,8 +3,8 @@ package com.pes.pockles.model
 import java.io.Serializable
 
 data class EditedUser(
-    val name: String,
-    val profileImage: String,
-    val radiusVisibility: Float,
-    val accentColor: String
+    var name: String,
+    var profileImage: String,
+    var radiusVisibility: Float,
+    var accentColor: String
 ): Serializable

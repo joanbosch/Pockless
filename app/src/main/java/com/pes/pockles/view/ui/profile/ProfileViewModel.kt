@@ -16,6 +16,8 @@ class ProfileViewModel @Inject constructor(
     var logoutUseCase: LogoutUseCase
 ) : ViewModel() {
 
+    lateinit var userdata: User
+
     init {
         repository.reloadUser()
     }

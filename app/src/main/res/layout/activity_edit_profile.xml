@@ -5,9 +5,7 @@
 
     <data>
 
-        <import type="com.pes.pockles.data.Resource" />
-
-        <import type="android.view.View" />
+        <import type="android.graphics.Color" />
 
         <variable
             name="editProfileViewModel"
@@ -119,7 +117,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/usernameInfo" />
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <EditText
                         android:id="@+id/usernameInfo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -127,11 +125,14 @@
                         android:layout_marginTop="4dp"
                         android:layout_marginBottom="4dp"
                         android:fontFamily="@font/montserrat"
+                        android:inputType="textPersonName"
                         android:textSize="14sp"
+                        android:text="@{editProfileViewModel.editableContent.name}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/username"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="username" />
+                        tools:text="username"
+                        android:autofillHints="" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -161,6 +162,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/montserrat"
+                        android:text="@{editProfileViewModel.mail}"
                         app:layout_constraintBottom_toBottomOf="@+id/email"
                         app:layout_constraintStart_toEndOf="@+id/email"
                         app:layout_constraintTop_toTopOf="@+id/email"
@@ -194,6 +196,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/montserrat"
+                        android:text="@{editProfileViewModel.birthDate}"
                         app:layout_constraintBottom_toBottomOf="@+id/birthdate"
                         app:layout_constraintStart_toEndOf="@+id/birthdate"
                         app:layout_constraintTop_toTopOf="@+id/birthdate"
@@ -241,6 +244,7 @@
                         android:layout_height="40dp"
                         android:layout_marginEnd="16dp"
                         android:background="@drawable/circle_register_color_picker"
+                        android:backgroundTint="@{Color.parseColor(editProfileViewModel.editableContent.accentColor)}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -264,16 +268,17 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/appCompatTextView3"
+                    <TextView
+                        android:id="@+id/kmNumber"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
                         android:fontFamily="@font/montserrat_bold"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:text="@{@string/visibility_register_format(editProfileViewModel.editableContent.radiusVisibility)}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/appCompatTextView4"
-                        tools:text="5 km" />
+                        tools:text="5 km"/>
 
                     <com.xw.repo.BubbleSeekBar
                         android:id="@+id/visibilitySeekBar"

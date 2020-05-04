@@ -38,18 +38,6 @@
                     android:layout_height="wrap_content"
                     android:padding="16dp">
 
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:backgroundTint="@color/md_white_1000"
-                        app:elevation="16dp"
-                        app:fabSize="mini"
-                        app:layout_constraintBottom_toBottomOf="@+id/profile_image"
-                        app:layout_constraintEnd_toEndOf="@+id/profile_image"
-                        app:maxImageSize="20dp"
-                        app:srcCompat="@drawable/ic_icon_camera"
-                        app:tint="@color/profile_camera_color" />
-
                     <com.mikhaellopez.circularimageview.CircularImageView
                         android:id="@+id/profile_image"
                         android:layout_width="150dp"
