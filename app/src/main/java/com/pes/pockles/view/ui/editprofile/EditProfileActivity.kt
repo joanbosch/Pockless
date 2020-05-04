@@ -1,18 +1,37 @@
 package com.pes.pockles.view.ui.editprofile
 
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.bottomsheets.BasicGridItem
+import com.afollestad.materialdialogs.bottomsheets.BottomSheet
+import com.afollestad.materialdialogs.bottomsheets.gridItems
+import com.afollestad.materialdialogs.bottomsheets.setPeekHeight
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.pes.pockles.R
+import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.ActivityEditProfileBinding
 import com.pes.pockles.model.EditedUser
 import com.pes.pockles.view.ui.base.BaseActivity
 import com.xw.repo.BubbleSeekBar
 import dev.sasikanth.colorsheet.ColorSheet
+import kotlinx.android.synthetic.main.activity_edit_profile.*
+import java.io.FileNotFoundException
+import java.io.InputStream
 
 class EditProfileActivity : BaseActivity() {
 
@@ -34,7 +53,6 @@ class EditProfileActivity : BaseActivity() {
                 Glide.with(this)
                     .load(user.profileImage)
                     .into(binding.profileImage)
-                //binding.user = user
             }
         })
 
@@ -66,6 +84,20 @@ class EditProfileActivity : BaseActivity() {
 
         }
 
+        binding.usernameInfo.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {}
+
+            override fun beforeTextChanged(s: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+                viewModel.setUsername(s.toString())
+            }
+        })
+
         binding.accentColorContainer.setOnClickListener {
             ColorSheet().colorPicker(
                 colors = resources.getIntArray(R.array.mdcolor_500),
@@ -74,6 +106,10 @@ class EditProfileActivity : BaseActivity() {
                     viewModel.setColor(color)
                 })
                 .show(supportFragmentManager)
+        }
+
+        binding.takeProfileImage.setOnClickListener {
+            photoPicker()
         }
 
         binding.saveButton.setOnClickListener {
@@ -95,4 +131,86 @@ class EditProfileActivity : BaseActivity() {
         return Color.parseColor(color)
     }
 
+    private fun photoPicker() {
+        val items = listOf(
+            BasicGridItem(R.drawable.ic_icon_camera, getString(R.string.take_photo_dialog_option)),
+            BasicGridItem(R.drawable.ic_image, getString(R.string.select_photo_dialog_option))
+        )
+
+        MaterialDialog(this, BottomSheet()).show {
+            title(text = getString(R.string.upload_image_dialog_title))
+            cornerRadius(16f)
+            setPeekHeight(res = R.dimen.register_menu_peek_height)
+            gridItems(items) { _, index, _ ->
+                run {
+                    if (index == 0) {
+                        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+                            takePictureIntent.resolveActivity(packageManager)?.also {
+                                startActivityForResult(takePictureIntent, 112)
+                            }
+                        }
+                    } else {
+                        val photoPickerIntent = Intent(Intent.ACTION_PICK)
+                        photoPickerIntent.type = "image/*"
+                        startActivityForResult(photoPickerIntent, 111)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setPhoto(bitmap: Bitmap) {
+        viewModel.uploadMedia(bitmap).observe(this, Observer {
+            when (it) {
+                is Resource.Loading -> {
+                    binding.loadingView.visibility = View.VISIBLE
+                    binding.profileImage.visibility = View.GONE
+                    binding.takeProfileImage.visibility = View.GONE
+                }
+                is Resource.Error -> {
+                    binding.loadingView.visibility = View.GONE
+                    binding.profileImage.visibility = View.VISIBLE
+                    binding.takeProfileImage.visibility = View.VISIBLE
+                    Snackbar.make(
+                        binding.editProfile,
+                        getString(R.string.error_uploading_an_image),
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+                is Resource.Success<String> -> {
+                    binding.profileImage.setImageBitmap(bitmap)
+                    binding.loadingView.visibility = View.GONE
+                    viewModel.setImageUrl(it.data!!)
+                    binding.profileImage.visibility = View.VISIBLE
+                    binding.takeProfileImage.visibility = View.VISIBLE
+                }
+            }
+        })
+    }
+
+    override fun onActivityResult(reqCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(reqCode, resultCode, data)
+        if (reqCode == 111) {
+            if (resultCode == Activity.RESULT_OK) {
+                try {
+                    val imageUri: Uri? = data?.data
+                    val imageStream: InputStream? = contentResolver.openInputStream(imageUri!!)
+                    val selectedImage = BitmapFactory.decodeStream(imageStream)
+                    setPhoto(selectedImage)
+                } catch (e: FileNotFoundException) {
+                    e.printStackTrace()
+                    Snackbar.make(
+                        binding.editProfile,
+                        getString(R.string.error_selecting_image),
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+            }
+        } else if (reqCode == 112) {
+            if (resultCode == Activity.RESULT_OK) {
+                val imageBitmap = data?.extras?.get("data") as Bitmap
+                setPhoto(imageBitmap)
+            }
+        }
+    }
 }

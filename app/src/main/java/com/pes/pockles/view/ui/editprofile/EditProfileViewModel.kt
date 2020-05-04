@@ -1,9 +1,11 @@
 package com.pes.pockles.view.ui.editprofile
 
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.pes.pockles.data.Resource
 import com.pes.pockles.data.storage.StorageManager
 import com.pes.pockles.domain.usecases.EditProfileUseCase
 import com.pes.pockles.model.EditedUser
@@ -48,6 +50,25 @@ class EditProfileViewModel @Inject constructor(
         }
     }
 
+    fun uploadMedia(bitmap: Bitmap): LiveData<Resource<String>> {
+        return storageManager.uploadMedia(bitmap, "profileImages");
+    }
+
+    fun setImageUrl(data: String) {
+        val u = editableContent.value
+        u?.let {
+            it.profileImage = data
+            _editableContent.value = it
+        }
+    }
+
+    fun setUsername (newName: String) {
+        val u = editableContent.value
+        u?.let {
+            it.name = newName
+            _editableContent.value = it
+        }
+    }
 
 
 }
