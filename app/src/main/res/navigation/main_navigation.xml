@@ -12,17 +12,34 @@
         tools:layout="@layout/fragment_chat" />
     <fragment
         android:id="@+id/mapFragment"
-        android:name="com.pes.pockles.view.ui.MapFragment"
+        android:name="com.pes.pockles.view.ui.map.MapFragment"
         android:label="fragment_map"
         tools:layout="@layout/fragment_map" />
     <fragment
         android:id="@+id/userProfileFragment"
-        android:name="com.pes.pockles.view.ui.UserProfileFragment"
+        android:name="com.pes.pockles.view.ui.profile.ProfileFragment"
         android:label="fragment_user_profile"
-        tools:layout="@layout/fragment_user_profile" />
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_userProfileFragment_to_pocksHistoryActivity"
+            app:destination="@id/pocksHistoryActivity" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_likedPocksActivity"
+            app:destination="@id/likedPocksActivity" />
+    </fragment>
     <fragment
         android:id="@+id/notificationsFragment"
         android:name="com.pes.pockles.view.ui.NotificationsFragment"
         android:label="fragment_notifications"
         tools:layout="@layout/fragment_notifications" />
+    <activity
+        android:id="@+id/pocksHistoryActivity"
+        android:name="com.pes.pockles.view.ui.pockshistory.PocksHistoryActivity"
+        android:label="PocksHistoryActivity"
+        tools:layout="@layout/activity_pocks_history" />
+    <activity
+        android:id="@+id/likedPocksActivity"
+        android:name="com.pes.pockles.view.ui.likes.LikedPocksActivity"
+        android:label="LikedPocksActivity"
+        tools:layout="@layout/activity_liked_pocks" />
 </navigation>

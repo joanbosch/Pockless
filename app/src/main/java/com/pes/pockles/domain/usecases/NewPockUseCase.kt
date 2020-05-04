@@ -2,13 +2,14 @@ package com.pes.pockles.domain.usecases
 
 import androidx.lifecycle.LiveData
 import com.pes.pockles.data.Resource
-import com.pes.pockles.data.repository.implementation.PockRepositoryImpl
-import com.pes.pockles.domain.repositories.PockRepository
+import com.pes.pockles.data.repository.PockRepository
+import com.pes.pockles.model.NewPock
 import com.pes.pockles.model.Pock
+import javax.inject.Inject
 
-class NewPockUseCase(private val pockRepository: PockRepository = PockRepositoryImpl()) {
+class NewPockUseCase @Inject constructor(var pockRepository: PockRepository) {
 
-    fun execute(pock: Pock): LiveData<Resource<Pock>> {
+    fun execute(pock: NewPock): LiveData<Resource<Pock>> {
         return pockRepository.newPock(pock)
     }
 }

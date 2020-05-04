@@ -1,31 +1,15 @@
-image: mingc/android-build-box:latest
+image: uber/android-build-environment:latest
 
 pipelines:
   pull-requests:
     '**':
       - step:
-          caches:
-            - gradle
-            - android-sdk
           script:
-            - echo "Setting up"
-            - unset ANDROID_NDK_HOME
-            - echo "Build"
-            - ./gradlew assembleDebug
+            - ./build.sh
   branches:
     develop:
       - step:
-          caches:
-            - gradle
-            - android-sdk
           script:
-            - echo "Setting up"
-            - unset ANDROID_NDK_HOME
-            - echo "Build"
-            - ./gradlew assembleDebug
+            - ./build.sh
           artifacts:
-            - app/build/outputs/apk/debug/*.apk
-
-definitions:
-  caches:
-    android-sdk: android-sdk
+            - pockles-app/build/outputs/apk/debug/*.apk
