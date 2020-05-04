@@ -29,7 +29,6 @@ import com.pes.pockles.model.EditedUser
 import com.pes.pockles.view.ui.base.BaseActivity
 import com.xw.repo.BubbleSeekBar
 import dev.sasikanth.colorsheet.ColorSheet
-import kotlinx.android.synthetic.main.activity_edit_profile.*
 import java.io.FileNotFoundException
 import java.io.InputStream
 
@@ -134,7 +133,8 @@ class EditProfileActivity : BaseActivity() {
     private fun photoPicker() {
         val items = listOf(
             BasicGridItem(R.drawable.ic_icon_camera, getString(R.string.take_photo_dialog_option)),
-            BasicGridItem(R.drawable.ic_image, getString(R.string.select_photo_dialog_option))
+            BasicGridItem(R.drawable.ic_image, getString(R.string.select_photo_dialog_option)),
+            BasicGridItem(R.drawable.ic_delete, getString(R.string.delete))
         )
 
         MaterialDialog(this, BottomSheet()).show {
@@ -143,16 +143,22 @@ class EditProfileActivity : BaseActivity() {
             setPeekHeight(res = R.dimen.register_menu_peek_height)
             gridItems(items) { _, index, _ ->
                 run {
-                    if (index == 0) {
-                        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-                            takePictureIntent.resolveActivity(packageManager)?.also {
-                                startActivityForResult(takePictureIntent, 112)
+                    when (index) {
+                        0 -> {
+                            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+                                takePictureIntent.resolveActivity(packageManager)?.also {
+                                    startActivityForResult(takePictureIntent, 112)
+                                }
                             }
                         }
-                    } else {
-                        val photoPickerIntent = Intent(Intent.ACTION_PICK)
-                        photoPickerIntent.type = "image/*"
-                        startActivityForResult(photoPickerIntent, 111)
+                        1 -> {
+                            val photoPickerIntent = Intent(Intent.ACTION_PICK)
+                            photoPickerIntent.type = "image/*"
+                            startActivityForResult(photoPickerIntent, 111)
+                        }
+                        else -> {
+                            viewModel.deleteImage()
+                        }
                     }
                 }
             }
@@ -178,7 +184,6 @@ class EditProfileActivity : BaseActivity() {
                     ).show()
                 }
                 is Resource.Success<String> -> {
-                    binding.profileImage.setImageBitmap(bitmap)
                     binding.loadingView.visibility = View.GONE
                     viewModel.setImageUrl(it.data!!)
                     binding.profileImage.visibility = View.VISIBLE

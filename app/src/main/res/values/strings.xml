@@ -116,4 +116,5 @@
     <string name="confirm_password">Confirmar contraseña:</string>
     <string name="new_password">nueva contraseña</string>
     <string name="repeat_password">repetir contraseña</string>
+    <string name="delete">Eliminar</string>
 </resources>

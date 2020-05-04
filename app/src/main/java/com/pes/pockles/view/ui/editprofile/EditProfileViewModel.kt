@@ -16,6 +16,11 @@ class EditProfileViewModel @Inject constructor(
     private val storageManager: StorageManager
 ) : ViewModel() {
 
+    companion object {
+        const val DEFAULT_IMAGE =
+            "https://firebasestorage.googleapis.com/v0/b/pockles.appspot.com/o/default_user_profile_image.png?alt=media&token=af8dd6a0-2dec-4780-9f6d-633cb9a93ba6"
+    }
+
     private val _mail = MutableLiveData<String>()
         val mail: LiveData<String>
         get() = _mail
@@ -70,5 +75,12 @@ class EditProfileViewModel @Inject constructor(
         }
     }
 
+    fun deleteImage() {
+        val u = editableContent.value
+        u?.let {
+            it.profileImage = DEFAULT_IMAGE
+            _editableContent.value = it
+        }
+    }
 
 }
