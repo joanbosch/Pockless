@@ -28,14 +28,29 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/backButton"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:backgroundTint="@color/colorAccent"
+                    android:contentDescription="@null"
+                    android:paddingStart="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_arrow_back_white_24dp" />
 
                 <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/toolbar"
                     android:layout_width="wrap_content"
                     android:layout_height="?attr/actionBarSize"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/backButton"
                     app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0"
                     app:layout_scrollFlags="scroll"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                     app:title="@string/title_toolbar_edit_profile" />
@@ -135,18 +150,19 @@
                         android:id="@+id/usernameInfo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:minWidth="100dp"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="4dp"
                         android:layout_marginBottom="4dp"
+                        android:autofillHints=""
                         android:fontFamily="@font/montserrat"
                         android:inputType="textPersonName"
-                        android:textSize="14sp"
                         android:text="@{editProfileViewModel.editableContent.name}"
+                        android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/username"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="username"
-                        android:autofillHints="" />
+                        tools:text="username" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

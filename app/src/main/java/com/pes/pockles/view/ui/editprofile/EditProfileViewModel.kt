@@ -21,6 +21,8 @@ class EditProfileViewModel @Inject constructor(
             "https://firebasestorage.googleapis.com/v0/b/pockles.appspot.com/o/default_user_profile_image.png?alt=media&token=af8dd6a0-2dec-4780-9f6d-633cb9a93ba6"
     }
 
+    private val _savedList = mutableListOf<Any>()
+
     private val _mail = MutableLiveData<String>()
         val mail: LiveData<String>
         get() = _mail
@@ -37,6 +39,10 @@ class EditProfileViewModel @Inject constructor(
         _mail.value = mail
         _birthDate.value = birthDate
         _editableContent.value = editableContent
+        _savedList.add(editableContent.name)
+        _savedList.add(editableContent.profileImage)
+        _savedList.add(editableContent.accentColor)
+        _savedList.add(editableContent.radiusVisibility)
     }
 
     fun setVisibility(progressFloat: Float) {
@@ -81,6 +87,22 @@ class EditProfileViewModel @Inject constructor(
             it.profileImage = DEFAULT_IMAGE
             _editableContent.value = it
         }
+    }
+
+    fun save() {
+        _savedList[0] = _editableContent.value!!.name
+        _savedList[1] = _editableContent.value!!.profileImage
+        _savedList[2] = _editableContent.value!!.accentColor
+        _savedList[3] = _editableContent.value!!.radiusVisibility
+    }
+
+    fun isChanged(): Boolean {
+        Log.i("editing profile back", _savedList[0] as String)
+        Log.i("editing profile back", _editableContent.value!!.name)
+        return (_savedList[0] != _editableContent.value!!.name ||
+                _savedList[1] != _editableContent.value!!.profileImage ||
+                _savedList[2] != _editableContent.value!!.accentColor ||
+                _savedList[3] != _editableContent.value!!.radiusVisibility)
     }
 
 }

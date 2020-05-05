@@ -12,6 +12,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -21,6 +22,7 @@ import com.afollestad.materialdialogs.bottomsheets.BottomSheet
 import com.afollestad.materialdialogs.bottomsheets.gridItems
 import com.afollestad.materialdialogs.bottomsheets.setPeekHeight
 import com.bumptech.glide.Glide
+import com.firebase.ui.auth.AuthUI
 import com.google.android.material.snackbar.Snackbar
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
@@ -94,6 +96,9 @@ class EditProfileActivity : BaseActivity() {
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
                 viewModel.setUsername(s.toString())
+                if (s.isNullOrEmpty()) {
+                    binding.usernameInfo.setError("Este campo no puede estar vacío")
+                }
             }
         })
 
@@ -107,15 +112,22 @@ class EditProfileActivity : BaseActivity() {
                 .show(supportFragmentManager)
         }
 
+        binding.backButton.setOnClickListener {
+            onBackPressed()
+        }
+
         binding.takeProfileImage.setOnClickListener {
             photoPicker()
         }
 
         binding.saveButton.setOnClickListener {
-            Log.i("EditingProfile", viewModel.editableContent.value?.name)
-            Log.i("EditingProfile", viewModel.editableContent.value?.accentColor)
-            Log.i("EditingProfile", viewModel.editableContent.value?.radiusVisibility.toString())
-            Log.i("EditingProfile", viewModel.editableContent.value?.profileImage)
+            if (!viewModel.editableContent.value?.name.isNullOrEmpty()) {
+                viewModel.save()
+                Log.i("EditingProfile", viewModel.editableContent.value?.name)
+                Log.i("EditingProfile", viewModel.editableContent.value?.accentColor)
+                Log.i("EditingProfile", viewModel.editableContent.value?.radiusVisibility.toString())
+                Log.i("EditingProfile", viewModel.editableContent.value?.profileImage)
+            }
         }
     }
 
@@ -217,5 +229,29 @@ class EditProfileActivity : BaseActivity() {
                 setPhoto(imageBitmap)
             }
         }
+    }
+
+    private fun close() {
+        run {
+            AuthUI.getInstance().delete(this@EditProfileActivity)
+            finish()
+        }
+    }
+
+    override fun onBackPressed() {
+        Log.i("editing profile back", viewModel.isChanged().toString())
+        if (viewModel.isChanged()) {
+            AlertDialog.Builder(this).setTitle(getString(R.string.cancel_changes_dialog_title))
+                .setMessage(getString(R.string.cancel_changes_dialog_description))
+                .setPositiveButton(
+                    getString(R.string.yes)
+                ) { _, _ ->
+                    close()
+                }
+                .setNegativeButton(getString(R.string.no)) { dialog, _ ->
+                    dialog.dismiss()
+                }.show()
+        }
+        else close()
     }
 }
