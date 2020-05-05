@@ -3,13 +3,13 @@ package com.pes.pockles.view.ui.profile
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ScrollView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.pes.pockles.R
 import com.pes.pockles.databinding.FragmentProfileBinding
-import com.pes.pockles.model.EditedPock
 import com.pes.pockles.model.EditedUser
 import com.pes.pockles.util.livedata.EventObserver
 import com.pes.pockles.view.ui.base.BaseFragment
@@ -18,6 +18,8 @@ import com.pes.pockles.view.ui.login.LaunchActivity
 import java.io.Serializable
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
+
+    private var shouldRefreshOnResume = false
 
     private val viewModel: ProfileViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(ProfileViewModel::class.java)
@@ -73,5 +75,19 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     override fun getLayout(): Int {
         return R.layout.fragment_profile
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Check should we need to refresh the fragment
+        if (shouldRefreshOnResume) {
+            binding.profileScrollView.fullScroll(ScrollView.FOCUS_UP);
+            viewModel.refresh()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        shouldRefreshOnResume = true
     }
 }

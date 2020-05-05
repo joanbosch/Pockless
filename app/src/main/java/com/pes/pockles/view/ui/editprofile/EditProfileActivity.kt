@@ -28,6 +28,7 @@ import com.pes.pockles.R
 import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.ActivityEditProfileBinding
 import com.pes.pockles.model.EditedUser
+import com.pes.pockles.model.User
 import com.pes.pockles.view.ui.base.BaseActivity
 import com.xw.repo.BubbleSeekBar
 import dev.sasikanth.colorsheet.ColorSheet
@@ -52,7 +53,7 @@ class EditProfileActivity : BaseActivity() {
         viewModel.editableContent.observe(this, Observer {
             it?.let { user ->
                 Glide.with(this)
-                    .load(user.profileImage)
+                    .load(user.profileImageUrl)
                     .into(binding.profileImage)
             }
         })
@@ -122,11 +123,45 @@ class EditProfileActivity : BaseActivity() {
 
         binding.saveButton.setOnClickListener {
             if (!viewModel.editableContent.value?.name.isNullOrEmpty()) {
-                viewModel.save()
+                if (viewModel.isChanged()) {
+                    viewModel.save().observe(this, Observer {
+                        when (it) {
+                            is Resource.Loading -> {
+                                binding.saveButton.visibility = View.GONE
+                                binding.saveProgressBar.visibility = View.VISIBLE
+                            }
+                            is Resource.Error -> {
+                                binding.saveProgressBar.visibility = View.GONE
+                                binding.saveButton.visibility = View.VISIBLE
+                                Snackbar.make(
+                                    binding.editProfile,
+                                    getString(R.string.error_editing_the_profile),
+                                    Snackbar.LENGTH_LONG
+                                ).show()
+                            }
+                            is Resource.Success<User> -> {
+                                binding.saveProgressBar.visibility = View.GONE
+                                binding.saveButton.visibility = View.VISIBLE
+                                Snackbar.make(
+                                    binding.editProfile,
+                                    getString(R.string.success_editing_the_profile),
+                                    Snackbar.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                    })
+                }
+                else {
+                    Snackbar.make(
+                        binding.editProfile,
+                        getString(R.string.no_changes_editing_the_profile),
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
                 Log.i("EditingProfile", viewModel.editableContent.value?.name)
                 Log.i("EditingProfile", viewModel.editableContent.value?.accentColor)
                 Log.i("EditingProfile", viewModel.editableContent.value?.radiusVisibility.toString())
-                Log.i("EditingProfile", viewModel.editableContent.value?.profileImage)
+                Log.i("EditingProfile", viewModel.editableContent.value?.profileImageUrl)
             }
         }
     }

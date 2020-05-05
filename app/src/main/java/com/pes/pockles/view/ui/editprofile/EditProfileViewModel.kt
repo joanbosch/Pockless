@@ -9,6 +9,7 @@ import com.pes.pockles.data.Resource
 import com.pes.pockles.data.storage.StorageManager
 import com.pes.pockles.domain.usecases.EditProfileUseCase
 import com.pes.pockles.model.EditedUser
+import com.pes.pockles.model.User
 import javax.inject.Inject
 
 class EditProfileViewModel @Inject constructor(
@@ -40,7 +41,7 @@ class EditProfileViewModel @Inject constructor(
         _birthDate.value = birthDate
         _editableContent.value = editableContent
         _savedList.add(editableContent.name)
-        _savedList.add(editableContent.profileImage)
+        _savedList.add(editableContent.profileImageUrl)
         _savedList.add(editableContent.accentColor)
         _savedList.add(editableContent.radiusVisibility)
     }
@@ -68,7 +69,7 @@ class EditProfileViewModel @Inject constructor(
     fun setImageUrl(data: String) {
         val u = editableContent.value
         u?.let {
-            it.profileImage = data
+            it.profileImageUrl = data
             _editableContent.value = it
         }
     }
@@ -84,23 +85,22 @@ class EditProfileViewModel @Inject constructor(
     fun deleteImage() {
         val u = editableContent.value
         u?.let {
-            it.profileImage = DEFAULT_IMAGE
+            it.profileImageUrl = DEFAULT_IMAGE
             _editableContent.value = it
         }
     }
 
-    fun save() {
+    fun save() : LiveData<Resource<User>>{
         _savedList[0] = _editableContent.value!!.name
-        _savedList[1] = _editableContent.value!!.profileImage
+        _savedList[1] = _editableContent.value!!.profileImageUrl
         _savedList[2] = _editableContent.value!!.accentColor
         _savedList[3] = _editableContent.value!!.radiusVisibility
+        return useCase.execute(_editableContent.value!!)
     }
 
     fun isChanged(): Boolean {
-        Log.i("editing profile back", _savedList[0] as String)
-        Log.i("editing profile back", _editableContent.value!!.name)
         return (_savedList[0] != _editableContent.value!!.name ||
-                _savedList[1] != _editableContent.value!!.profileImage ||
+                _savedList[1] != _editableContent.value!!.profileImageUrl ||
                 _savedList[2] != _editableContent.value!!.accentColor ||
                 _savedList[3] != _editableContent.value!!.radiusVisibility)
     }

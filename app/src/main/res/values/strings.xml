@@ -119,4 +119,7 @@
     <string name="delete">Eliminar</string>
     <string name="cancel_changes_dialog_title">Hay cambios sin guardar</string>
     <string name="cancel_changes_dialog_description">¿Seguro que quieres salir?</string>
+    <string name="error_editing_the_profile">Ha ocurrido un error al actualizar tu perfil. Intentelo de nuevo más tarde</string>
+    <string name="success_editing_the_profile">Se ha actualizado tu perfil</string>
+    <string name="no_changes_editing_the_profile">Tu perfil ya esta actualizado</string>
 </resources>
