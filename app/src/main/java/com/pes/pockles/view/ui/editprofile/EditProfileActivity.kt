@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
@@ -158,10 +157,6 @@ class EditProfileActivity : BaseActivity() {
                         Snackbar.LENGTH_LONG
                     ).show()
                 }
-                Log.i("EditingProfile", viewModel.editableContent.value?.name)
-                Log.i("EditingProfile", viewModel.editableContent.value?.accentColor)
-                Log.i("EditingProfile", viewModel.editableContent.value?.radiusVisibility.toString())
-                Log.i("EditingProfile", viewModel.editableContent.value?.profileImageUrl)
             }
         }
     }
@@ -274,7 +269,6 @@ class EditProfileActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        Log.i("editing profile back", viewModel.isChanged().toString())
         if (viewModel.isChanged()) {
             AlertDialog.Builder(this).setTitle(getString(R.string.cancel_changes_dialog_title))
                 .setMessage(getString(R.string.cancel_changes_dialog_description))
