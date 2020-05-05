@@ -106,4 +106,9 @@
     <string name="liked_pock_activity_title">Me gusta</string>
     <string name="error_obtaining_liked_pocks">Ha ocurrido un error al obtener los pocks gustados</string>
     <string name="error_removing_like">Ha ocurrido un error al eliminar el me gusta del pock</string>
+
+    <!-- Chat Strings -->
+    <string name="chats">Chats</string>
+    <string name="you_dont_have_any_chat">No tienes ningún chat</string>
+    you_dont_have_any_chat
 </resources>

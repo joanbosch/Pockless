@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="chat"
+            type="com.pes.pockles.model.Chat" />
+        <variable
+            name="username"
+            type="String" />
+
+        <import type="com.pes.pockles.util.TimeUtils" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/likeItemContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/item_like_background_ripple"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="16dp">
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/circularImageView2"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:scaleType="centerCrop"
+            app:civ_border_width="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcUrl="@+id/profile_image" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView5"
+            android:layout_width="173dp"
+            android:layout_height="22dp"
+            android:layout_marginStart="8dp"
+            android:text="@{username}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/md_black_1000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.056"
+            app:layout_constraintStart_toEndOf="@+id/circularImageView2"
+            app:layout_constraintTop_toTopOf="@+id/circularImageView2"
+            tools:text="Username" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/lastMessageDate"
+            android:layout_width="99dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="204dp"
+            android:text="@{TimeUtils.getChatTime(chat)}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintStart_toEndOf="@+id/circularImageView2"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Date" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/lasMessageContent"
+            android:layout_width="293dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="8dp"
+            android:text="@{chat.lastMessage}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/circularImageView2"
+            app:layout_constraintTop_toBottomOf="@+id/appCompatTextView5"
+            tools:text="Content" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

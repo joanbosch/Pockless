@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="message"
+            type="com.pes.pockles.model.Message" />
+        <import type="com.pes.pockles.util.TimeUtils" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/txtOtherMessage"
+            android:text="@{message.text}"
+            android:background="@drawable/other_message_bubble"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="240dp"
+            android:padding="15dp"
+            android:elevation="5dp"
+            android:textColor="#ffffff"
+            android:layout_marginTop="4dp"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/txtOtherMessageTime"
+            android:text="@{TimeUtils.getMessageTime(message)}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@+id/txtOtherMessage"
+            android:layout_marginLeft="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/txtOtherMessage" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
