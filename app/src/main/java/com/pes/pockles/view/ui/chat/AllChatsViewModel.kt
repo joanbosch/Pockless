@@ -18,14 +18,11 @@ class AllChatsViewModel @Inject constructor(
 
     private val _chats = MediatorLiveData<Resource<List<Chat>>>()
 
-    // Executed when RecyclerView must be updated
-    /*
-    fun refreshInformation() {
+    init {
         val source = useCase.execute()
-        _pocksHistory.addSource(source) {
-            _pocksHistory.value = it
-            if (!it.loading) _pocksHistory.removeSource(source)
+        _chats.addSource(source){
+            _chats.value = it
+            if(!it.loading) _chats.removeSource(source)
         }
     }
-     */
 }

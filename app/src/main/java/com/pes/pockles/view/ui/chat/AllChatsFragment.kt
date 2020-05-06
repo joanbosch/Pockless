@@ -18,7 +18,7 @@ import com.pes.pockles.model.Chat
 import com.pes.pockles.view.ui.chat.item.BindingChatItem
 
 /**
- * A simple [Fragment] subclass.
+ * A simple [Fragment] subclass
  */
 class AllChatsFragment : BaseFragment<FragmentChatBinding>() {
 
@@ -32,7 +32,7 @@ class AllChatsFragment : BaseFragment<FragmentChatBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.viewModel = viewModel
+        //binding.viewmodel = viewModel
 
         binding.rvChats.let {
             it.layoutManager = LinearLayoutManager(activity)
@@ -43,9 +43,9 @@ class AllChatsFragment : BaseFragment<FragmentChatBinding>() {
     }
 
     private fun initializeObservers() {
-        viewModel.chats.observe(this, Observer {
-            it?.let {
-                when (it) {
+        viewModel.chats.observe(this, Observer {value: Resource<List<Chat>> ->
+            value?.let {
+                when (value) {
                     is Resource.Success<List<Chat>> -> setDataRecyclerView(it.data!!)
                     is Resource.Error -> handleError()
                     is Resource.Loading -> binding.swipeChats.isRefreshing = true
