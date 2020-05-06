@@ -32,7 +32,7 @@ class AllChatsFragment : BaseFragment<FragmentChatBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //binding.viewmodel = viewModel
+        binding.viewmodel = viewModel
 
         binding.rvChats.let {
             it.layoutManager = LinearLayoutManager(activity)
@@ -63,6 +63,8 @@ class AllChatsFragment : BaseFragment<FragmentChatBinding>() {
 
     private fun setDataRecyclerView(chats: List<Chat>) {
         binding.swipeChats.isRefreshing = false
+        binding.ChatsProgressBar.visibility = View.GONE
+        binding.txtNoChats.visibility = View.GONE
         if (chats.isEmpty()) {
             binding.txtNoChats.visibility = View.VISIBLE
         } else {

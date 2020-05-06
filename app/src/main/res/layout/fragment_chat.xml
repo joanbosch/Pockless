@@ -10,8 +10,8 @@
         <import type="android.view.View" />
 
         <variable
-            name="pocksHistoryViewModel"
-            type="com.pes.pockles.view.ui.pockshistory.PocksHistoryViewModel" />
+            name="viewmodel"
+            type="com.pes.pockles.view.ui.chat.AllChatsViewModel" />
 
     </data>
 

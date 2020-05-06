@@ -24,7 +24,7 @@ object TimeUtils {
     @JvmStatic
     fun getChatTime(chat: Chat): String {
         val df: DateFormat = SimpleDateFormat(
-            "dd-MMM-yy HH:mm",
+            "dd-MMM HH:mm",
             Locale.getDefault()
         )
         return try {

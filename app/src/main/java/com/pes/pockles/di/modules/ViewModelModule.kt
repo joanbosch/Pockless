@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.pes.pockles.di.util.ViewModelFactory
 import com.pes.pockles.di.util.ViewModelKey
+import com.pes.pockles.domain.usecases.AllChatsUseCase
+import com.pes.pockles.view.ui.chat.AllChatsViewModel
 import com.pes.pockles.view.ui.editpock.EditPockViewModel
 import com.pes.pockles.view.ui.likes.LikedPocksViewModel
 import com.pes.pockles.view.ui.login.LaunchActivityViewModel
@@ -73,6 +75,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(LikedPocksViewModel::class)
     abstract fun likedPocksViewModel(viewModel: LikedPocksViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AllChatsViewModel::class)
+    abstract fun allChatsViewModel(viewModel: AllChatsViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
