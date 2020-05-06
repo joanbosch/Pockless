@@ -62,12 +62,13 @@
                     android:visibility="visible" />
 
                 <TextView
-                    android:id="@+id/cardTitle"
+                    android:id="@+id/txtNoChats"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/you_dont_have_any_chat"
+                    android:textAlignment="center"
                     android:textAppearance="?attr/textAppearanceHeadline6"
-                    android:textAlignment="center"/>
+                    android:visibility="invisible" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvChats"

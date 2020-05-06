@@ -21,7 +21,7 @@ object TimeUtils {
             ""
         }
     }
-
+    @JvmStatic
     fun getChatTime(chat: Chat): String {
         val df: DateFormat = SimpleDateFormat(
             "dd-MMM-yy HH:mm",
@@ -33,7 +33,7 @@ object TimeUtils {
             ""
         }
     }
-
+    @JvmStatic
     fun getMessageTime(msg: Message): String {
         val df: DateFormat = SimpleDateFormat(
             "HH:mm",

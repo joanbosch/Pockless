@@ -65,4 +65,7 @@ interface ApiService {
 
     @PUT("user/token")
     fun insertFCMToken(@Body insertToken: InsertToken): Single<Boolean>
+
+    @GET("chat")
+    fun allChats(): Single<List<Chat>>
 }
