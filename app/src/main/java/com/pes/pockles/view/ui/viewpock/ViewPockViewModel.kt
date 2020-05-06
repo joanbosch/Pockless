@@ -80,7 +80,13 @@ class ViewPockViewModel @Inject constructor(
         }
     }
 
-    fun report(pockId: String){
-        pockRepository.reportPock(pockId)
+    fun report(){
+        val data = pock.value?.data?.let {
+            if(it.reported){
+                _errorMsg.value = R.string.AlertNO
+            }
+            pockRepository.reportPock(it.id) }
+
+
     }
 }

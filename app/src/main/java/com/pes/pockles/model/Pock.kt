@@ -11,5 +11,8 @@ data class Pock(
     val username: String = "Carlos",
     var likes: Int = 0,
     var liked: Boolean = false,
-    var userProfileImage: String? = ""
+    var userProfileImage: String? = "",
+    var reports: Int =0,
+    var reported: Boolean = false,
+    var hidden: Boolean = false
 )

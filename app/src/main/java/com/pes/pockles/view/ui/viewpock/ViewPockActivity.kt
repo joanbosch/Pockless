@@ -55,7 +55,7 @@ class ViewPockActivity : BaseActivity() {
         }
 
         binding.report.setOnClickListener {
-            goReport(pockId)
+            goReport()
         }
     }
 
@@ -65,8 +65,8 @@ class ViewPockActivity : BaseActivity() {
         startActivity(shareIntent)
     }
 
-    private fun goReport(id: String) {
-        basicAlert(findViewById(R.id.constraintLayout3), id)
+    private fun goReport() {
+        basicAlert(findViewById(R.id.constraintLayout3))
     }
 
     private fun goChat() {
@@ -104,8 +104,8 @@ class ViewPockActivity : BaseActivity() {
         }
     }
 
-//Alert for displaying the user agreement to report the pock
-    private fun basicAlert(view: View, idP: String) {
+    //Alert for displaying the user agreement to report the pock
+    private fun basicAlert(view: View) {
         let {
             val builder = AlertDialog.Builder(it)
             builder.setMessage(R.string.AlertMessageReport)?.setTitle(R.string.AlertTitleReport)
@@ -113,7 +113,7 @@ class ViewPockActivity : BaseActivity() {
                 setPositiveButton(
                     R.string.AlertOK
                 ) { dialog, id ->
-                    okReport(idP)
+                    okReport()
                     // User clicked OK button
                 }
                 setNegativeButton(
@@ -126,9 +126,9 @@ class ViewPockActivity : BaseActivity() {
         }.show()
     }
 
-    private fun okReport(id: String) {
-        Toast.makeText(this, "AlertDialogWorks", Toast.LENGTH_SHORT).show()
-        //binding.pockViewModel.report(id)
+    private fun okReport() {
+        Toast.makeText(this, "Reported", Toast.LENGTH_SHORT).show()
+        binding.pockViewModel?.report()
     }
 
 }
