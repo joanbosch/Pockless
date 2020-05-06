@@ -68,7 +68,7 @@
 
                 <Button
                     android:id="@+id/btnSend"
-                    android:layout_width="68dp"
+                    android:layout_width="59dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:clickable="true"
