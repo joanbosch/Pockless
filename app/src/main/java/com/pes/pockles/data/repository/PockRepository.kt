@@ -12,6 +12,7 @@ import com.pes.pockles.model.Pock
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.view_pock.view.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -109,5 +110,9 @@ class PockRepository @Inject constructor(
 
     fun undoLikePock(id: String): LiveData<Resource<Pock>> {
         return callApi(Function { apiService -> apiService.undoLike(id) })
+    }
+
+    fun reportPock(id: String): LiveData<Resource<Pock>> {
+        return callApi(Function { apiService -> apiService.report(id) })
     }
 }

@@ -4,9 +4,11 @@ import android.content.Intent
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
@@ -53,7 +55,7 @@ class ViewPockActivity : BaseActivity() {
         }
 
         binding.report.setOnClickListener {
-            goReport()
+            goReport(pockId)
         }
     }
 
@@ -63,8 +65,8 @@ class ViewPockActivity : BaseActivity() {
         startActivity(shareIntent)
     }
 
-    private fun goReport() {
-        Toast.makeText(this, "Report function not implemented yet!", Toast.LENGTH_SHORT).show()
+    private fun goReport(id: String) {
+        basicAlert(findViewById(R.id.constraintLayout3), id)
     }
 
     private fun goChat() {
@@ -101,4 +103,32 @@ class ViewPockActivity : BaseActivity() {
             window.setLayout((width * .7).toInt(), (height * .8).toInt())
         }
     }
+
+//Alert for displaying the user agreement to report the pock
+    private fun basicAlert(view: View, idP: String) {
+        let {
+            val builder = AlertDialog.Builder(it)
+            builder.setMessage(R.string.AlertMessageReport)?.setTitle(R.string.AlertTitleReport)
+            builder.apply {
+                setPositiveButton(
+                    R.string.AlertOK
+                ) { dialog, id ->
+                    okReport(idP)
+                    // User clicked OK button
+                }
+                setNegativeButton(
+                    R.string.AlertNO
+                ) { dialog, id ->
+                    // User cancelled the dialog
+                }
+            }
+            builder.create()
+        }.show()
+    }
+
+    private fun okReport(id: String) {
+        Toast.makeText(this, "AlertDialogWorks", Toast.LENGTH_SHORT).show()
+        //binding.pockViewModel.report(id)
+    }
+
 }

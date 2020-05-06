@@ -93,7 +93,10 @@
     <string name="nearby_pocks">Pocks a tu alrededor</string>
     <string name="error_general_like">Ha ocurrido un error con el like</string>
     <string name="error_no_pock">No se ha podido obtener el pock</string>
-
+    <string name="AlertTitleReport">Reportar Pock</string>
+    <string name="AlertMessageReport">Reportar un Pock es algo muy serio y no puede ser revocado ¿Estas seguro de que quieres reportar este pock?</string>
+    <string name="AlertOK">Reportar</string>
+    <string name="AlertNO">Cancelar</string>
 
     <!-- Edit Pock Resources -->
     <string name="title_activity_edit_pock">EditPockActivity</string>

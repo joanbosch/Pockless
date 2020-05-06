@@ -79,4 +79,8 @@ class ViewPockViewModel @Inject constructor(
             }
         }
     }
+
+    fun report(pockId: String){
+        pockRepository.reportPock(pockId)
+    }
 }
