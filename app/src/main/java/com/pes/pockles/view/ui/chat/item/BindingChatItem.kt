@@ -24,10 +24,8 @@ class BindingChatItem : AbstractBindingItem<ChatItemBinding>() {
     binding.chatItemCard.setOnClickListener {
 
         val intent = Intent(it.context, ChatActivity::class.java).apply {
-            /* PER PASSAR COSES AL ACTIVITY
-            putExtra("pockId", pock?.id)
-            putExtra("editableContent", EditedPock(pock!!.message, pock!!.category, pock!!.chatAccess, pock?.media) as Serializable)
-             */
+            putExtra("chatID", chat?.id)
+            //putExtra("editableContent", EditedPock(pock!!.message, pock!!.category, pock!!.chatAccess, pock?.media) as Serializable)
         }
         it.context.startActivity(intent)
     }

@@ -10,6 +10,7 @@ import com.pes.pockles.R
 import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.ChatActivityBinding
 import com.pes.pockles.model.Message
+import com.pes.pockles.model.NewMessage
 import com.pes.pockles.view.ui.base.BaseActivity
 import com.pes.pockles.view.ui.chat.item.MessageAdapter
 
@@ -22,6 +23,8 @@ class ChatActivity : BaseActivity() {
         ViewModelProviders.of(this, viewModelFactory).get(ChatViewModel::class.java)
     }
 
+    private var chatID:String  = ""
+    private var chatPosition = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,36 +37,64 @@ class ChatActivity : BaseActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
 
+        //Obtaing the chatID
+
+        chatID = intent.getStringExtra("chatID")
+
         //Initialize observers
         initializeObservers()
 
         //Define Actions
+        initializeListeners()
 
-        /*
-        MUST BE DONE!
-         */
+        viewModel.refreshMessages(chatID)
     }
+
+    private fun initializeListeners() {
+        //Listener to go Back
+        binding.toolbar.setNavigationOnClickListener {
+            onBackPressed()
+        }
+
+        binding.btnSend.setOnClickListener {
+            val txt = binding.txtMessage.text.toString()
+            val message = NewMessage(txt,chatID)
+            viewModel.postMessage(message)
+            binding.txtMessage.text.clear()
+        }
+    }
+
 
     private fun initializeObservers() {
         viewModel.messages.observe(this, Observer {
             it?.let {
                 when(it) {
                     is Resource.Success<List<Message>> -> setDataRecyclerView(it.data!!)
-                    is Resource.Error -> handleError()
+                    is Resource.Error -> handleError("No se han podido obtener los mensajes del chat")
                 }
             }
         }
         )
-        //Listener to go Back
-        binding.toolbar.setNavigationOnClickListener {
-            onBackPressed()
+
+        viewModel.newMsg.observe(this, Observer {
+            it?.let {
+                when(it) {
+                    is Resource.Success<Message> -> refreshMessages()
+                    is Resource.Error -> handleError("No se ha podido añadir el mensaje")
+                }
+            }
         }
+        )
     }
 
-    private fun handleError() {
+    private fun refreshMessages() {
+        viewModel.refreshMessages(chatID)
+    }
+
+    private fun handleError(s: String) {
         val text = getString(R.string.cannot_load_chats)
         val duration = Toast.LENGTH_SHORT
-        val toast = Toast.makeText(this, text, duration)
+        val toast = Toast.makeText(this, s, duration)
         toast.show()
     }
 
@@ -73,6 +104,7 @@ class ChatActivity : BaseActivity() {
         adapter.setMessages(messages)
         binding.rvChat.adapter = adapter
         binding.rvChat.scrollToPosition(messages.size - 1);
+        chatPosition = messages.size - 1
     }
 
 

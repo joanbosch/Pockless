@@ -47,7 +47,7 @@ class MessageAdapter (val context: Context) : RecyclerView.Adapter<MessageViewHo
     override fun getItemViewType(position: Int): Int {
         val message = messages[position]
 
-        return if(message.senderId != "fqa35iAW2Qd5ewCTK50RhpfuRWr1" ) {
+        return if(message.senderId == "fqa35iAW2Qd5ewCTK50RhpfuRWr1" ) {
             VIEW_TYPE_MY_MESSAGE
         }
         else {

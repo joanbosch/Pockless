@@ -48,7 +48,6 @@ class AllChatsFragment : BaseFragment<FragmentChatBinding>() {
                 when (value) {
                     is Resource.Success<List<Chat>> -> setDataRecyclerView(it.data!!)
                     is Resource.Error -> handleError()
-                    is Resource.Loading -> binding.swipeChats.isRefreshing = true
                 }
             }
         })
@@ -62,7 +61,6 @@ class AllChatsFragment : BaseFragment<FragmentChatBinding>() {
     }
 
     private fun setDataRecyclerView(chats: List<Chat>) {
-        binding.swipeChats.isRefreshing = false
         binding.ChatsProgressBar.visibility = View.GONE
         binding.txtNoChats.visibility = View.GONE
         if (chats.isEmpty()) {
