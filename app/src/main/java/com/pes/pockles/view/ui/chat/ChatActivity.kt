@@ -6,25 +6,22 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mikepenz.fastadapter.FastAdapter
-import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.ChatActivityBinding
 import com.pes.pockles.model.Message
 import com.pes.pockles.view.ui.base.BaseActivity
-import com.pes.pockles.view.ui.chat.item.BindingMessageItem
-import com.pes.pockles.view.ui.pockshistory.item.BindingPockItem
+import com.pes.pockles.view.ui.chat.item.MessageAdapter
 
 class ChatActivity : BaseActivity() {
+
+    private lateinit var adapter: MessageAdapter
 
     private lateinit var binding: ChatActivityBinding
     private val viewModel: ChatViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(ChatViewModel::class.java)
     }
 
-    // Create the ItemAdapter holding your Items
-    private val itemAdapter = ItemAdapter<BindingMessageItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +33,8 @@ class ChatActivity : BaseActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
+        binding.btnSend.bringToFront()
+        binding.txtMessage.bringToFront()
 
         //Initialize observers
         initializeObservers()
@@ -45,12 +44,6 @@ class ChatActivity : BaseActivity() {
         /*
         MUST BE DONE!
          */
-
-        //RecyclerView
-        binding.rvChat.let {
-            it.layoutManager = LinearLayoutManager(this)
-            it.adapter = FastAdapter.with(itemAdapter)
-        }
     }
 
     private fun initializeObservers() {
@@ -65,23 +58,19 @@ class ChatActivity : BaseActivity() {
         )
     }
 
-    private fun setDataRecyclerView(messages: List<Message>) {
-        val pockListBinding: List<BindingMessageItem> = messages.map { msg ->
-            val binding =
-                BindingMessageItem()
-            binding.message = msg
-            binding.myMessage = true
-            binding
-        }
-
-        //Fill and set the items to the ItemAdapter
-        itemAdapter.setNewList(pockListBinding)
-    }
-
     private fun handleError() {
         val text = getString(R.string.cannot_load_chats)
         val duration = Toast.LENGTH_SHORT
         val toast = Toast.makeText(this, text, duration)
         toast.show()
     }
+
+    private fun setDataRecyclerView(messages: List<Message>) {
+        binding.rvChat.layoutManager = LinearLayoutManager(this)
+        adapter = MessageAdapter(this)
+        adapter.setMessages(messages)
+        binding.rvChat.adapter = adapter
+    }
+
+
 }
