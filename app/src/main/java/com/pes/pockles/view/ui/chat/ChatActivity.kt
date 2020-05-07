@@ -33,8 +33,6 @@ class ChatActivity : BaseActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
-        binding.btnSend.bringToFront()
-        binding.txtMessage.bringToFront()
 
         //Initialize observers
         initializeObservers()
@@ -56,6 +54,10 @@ class ChatActivity : BaseActivity() {
             }
         }
         )
+        //Listener to go Back
+        binding.toolbar.setNavigationOnClickListener {
+            onBackPressed()
+        }
     }
 
     private fun handleError() {
@@ -70,6 +72,7 @@ class ChatActivity : BaseActivity() {
         adapter = MessageAdapter(this)
         adapter.setMessages(messages)
         binding.rvChat.adapter = adapter
+        binding.rvChat.scrollToPosition(messages.size - 1);
     }
 
 
