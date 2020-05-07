@@ -9,6 +9,10 @@
             name="chat"
             type="com.pes.pockles.model.Chat" />
 
+        <variable
+            name="viewmodel"
+            type="com.pes.pockles.view.ui.chat.ChatViewModel" />
+
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

@@ -68,4 +68,7 @@ interface ApiService {
 
     @GET("chat")
     fun allChats(): Single<List<Chat>>
+
+    @GET("chat/{id}")
+    fun allMessageChat(@Path("id") id: String): Single<List<Message>>
 }

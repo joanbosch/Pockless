@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.pes.pockles.data.Resource
 import com.pes.pockles.data.api.ApiService
 import com.pes.pockles.model.Chat
+import com.pes.pockles.model.Message
 import javax.inject.Inject
 import javax.inject.Singleton
 import io.reactivex.functions.Function
@@ -15,5 +16,9 @@ class ChatRepository @Inject constructor(
 
     fun getAllChats(): LiveData<Resource<List<Chat>>> {
         return callApi(Function { apiService -> apiService.allChats() })
+    }
+
+    fun getAllChatMessages(chatId: String): LiveData<Resource<List<Message>>> {
+        return callApi(Function { apiService -> apiService.allMessageChat(chatId) })
     }
 }
