@@ -1,17 +1,20 @@
 package com.pes.pockles.view.ui.chat
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.ChatActivityBinding
 import com.pes.pockles.model.Message
 import com.pes.pockles.view.ui.base.BaseActivity
-import kotlinx.android.synthetic.main.activity_register.*
+import com.pes.pockles.view.ui.chat.item.BindingMessageItem
+import com.pes.pockles.view.ui.pockshistory.item.BindingPockItem
 
 class ChatActivity : BaseActivity() {
 
@@ -20,8 +23,11 @@ class ChatActivity : BaseActivity() {
         ViewModelProviders.of(this, viewModelFactory).get(ChatViewModel::class.java)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    // Create the ItemAdapter holding your Items
+    private val itemAdapter = ItemAdapter<BindingMessageItem>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.chat_activity)
         binding.lifecycleOwner = this
         binding.viewmodel = viewModel
@@ -39,6 +45,12 @@ class ChatActivity : BaseActivity() {
         /*
         MUST BE DONE!
          */
+
+        //RecyclerView
+        binding.rvChat.let {
+            it.layoutManager = LinearLayoutManager(this)
+            it.adapter = FastAdapter.with(itemAdapter)
+        }
     }
 
     private fun initializeObservers() {
@@ -54,7 +66,16 @@ class ChatActivity : BaseActivity() {
     }
 
     private fun setDataRecyclerView(messages: List<Message>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val pockListBinding: List<BindingMessageItem> = messages.map { msg ->
+            val binding =
+                BindingMessageItem()
+            binding.message = msg
+            binding.myMessage = true
+            binding
+        }
+
+        //Fill and set the items to the ItemAdapter
+        itemAdapter.setNewList(pockListBinding)
     }
 
     private fun handleError() {

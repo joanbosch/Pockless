@@ -111,4 +111,5 @@
     <string name="chats">Chats</string>
     <string name="you_dont_have_any_chat">No tienes ningún chat</string>
     <string name="cannot_load_chats">No se han podido obtener los chats</string>
+    <string name="title_activity_chat">Chat</string>
 </resources>
