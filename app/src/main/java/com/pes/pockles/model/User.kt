@@ -15,6 +15,7 @@ data class User(
     @SerializedName("profileImageUrl")
     val profileImage: String,
     val radiusVisibility: Float,
+    val accentColor: String,
     val badge: Int, // todo: change to badge once available
     @SerializedName("pocks")
     val createdPocksNumber: Int
