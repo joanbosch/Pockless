@@ -12,7 +12,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.pes.pockles.R
-import com.pes.pockles.data.repository.UserRepository
+import com.pes.pockles.data.repository.RepositoryProvider
 import com.pes.pockles.view.ui.MainActivity
 import dagger.android.AndroidInjection
 import javax.inject.Inject
@@ -20,7 +20,7 @@ import javax.inject.Inject
 class PocklesMessagingService : FirebaseMessagingService() {
 
     @Inject
-    lateinit var userRepository: UserRepository
+    lateinit var repositoryProvider: RepositoryProvider
 
     override fun onCreate() {
         AndroidInjection.inject(this)
@@ -34,22 +34,24 @@ class PocklesMessagingService : FirebaseMessagingService() {
      */
     override fun onNewToken(token: String) {
         //Send token to PAPI
-        FirebaseAuth.getInstance().currentUser?.let { userRepository.insertFCMToken(token) }
-
+        FirebaseAuth.getInstance()
+            .currentUser?.let { repositoryProvider.userRepository.insertFCMToken(token) }
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        var notification: Notification =
+        val notification: Notification =
             mapAPIMessageTypeToNotificationType(remoteMessage.data["category"]?.toInt())
         /*In some cases this method will do nothing, it is added because in some yes,
         * and maybe in the future we want to add functionality at receiving this notifications
         * that actually we don't want an special treatment on it*/
         val handled = notification.onMessageReceived(
-            remoteMessage?.data["body"],
-            remoteMessage?.data["title"]
+            repositoryProvider,
+            remoteMessage.data["body"],
+            remoteMessage.data["title"],
+            remoteMessage.data
         )
         if (!handled) {
-            sendNotification(remoteMessage?.data["body"], remoteMessage?.data["title"])
+            sendNotification(remoteMessage.data["body"], remoteMessage.data["title"])
         }
     }
 

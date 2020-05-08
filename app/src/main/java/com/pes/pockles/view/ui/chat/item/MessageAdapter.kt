@@ -16,17 +16,17 @@ import kotlinx.android.synthetic.main.other_message.view.*
 private const val VIEW_TYPE_MY_MESSAGE = 1
 private const val VIEW_TYPE_OTHER_MESSAGE = 2
 
-class MessageAdapter (val context: Context) : RecyclerView.Adapter<MessageViewHolder>() {
+class MessageAdapter(val context: Context) : RecyclerView.Adapter<MessageViewHolder>() {
 
     private var messages: List<Message> = ArrayList()
 
-    fun setMessages(messages : List<Message>){
+    fun setMessages(messages: List<Message>) {
         this.messages = messages
     }
 
-    inner class MyMessageViewHolder (view :View) : MessageViewHolder(view) {
-        private var messageText : TextView = view.txtMyMessage
-        private var timeText : TextView = view.txtMyMessageTime
+    inner class MyMessageViewHolder(view: View) : MessageViewHolder(view) {
+        private var messageText: TextView = view.txtMyMessage
+        private var timeText: TextView = view.txtMyMessageTime
 
         override fun bind(message: Message) {
             messageText.text = message.text
@@ -34,9 +34,9 @@ class MessageAdapter (val context: Context) : RecyclerView.Adapter<MessageViewHo
         }
     }
 
-    inner class OtherMessageViewHolder (view :View) : MessageViewHolder(view) {
-        private var messageText : TextView = view.txtOtherMessage
-        private var timeText : TextView = view.txtOtherMessageTime
+    inner class OtherMessageViewHolder(view: View) : MessageViewHolder(view) {
+        private var messageText: TextView = view.txtOtherMessage
+        private var timeText: TextView = view.txtOtherMessageTime
 
         override fun bind(message: Message) {
             messageText.text = message.text
@@ -47,16 +47,15 @@ class MessageAdapter (val context: Context) : RecyclerView.Adapter<MessageViewHo
     override fun getItemViewType(position: Int): Int {
         val message = messages[position]
 
-        return if(message.senderId == "fqa35iAW2Qd5ewCTK50RhpfuRWr1" ) {
+        return if (message.senderId == "fqa35iAW2Qd5ewCTK50RhpfuRWr1") {
             VIEW_TYPE_MY_MESSAGE
-        }
-        else {
+        } else {
             VIEW_TYPE_OTHER_MESSAGE
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
-        return if(viewType == VIEW_TYPE_MY_MESSAGE) {
+        return if (viewType == VIEW_TYPE_MY_MESSAGE) {
             MyMessageViewHolder(
                 LayoutInflater.from(context).inflate(R.layout.my_message, parent, false)
             )
@@ -77,6 +76,7 @@ class MessageAdapter (val context: Context) : RecyclerView.Adapter<MessageViewHo
     }
 
 }
-open class MessageViewHolder (view: View) : RecyclerView.ViewHolder(view) {
-    open fun bind(message:Message) {}
+
+open class MessageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    open fun bind(message: Message) {}
 }
