@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.pes.pockles.R
 import com.pes.pockles.databinding.ViewPockBinding
 import com.pes.pockles.view.ui.base.BaseActivity
+import com.pes.pockles.view.ui.chat.ChatActivity
 
 
 class ViewPockActivity : BaseActivity() {
@@ -45,7 +46,7 @@ class ViewPockActivity : BaseActivity() {
         }
 
         binding.chat.setOnClickListener {
-            goChat()
+            goChat(pockId)
         }
 
         binding.share.setOnClickListener {
@@ -67,8 +68,16 @@ class ViewPockActivity : BaseActivity() {
         Toast.makeText(this, "Report function not implemented yet!", Toast.LENGTH_SHORT).show()
     }
 
-    private fun goChat() {
-        Toast.makeText(this, "Chat function not implemented yet!", Toast.LENGTH_SHORT).show()
+    private fun goChat(pockId: String) {
+
+        val intent = Intent(this, ChatActivity::class.java).apply {
+            putExtra("pockID", pockId)
+            putExtra("username", viewModel.pock.value!!.data?.username)
+            putExtra("userImage", viewModel.pock.value!!.data?.userProfileImage)
+            //putExtra("editableContent", EditedPock(pock!!.message, pock!!.category, pock!!.chatAccess, pock?.media) as Serializable)
+        }
+        startActivity(intent)
+
     }
 
 

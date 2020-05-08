@@ -24,6 +24,9 @@ class ChatActivity : BaseActivity() {
     }
 
     private var chatID:String  = ""
+    private var pockID:String  = ""
+    private var username:String  = ""
+    private var userImage: String = ""
     private var chatPosition = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,8 +41,17 @@ class ChatActivity : BaseActivity() {
         supportActionBar!!.setDisplayShowHomeEnabled(true)
 
         //Obtaing the chatID
-
         chatID = intent.getStringExtra("chatID")
+
+        /*//Obtaining the pockID
+        pockID = intent.getStringExtra("pockID")
+
+        //Obtaining the username of the User
+        username = intent.getStringExtra("username")
+
+        // Obtain the user image
+        userImage = intent.getStringExtra("userImage")
+        */
 
         //Initialize observers
         initializeObservers()
@@ -60,7 +72,7 @@ class ChatActivity : BaseActivity() {
             val txt = binding.txtMessage.text.toString()
             val message = NewMessage(txt,chatID)
             viewModel.postMessage(message)
-            binding.txtMessage.text.clear()
+            binding.txtMessage.text!!.clear()
         }
     }
 

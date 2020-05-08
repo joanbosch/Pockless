@@ -44,17 +44,15 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvChat"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="60dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="55dp"
             android:scrollbars="vertical"
             app:layout_constraintBottom_toTopOf="@+id/constraintLayout4"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-            app:layout_constraintVertical_bias="1.0"
             tools:ignore="MissingConstraints" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -66,39 +64,32 @@
             app:layout_constraintStart_toStartOf="parent">
 
 
-            <LinearLayout
-                android:id="@+id/layout_messageArea"
-                android:layout_width="match_parent"
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/txtMessage"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="parent"
-                tools:ignore="MissingConstraints"
-                tools:layout_editor_absoluteX="-171dp">
+                android:gravity="left|bottom"
+                android:hint="Enter message"
+                android:includeFontPadding="false"
+                android:maxLines="6"
+                android:paddingStart="@dimen/add_image_padding"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/btnSend"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <EditText
-                    android:id="@+id/txtMessage"
-                    android:layout_width="350dp"
-                    android:layout_height="match_parent"
-                    android:gravity="left|bottom"
-                    android:hint="Enter message"
-                    android:includeFontPadding="false"
-                    android:maxLines="6"
-                    android:paddingStart="@dimen/add_image_padding"
-                    android:textSize="14sp" />
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    />
-                <Button
-                    android:id="@+id/btnSend"
-                    android:layout_width="61dp"
-                    android:layout_height="match_parent"
-                    android:clickable="true"
-                    android:layout_alignParentRight="true"
-                    app:cornerRadius="25dp"
-                    app:icon="@android:drawable/ic_menu_send" />
-            </LinearLayout>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btnSend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:baselineAlignBottom="false"
+                app:srcCompat="@drawable/ic_send_black_24dp"
+                app:backgroundTint="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </com.google.android.material.floatingactionbutton.FloatingActionButton>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
