@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.ChatActivityBinding
+import com.pes.pockles.model.ChatData
 import com.pes.pockles.model.Message
 import com.pes.pockles.model.NewMessage
 import com.pes.pockles.view.ui.base.BaseActivity
@@ -23,10 +24,7 @@ class ChatActivity : BaseActivity() {
         ViewModelProviders.of(this, viewModelFactory).get(ChatViewModel::class.java)
     }
 
-    private var chatID:String  = ""
-    private var pockID:String  = ""
-    private var username:String  = ""
-    private var userImage: String = ""
+    private lateinit var chatInformation: ChatData
     private var chatPosition = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,18 +38,9 @@ class ChatActivity : BaseActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
 
-        //Obtaing the chatID
-        chatID = intent.getStringExtra("chatID")
-
-        /*//Obtaining the pockID
-        pockID = intent.getStringExtra("pockID")
-
-        //Obtaining the username of the User
-        username = intent.getStringExtra("username")
-
-        // Obtain the user image
-        userImage = intent.getStringExtra("userImage")
-        */
+        //Obtaining the ChatInformation
+        chatInformation = intent.extras?.getParcelable("chatData")!!
+        binding.chat = chatInformation
 
         //Initialize observers
         initializeObservers()
@@ -59,7 +48,7 @@ class ChatActivity : BaseActivity() {
         //Define Actions
         initializeListeners()
 
-        viewModel.refreshMessages(chatID)
+        chatInformation.chatId?.let { viewModel.refreshMessages(it) }
     }
 
     private fun initializeListeners() {
@@ -70,7 +59,7 @@ class ChatActivity : BaseActivity() {
 
         binding.btnSend.setOnClickListener {
             val txt = binding.txtMessage.text.toString()
-            val message = NewMessage(txt,chatID)
+            val message = NewMessage(txt,chatInformation.chatId)
             viewModel.postMessage(message)
             binding.txtMessage.text!!.clear()
         }
@@ -100,7 +89,7 @@ class ChatActivity : BaseActivity() {
     }
 
     private fun refreshMessages() {
-        viewModel.refreshMessages(chatID)
+        chatInformation.chatId?.let { viewModel.refreshMessages(it) }
     }
 
     private fun handleError(s: String) {

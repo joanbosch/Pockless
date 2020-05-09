@@ -7,6 +7,7 @@ import com.mikepenz.fastadapter.binding.AbstractBindingItem
 import com.pes.pockles.R
 import com.pes.pockles.databinding.ChatItemBinding
 import com.pes.pockles.model.Chat
+import com.pes.pockles.model.ChatData
 import com.pes.pockles.view.ui.chat.ChatActivity
 
 
@@ -24,8 +25,8 @@ class BindingChatItem : AbstractBindingItem<ChatItemBinding>() {
     binding.chatItemCard.setOnClickListener {
 
         val intent = Intent(it.context, ChatActivity::class.java).apply {
-            putExtra("chatID", chat?.id)
-            //putExtra("editableContent", EditedPock(pock!!.message, pock!!.category, pock!!.chatAccess, pock?.media) as Serializable)
+            var chatData: ChatData = ChatData(chat?.id, null, chat?.user2!!.name, chat?.user2!!.profileImageUrl)
+            putExtra("chatData", chatData)
         }
         it.context.startActivity(intent)
     }
