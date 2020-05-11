@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.pes.pockles.R
 import com.pes.pockles.databinding.ViewPockBinding
+import com.pes.pockles.model.ChatData
 import com.pes.pockles.view.ui.base.BaseActivity
 import com.pes.pockles.view.ui.chat.ChatActivity
 
@@ -71,10 +72,8 @@ class ViewPockActivity : BaseActivity() {
     private fun goChat(pockId: String) {
 
         val intent = Intent(this, ChatActivity::class.java).apply {
-            putExtra("pockID", pockId)
-            putExtra("username", viewModel.pock.value!!.data?.username)
-            putExtra("userImage", viewModel.pock.value!!.data?.userProfileImage)
-            //putExtra("editableContent", EditedPock(pock!!.message, pock!!.category, pock!!.chatAccess, pock?.media) as Serializable)
+            var chatData: ChatData = ChatData(null, pockId, viewModel.pock.value?.data!!.username, viewModel.pock.value?.data!!.userProfileImage)
+            putExtra("chatData", chatData)
         }
         startActivity(intent)
 

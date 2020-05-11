@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.pes.pockles.R
 import com.pes.pockles.model.Message
 import com.pes.pockles.util.TimeUtils
@@ -47,7 +48,7 @@ class MessageAdapter(val context: Context) : RecyclerView.Adapter<MessageViewHol
     override fun getItemViewType(position: Int): Int {
         val message = messages[position]
 
-        return if (message.senderId == "fqa35iAW2Qd5ewCTK50RhpfuRWr1") {
+        return if (message.senderId == FirebaseAuth.getInstance().currentUser?.uid) {
             VIEW_TYPE_MY_MESSAGE
         } else {
             VIEW_TYPE_OTHER_MESSAGE

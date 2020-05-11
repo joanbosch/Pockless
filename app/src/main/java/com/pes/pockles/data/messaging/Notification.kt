@@ -1,6 +1,10 @@
 package com.pes.pockles.data.messaging
 
+import android.app.ActivityManager
+
 import com.pes.pockles.data.repository.RepositoryProvider
+import com.pes.pockles.model.Message
+import com.pes.pockles.view.ui.chat.ChatActivity
 
 enum class Notification {
     CHAT {
@@ -10,7 +14,15 @@ enum class Notification {
             title: String?,
             extras: Map<String, String>
         ): Boolean {
-            return false
+            val msg = Message(extras["chatId"] ?: error(""),
+                extras["text"] ?: error(""),
+                extras["senderId"] ?: error(""),
+                (extras["read"] ?: error("")).toBoolean(),
+                (extras["date"] ?: error("")).toLong(),
+                extras["chatId"] ?: error("")
+            )
+            repositoryProvider.chatRepository.onMessageReceived(msg)
+            return true
         }
 
     },

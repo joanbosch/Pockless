@@ -15,6 +15,8 @@ class ChatRepository @Inject constructor(
     private var apiService: ApiService
 ) : BaseRepository(apiService) {
 
+    private val observers = mutableMapOf<String, (Message) -> Unit>()
+
     fun getAllChats(): LiveData<Resource<List<Chat>>> {
         return callApi(Function { apiService -> apiService.allChats() })
     }
@@ -26,4 +28,22 @@ class ChatRepository @Inject constructor(
     fun newMessage(message: NewMessage): LiveData<Resource<Message>> {
         return callApi(Function { apiService -> apiService.newMessage(message) })
     }
+
+    fun observe(chatId: String, observer: (m: Message) -> Unit) {
+        observers[chatId] = observer
+    }
+
+    fun removeObserver(chatId: String) {
+        observers.remove(chatId)
+    }
+
+    fun onMessageReceived(message: Message) {
+        if (observers.contains(message.chatId)) {
+            observers[message.chatId]!!(message)
+        } else {
+            // notificacion
+        }
+    }
+
+
 }

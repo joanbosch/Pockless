@@ -20,11 +20,7 @@ class AllChatsViewModel @Inject constructor(
         get() = _chats
 
     private val _chats = MediatorLiveData<Resource<List<Chat>>>()
-    /*
-    val user: LiveData<Resource<User>>
-        get() = _user
-    private val _user = MediatorLiveData<Resource<User>>()
-    */
+
     init {
         val source = useCase.execute()
         _chats.addSource(source){
@@ -33,8 +29,9 @@ class AllChatsViewModel @Inject constructor(
         }
     }
 
+    fun you() {
 
-
+    }
 
 
 }

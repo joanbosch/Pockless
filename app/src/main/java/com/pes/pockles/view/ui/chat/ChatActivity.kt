@@ -42,6 +42,9 @@ class ChatActivity : BaseActivity() {
         chatInformation = intent.extras?.getParcelable("chatData")!!
         binding.chat = chatInformation
 
+        // Set the notification binding to the activity
+        chatInformation.chatId?.let { viewModel.setUpNotificationObserver(it) }
+
         //Initialize observers
         initializeObservers()
 
@@ -59,7 +62,12 @@ class ChatActivity : BaseActivity() {
 
         binding.btnSend.setOnClickListener {
             val txt = binding.txtMessage.text.toString()
-            val message = NewMessage(txt,chatInformation.chatId)
+            var message: NewMessage
+            message = if (!chatInformation.chatId.isNullOrEmpty()) {
+                NewMessage(txt, chatInformation.chatId, null)
+            } else {
+                NewMessage(txt, null, chatInformation.pockId)
+            }
             viewModel.postMessage(message)
             binding.txtMessage.text!!.clear()
         }
@@ -70,7 +78,7 @@ class ChatActivity : BaseActivity() {
         viewModel.messages.observe(this, Observer {
             it?.let {
                 when(it) {
-                    is Resource.Success<List<Message>> -> setDataRecyclerView(it.data!!)
+                    is Resource.Success<MutableList<Message>> -> setDataRecyclerView(it.data!!)
                     is Resource.Error -> handleError("No se han podido obtener los mensajes del chat")
                 }
             }
@@ -99,7 +107,7 @@ class ChatActivity : BaseActivity() {
         toast.show()
     }
 
-    private fun setDataRecyclerView(messages: List<Message>) {
+    private fun setDataRecyclerView(messages: MutableList<Message>) {
         binding.rvChat.layoutManager = LinearLayoutManager(this)
         adapter = MessageAdapter(this)
         adapter.setMessages(messages)

@@ -7,7 +7,7 @@ data class ChatData(
     val chatId: String?,
     var pockId: String?,
     var user_name: String,
-    var profileImageUrl: String
+    var profileImageUrl: String?
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
