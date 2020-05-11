@@ -119,7 +119,7 @@ class ViewPockActivity : BaseActivity() {
                 setNegativeButton(
                     R.string.AlertNO
                 ) { dialog, id ->
-                    // User cancelled the dialog
+                    // User cancelled the dialog, it simply closes it
                 }
             }
             builder.create()
@@ -127,7 +127,6 @@ class ViewPockActivity : BaseActivity() {
     }
 
     private fun okReport() {
-        Toast.makeText(this, "Reported", Toast.LENGTH_SHORT).show()
         binding.pockViewModel?.report()
     }
 

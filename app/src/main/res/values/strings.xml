@@ -97,6 +97,9 @@
     <string name="AlertMessageReport">Reportar un Pock es algo muy serio y no puede ser revocado ¿Estas seguro de que quieres reportar este pock?</string>
     <string name="AlertOK">Reportar</string>
     <string name="AlertNO">Cancelar</string>
+    <string name="Reported">Ya has reportado este pock</string>
+    <string name="ReportSend">Hemos enviado el reporte a nuestros sistemas</string>
+
 
     <!-- Edit Pock Resources -->
     <string name="title_activity_edit_pock">EditPockActivity</string>
