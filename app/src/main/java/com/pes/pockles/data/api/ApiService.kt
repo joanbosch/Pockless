@@ -66,6 +66,6 @@ interface ApiService {
     @PUT("user/token")
     fun insertFCMToken(@Body insertToken: InsertToken): Single<Boolean>
 
-    @POST("pock/{id}/report")
-    fun report(@Path("id") id: String): Single<Pock>
+    @PATCH("user")
+    fun editProfile(@Body editProfile: EditedUser): Single<User>
 }

@@ -16,6 +16,8 @@ class ProfileViewModel @Inject constructor(
     var logoutUseCase: LogoutUseCase
 ) : ViewModel() {
 
+    lateinit var userdata: User
+
     init {
         repository.reloadUser()
     }
@@ -37,6 +39,10 @@ class ProfileViewModel @Inject constructor(
         }
 
     val user: LiveData<User> = repository.getUser()
+
+    fun refresh() {
+        repository.reloadUser()
+    }
 
     fun navigateToHistoryOnClick(v: View) {
         _navigateToHistory.value = Event(true)
