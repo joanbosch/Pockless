@@ -21,7 +21,6 @@ import com.afollestad.materialdialogs.bottomsheets.BottomSheet
 import com.afollestad.materialdialogs.bottomsheets.gridItems
 import com.afollestad.materialdialogs.bottomsheets.setPeekHeight
 import com.bumptech.glide.Glide
-import com.firebase.ui.auth.AuthUI
 import com.google.android.material.snackbar.Snackbar
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
@@ -41,6 +40,7 @@ class EditProfileActivity : BaseActivity() {
     private val viewModel: EditProfileViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(EditProfileViewModel::class.java)
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_profile)
@@ -89,12 +89,16 @@ class EditProfileActivity : BaseActivity() {
 
             override fun afterTextChanged(s: Editable) {}
 
-            override fun beforeTextChanged(s: CharSequence, start: Int,
-                                           count: Int, after: Int) {
+            override fun beforeTextChanged(
+                s: CharSequence, start: Int,
+                count: Int, after: Int
+            ) {
             }
 
-            override fun onTextChanged(s: CharSequence, start: Int,
-                                       before: Int, count: Int) {
+            override fun onTextChanged(
+                s: CharSequence, start: Int,
+                before: Int, count: Int
+            ) {
                 viewModel.setUsername(s.toString())
                 if (s.isNullOrEmpty()) {
                     binding.usernameInfo.setError("Este campo no puede estar vacío")
@@ -149,8 +153,7 @@ class EditProfileActivity : BaseActivity() {
                             }
                         }
                     })
-                }
-                else {
+                } else {
                     Snackbar.make(
                         binding.editProfile,
                         getString(R.string.no_changes_editing_the_profile),
@@ -163,7 +166,11 @@ class EditProfileActivity : BaseActivity() {
 
     private fun loadContent() {
         val infoToEdit = intent.extras?.get("editableContent") as EditedUser
-        viewModel.loadContent(intent.extras?.get("mail") as String, intent.extras?.get("birthDate") as String, infoToEdit)
+        viewModel.loadContent(
+            intent.extras?.get("mail") as String,
+            intent.extras?.get("birthDate") as String,
+            infoToEdit
+        )
         binding.visibilitySeekBar.setProgress(infoToEdit.radiusVisibility)
     }
 
@@ -262,10 +269,7 @@ class EditProfileActivity : BaseActivity() {
     }
 
     private fun close() {
-        run {
-            AuthUI.getInstance().delete(this@EditProfileActivity)
-            finish()
-        }
+        finish()
     }
 
     override fun onBackPressed() {
@@ -280,7 +284,6 @@ class EditProfileActivity : BaseActivity() {
                 .setNegativeButton(getString(R.string.no)) { dialog, _ ->
                     dialog.dismiss()
                 }.show()
-        }
-        else close()
+        } else close()
     }
 }
