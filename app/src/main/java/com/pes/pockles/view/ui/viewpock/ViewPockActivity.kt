@@ -66,7 +66,7 @@ class ViewPockActivity : BaseActivity() {
     }
 
     private fun goReport() {
-        basicAlert(findViewById(R.id.constraintLayout3))
+        basicAlert()
     }
 
     private fun goChat() {
@@ -105,7 +105,7 @@ class ViewPockActivity : BaseActivity() {
     }
 
     //Alert for displaying the user agreement to report the pock
-    private fun basicAlert(view: View) {
+    private fun basicAlert() {
         let {
             val builder = AlertDialog.Builder(it)
             builder.setMessage(R.string.AlertMessageReport)?.setTitle(R.string.AlertTitleReport)
