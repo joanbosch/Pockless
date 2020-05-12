@@ -155,7 +155,7 @@ class ViewPockActivity : BaseActivity() {
 
     private fun okReport(which: Int) {
         val bigArray = resources.getStringArray(R.array.Motivos)
-        val motive = temp[which]
+        val motive = bigArray[which]
         binding.pockViewModel?.report(motive)
     }
 
