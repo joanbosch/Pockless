@@ -111,7 +111,7 @@ class PockRepository @Inject constructor(
         return callApi(Function { apiService -> apiService.undoLike(id) })
     }
 
-    fun reportPock(id: String): LiveData<Resource<Pock>> {
-        return callApi(Function { apiService -> apiService.report(id) })
+    fun reportPock(id: String, motivo:String): LiveData<Resource<Pock>> {
+        return callApi(Function { apiService -> apiService.report(id,motivo) })
     }
 }

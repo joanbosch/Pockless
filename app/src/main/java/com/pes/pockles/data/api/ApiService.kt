@@ -70,5 +70,5 @@ interface ApiService {
     fun editProfile(@Body editProfile: EditedUser): Single<User>
 
     @POST("pock/{id}/report")
-    fun report(@Path("id") id: String): Single<Pock>
+    fun report(@Path("id") id: String, @Query("motivo") motivo: String): Single<Pock>
 }

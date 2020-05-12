@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
@@ -113,7 +112,7 @@ class ViewPockActivity : BaseActivity() {
                 setPositiveButton(
                     R.string.AlertOK
                 ) { dialog, id ->
-                    okReport()
+                    choiceAlert()
                     // User clicked OK button
                 }
                 setNegativeButton(
@@ -121,13 +120,43 @@ class ViewPockActivity : BaseActivity() {
                 ) { dialog, id ->
                     // User cancelled the dialog, it simply closes it
                 }
+
             }
             builder.create()
         }.show()
     }
 
-    private fun okReport() {
-        binding.pockViewModel?.report()
+    private fun choiceAlert() {
+        // setup the alert builder
+        val builder =
+            AlertDialog.Builder(this)
+        builder.setTitle(R.string.AlertTitleMotivo)
+// add a radio button list
+        val motivos = R.array.Motivos
+        var checkedItem = 1 // default
+        builder.setSingleChoiceItems(
+            motivos,
+            checkedItem
+        ) { dialog, which ->
+            checkedItem=which
+        }
+// add OK and Cancel buttons
+
+        builder.setPositiveButton(
+            R.string.AlertOK
+        ) { dialog, which ->
+            okReport(checkedItem)
+        }
+        builder.setNegativeButton(R.string.AlertNO, null)
+// create and show the alert dialog
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun okReport(which: Int) {
+        val bigArray = resources.getStringArray(R.array.Motivos)
+        val motive = temp[which]
+        binding.pockViewModel?.report(motive)
     }
 
 }

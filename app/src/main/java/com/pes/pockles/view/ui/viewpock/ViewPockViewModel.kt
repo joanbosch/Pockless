@@ -1,6 +1,5 @@
 package com.pes.pockles.view.ui.viewpock
 
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -81,13 +80,13 @@ class ViewPockViewModel @Inject constructor(
         }
     }
 
-    fun report() {
+    fun report(motivo: String) {
         val data = pock.value?.data?.let {
             getPock()
             if (it.reported) {
                 _errorMsg.value = R.string.Reported
             } else {
-                pockRepository.reportPock(it.id)
+                pockRepository.reportPock(it.id,motivo)
                 _errorMsg.value = R.string.ReportSend
 
             }
