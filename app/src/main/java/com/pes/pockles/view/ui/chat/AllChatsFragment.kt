@@ -40,6 +40,7 @@ class AllChatsFragment : BaseFragment<FragmentChatBinding>() {
         }
 
         initializeObservers()
+
     }
 
     private fun initializeObservers() {
@@ -74,7 +75,11 @@ class AllChatsFragment : BaseFragment<FragmentChatBinding>() {
             }
             //Fill and set the items to the ItemAdapter
             itemAdapter.setNewList(chatListBinding)
+
+            // Set up the notification observers
+            viewModel.setUpNotificationObserver()
         }
+
     }
 
     override fun getLayout(): Int {

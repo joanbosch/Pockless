@@ -5,6 +5,6 @@ data class Chat(
     val user1: String,
     val user2: ChatUser,
     val pock: String,
-    val lastMessage: String,
+    var lastMessage: String,
     val date: Long
 )
