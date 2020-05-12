@@ -37,12 +37,12 @@ class ChatRepository @Inject constructor(
         observers.remove(chatId)
     }
 
-    fun onMessageReceived(message: Message) {
+    fun onMessageReceived(message: Message) : Boolean {
         if (observers.contains(message.chatId)) {
             observers[message.chatId]!!(message)
-        } else {
-            // notificacion
+            return true
         }
+        return false
     }
 
 

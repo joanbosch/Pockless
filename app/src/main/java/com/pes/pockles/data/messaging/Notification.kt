@@ -21,8 +21,7 @@ enum class Notification {
                 (extras["date"] ?: error("")).toLong(),
                 extras["chatId"] ?: error("")
             )
-            repositoryProvider.chatRepository.onMessageReceived(msg)
-            return true
+            return repositoryProvider.chatRepository.onMessageReceived(msg)
         }
 
     },

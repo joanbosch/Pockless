@@ -79,7 +79,7 @@ class ChatActivity : BaseActivity() {
             it?.let {
                 when(it) {
                     is Resource.Success<MutableList<Message>> -> setDataRecyclerView(it.data!!)
-                    is Resource.Error -> handleError("No se han podido obtener los mensajes del chat")
+                    is Resource.Error -> handleError(R.string.cannot_obtain_the_chat_messages.toString())
                 }
             }
         }
@@ -89,7 +89,7 @@ class ChatActivity : BaseActivity() {
             it?.let {
                 when(it) {
                     is Resource.Success<Message> -> refreshMessages()
-                    is Resource.Error -> handleError("No se ha podido añadir el mensaje")
+                    is Resource.Error -> handleError(R.string.cannot_add_message.toString())
                 }
             }
         }

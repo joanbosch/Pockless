@@ -32,6 +32,7 @@ class AllChatsFragment : BaseFragment<FragmentChatBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.swipeChats.isRefreshing = true
         binding.viewmodel = viewModel
 
         binding.rvChats.let {
@@ -40,6 +41,16 @@ class AllChatsFragment : BaseFragment<FragmentChatBinding>() {
         }
 
         initializeObservers()
+
+        initilizeListeners()
+
+    }
+
+    private fun initilizeListeners() {
+        // Add refresh action
+        binding.swipeChats.setOnRefreshListener {
+            viewModel.getAllChats()
+        }
 
     }
 
@@ -62,7 +73,8 @@ class AllChatsFragment : BaseFragment<FragmentChatBinding>() {
     }
 
     private fun setDataRecyclerView(chats: List<Chat>) {
-        binding.ChatsProgressBar.visibility = View.GONE
+        binding.swipeChats.isRefreshing = false
+
         binding.txtNoChats.visibility = View.GONE
         if (chats.isEmpty()) {
             binding.txtNoChats.visibility = View.VISIBLE

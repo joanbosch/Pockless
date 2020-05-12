@@ -26,7 +26,7 @@ class AllChatsViewModel @Inject constructor(
 
     }
 
-    private fun getAllChats() {
+    fun getAllChats() {
         val source = useCase.execute()
         _chats.addSource(source) {
             _chats.value = it
