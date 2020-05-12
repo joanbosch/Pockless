@@ -4,15 +4,19 @@ import android.content.Intent
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.pes.pockles.R
+import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.ViewPockBinding
 import com.pes.pockles.model.ChatData
+import com.pes.pockles.model.Pock
 import com.pes.pockles.view.ui.base.BaseActivity
 import com.pes.pockles.view.ui.chat.ChatActivity
 
@@ -56,6 +60,25 @@ class ViewPockActivity : BaseActivity() {
 
         binding.report.setOnClickListener {
             goReport()
+        }
+
+        initializeObservers()
+    }
+
+    private fun initializeObservers() {
+        viewModel.pock.observe(this, Observer {
+            it?.let {
+                when(it) {
+                    is Resource.Success<Pock> -> setChatButton()
+                }
+            }
+        }
+        )
+    }
+
+    private fun setChatButton() {
+        if (!viewModel.getPock()!!.chatAccess!!) {
+            binding.chat.visibility = View.GONE
         }
     }
 

@@ -4,7 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class ChatData(
-    val chatId: String?,
+    var chatId: String?,
     var pockId: String?,
     var user_name: String,
     var profileImageUrl: String?

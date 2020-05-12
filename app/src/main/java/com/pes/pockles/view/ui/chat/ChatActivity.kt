@@ -79,7 +79,7 @@ class ChatActivity : BaseActivity() {
             it?.let {
                 when(it) {
                     is Resource.Success<MutableList<Message>> -> setDataRecyclerView(it.data!!)
-                    is Resource.Error -> handleError(R.string.cannot_obtain_the_chat_messages.toString())
+                    is Resource.Error -> handleError(getString(R.string.cannot_obtain_the_chat_messages))
                 }
             }
         }
@@ -88,16 +88,12 @@ class ChatActivity : BaseActivity() {
         viewModel.newMsg.observe(this, Observer {
             it?.let {
                 when(it) {
-                    is Resource.Success<Message> -> refreshMessages()
-                    is Resource.Error -> handleError(R.string.cannot_add_message.toString())
+                    is Resource.Success<Message> -> refreshMessages(it.data)
+                    is Resource.Error -> handleError(getString(R.string.cannot_add_message))
                 }
             }
         }
         )
-    }
-
-    private fun refreshMessages() {
-        chatInformation.chatId?.let { viewModel.refreshMessages(it) }
     }
 
     private fun handleError(s: String) {
@@ -116,5 +112,9 @@ class ChatActivity : BaseActivity() {
         chatPosition = messages.size - 1
     }
 
-
+    // Non-used, but can be useful in future
+    private fun refreshMessages(msg: Message?) {
+        chatInformation.chatId = msg!!.chatId
+        chatInformation.chatId?.let { viewModel.refreshMessages(it) }
+    }
 }

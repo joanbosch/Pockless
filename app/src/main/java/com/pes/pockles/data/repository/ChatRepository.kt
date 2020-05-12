@@ -1,6 +1,7 @@
 package com.pes.pockles.data.repository
 
 import androidx.lifecycle.LiveData
+import com.google.firebase.auth.FirebaseAuth
 import com.pes.pockles.data.Resource
 import com.pes.pockles.data.api.ApiService
 import com.pes.pockles.model.Chat
@@ -40,6 +41,8 @@ class ChatRepository @Inject constructor(
     fun onMessageReceived(message: Message) : Boolean {
         if (observers.contains(message.chatId)) {
             observers[message.chatId]!!(message)
+            return true
+        } else if (message.senderId == FirebaseAuth.getInstance().uid){
             return true
         }
         return false
