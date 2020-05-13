@@ -10,6 +10,7 @@ import com.pes.pockles.model.CreateUser
 import com.pes.pockles.model.InsertToken
 import com.pes.pockles.model.Pock
 import com.pes.pockles.model.User
+import com.pes.pockles.model.EditedUser
 import com.pes.pockles.util.AppExecutors
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Function
@@ -73,5 +74,9 @@ class UserRepository @Inject constructor(
                 val token = task.result?.token
                 insertFCMToken(token!!)
             })
+    }
+
+    fun editProfile(editProfile: EditedUser): LiveData<Resource<User>> {
+        return callApi(Function { apiService -> apiService.editProfile(editProfile) })
     }
 }

@@ -107,6 +107,22 @@
     <string name="error_obtaining_liked_pocks">Ha ocurrido un error al obtener los pocks gustados</string>
     <string name="error_removing_like">Ha ocurrido un error al eliminar el me gusta del pock</string>
 
+    <!-- Edit Profile Resources -->
+    <string name="title_toolbar_edit_profile">Editar Perfil</string>
+    <string name="username">Nombre de usuario:</string>
+    <string name="email">Correo electrónico:</string>
+    <string name="birthdate">Fecha de nacimiento:</string>
+    <string name="change_password">Cambiar contraseña:</string>
+    <string name="confirm_password">Confirmar contraseña:</string>
+    <string name="new_password">nueva contraseña</string>
+    <string name="repeat_password">repetir contraseña</string>
+    <string name="delete">Eliminar</string>
+    <string name="cancel_changes_dialog_title">Hay cambios sin guardar</string>
+    <string name="cancel_changes_dialog_description">¿Seguro que quieres salir?</string>
+    <string name="error_editing_the_profile">Ha ocurrido un error al actualizar tu perfil. Intentelo de nuevo más tarde</string>
+    <string name="success_editing_the_profile">Se ha actualizado tu perfil</string>
+    <string name="no_changes_editing_the_profile">Tu perfil ya esta actualizado</string>
+
     <!-- Chat Strings -->
     <string name="chats">Chats</string>
     <string name="you_dont_have_any_chat">No tienes ningún chat</string>

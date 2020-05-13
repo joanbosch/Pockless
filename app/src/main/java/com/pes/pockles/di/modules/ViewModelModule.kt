@@ -8,6 +8,7 @@ import com.pes.pockles.domain.usecases.AllChatsUseCase
 import com.pes.pockles.view.ui.chat.AllChatsViewModel
 import com.pes.pockles.view.ui.chat.ChatViewModel
 import com.pes.pockles.view.ui.editpock.EditPockViewModel
+import com.pes.pockles.view.ui.editprofile.EditProfileViewModel
 import com.pes.pockles.view.ui.likes.LikedPocksViewModel
 import com.pes.pockles.view.ui.login.LaunchActivityViewModel
 import com.pes.pockles.view.ui.login.register.RegisterActivityViewModel
@@ -76,6 +77,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(LikedPocksViewModel::class)
     abstract fun likedPocksViewModel(viewModel: LikedPocksViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(EditProfileViewModel::class)
+    abstract fun EditProfileViewModel(viewModel: EditProfileViewModel): ViewModel
 
     @Binds
     @IntoMap
