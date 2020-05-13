@@ -23,6 +23,7 @@ class MessageAdapter(val context: Context) : RecyclerView.Adapter<MessageViewHol
 
     fun setMessages(messages: List<Message>) {
         this.messages = messages
+        this.notifyDataSetChanged()
     }
 
     inner class MyMessageViewHolder(view: View) : MessageViewHolder(view) {

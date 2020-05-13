@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.ChatActivityBinding
@@ -32,6 +33,8 @@ class ChatActivity : BaseActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.chat_activity)
         binding.lifecycleOwner = this
         binding.viewmodel = viewModel
+        binding.rvChat.layoutManager = LinearLayoutManager(this)
+        adapter = MessageAdapter(this)
 
         //Add back button to toolbar
         setSupportActionBar(binding.toolbar)
@@ -98,14 +101,14 @@ class ChatActivity : BaseActivity() {
 
     private fun handleError(s: String) {
         val text = getString(R.string.cannot_load_chats)
-        val duration = Toast.LENGTH_SHORT
-        val toast = Toast.makeText(this, s, duration)
-        toast.show()
+        Snackbar.make(
+            binding.constraintLayout3,
+            getString(R.string.cannot_load_chats),
+            Snackbar.LENGTH_SHORT
+        ).show()
     }
 
     private fun setDataRecyclerView(messages: MutableList<Message>) {
-        binding.rvChat.layoutManager = LinearLayoutManager(this)
-        adapter = MessageAdapter(this)
         adapter.setMessages(messages)
         binding.rvChat.adapter = adapter
         binding.rvChat.scrollToPosition(messages.size - 1);

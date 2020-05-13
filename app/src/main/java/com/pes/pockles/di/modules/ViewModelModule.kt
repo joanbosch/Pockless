@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.pes.pockles.di.util.ViewModelFactory
 import com.pes.pockles.di.util.ViewModelKey
-import com.pes.pockles.domain.usecases.AllChatsUseCase
 import com.pes.pockles.view.ui.chat.AllChatsViewModel
 import com.pes.pockles.view.ui.chat.ChatViewModel
 import com.pes.pockles.view.ui.editpock.EditPockViewModel

@@ -13,7 +13,7 @@ data class ChatData(
         parcel.readString(),
         parcel.readString(),
         parcel.readString()!!,
-        parcel.readString()!!
+        parcel.readString()
     ) {
     }
 

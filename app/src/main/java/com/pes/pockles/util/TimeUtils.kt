@@ -11,36 +11,23 @@ import java.util.*
 object TimeUtils {
     @JvmStatic
     fun getPockTime(pock: Pock): String {
-        val df: DateFormat = SimpleDateFormat(
-            "dd-MMM-yyyy HH:mm",
-            Locale.getDefault()
-        )
-        return try {
-            df.format(pock.dateInserted)
-        } catch (ignore: Exception) {
-            ""
-        }
+        return getTime(pock.dateInserted, "dd-MMM-yyyy HH:mm")
     }
     @JvmStatic
     fun getChatTime(chat: Chat): String {
-        val df: DateFormat = SimpleDateFormat(
-            "dd-MMM HH:mm",
-            Locale.getDefault()
-        )
-        return try {
-            df.format(chat.date)
-        } catch (ignore: Exception) {
-            ""
-        }
+        return getTime(chat.date, "dd-MM HH:mm")
     }
     @JvmStatic
     fun getMessageTime(msg: Message): String {
+        return getTime(msg.date,"HH:mm")
+    }
+    private fun getTime(date : Long, pattern : String) : String {
         val df: DateFormat = SimpleDateFormat(
-            "HH:mm",
+            pattern,
             Locale.getDefault()
         )
         return try {
-            df.format(msg.date)
+            df.format(date)
         } catch (ignore: Exception) {
             ""
         }
