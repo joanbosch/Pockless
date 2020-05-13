@@ -95,14 +95,14 @@
     <string name="error_no_pock">No se ha podido obtener el pock</string>
 
     <!-- Report Pock Resources -->
-    <string name="AlertTitleReport">Reportar Pock</string>
-    <string name="AlertMessageReport">Reportar un Pock es algo muy serio y no puede ser revocado ¿Estas seguro de que quieres reportar este pock?</string>
-    <string name="AlertOK">Reportar</string>
-    <string name="AlertTitleMotivo">Elige un motivo</string>
-    <string name="AlertNO">Cancelar</string>
-    <string name="Reported">Ya has reportado este pock</string>
-    <string name="ReportSend">Hemos enviado el reporte a nuestros sistemas</string>
-    <string-array name="Motivos">
+    <string name="alertTitleReport">Reportar Pock</string>
+    <string name="alertMessageReport">Reportar un Pock es algo muy serio y no puede ser revocado ¿Estas seguro de que quieres reportar este pock?</string>
+    <string name="alertOK">Reportar</string>
+    <string name="alertTitleMotivo">Elige un motivo</string>
+    <string name="alertNO">Cancelar</string>
+    <string name="reported">Ya has reportado este pock</string>
+    <string name="reportSend">Hemos enviado el reporte a nuestros sistemas</string>
+    <string-array name="motivos">
         <item>SPAM</item>
         <item>Racismo</item>
         <item>Categoria inapropiada</item>

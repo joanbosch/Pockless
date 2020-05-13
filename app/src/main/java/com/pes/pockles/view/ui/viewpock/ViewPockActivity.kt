@@ -107,16 +107,16 @@ class ViewPockActivity : BaseActivity() {
     private fun basicAlert() {
         let {
             val builder = AlertDialog.Builder(it)
-            builder.setMessage(R.string.AlertMessageReport)?.setTitle(R.string.AlertTitleReport)
+            builder.setMessage(R.string.alertMessageReport)?.setTitle(R.string.alertTitleReport)
             builder.apply {
                 setPositiveButton(
-                    R.string.AlertOK
+                    R.string.alertOK
                 ) { dialog, id ->
                     choiceAlert()
                     // User clicked OK button
                 }
                 setNegativeButton(
-                    R.string.AlertNO
+                    R.string.alertNO
                 ) { dialog, id ->
                     // User cancelled the dialog, it simply closes it
                 }
@@ -130,33 +130,33 @@ class ViewPockActivity : BaseActivity() {
         // setup the alert builder
         val builder =
             AlertDialog.Builder(this)
-        builder.setTitle(R.string.AlertTitleMotivo)
+        builder.setTitle(R.string.alertTitleMotivo)
 // add a radio button list
-        val motivos = R.array.Motivos
+        val motivos = R.array.motivos
         var checkedItem = 1 // default
         builder.setSingleChoiceItems(
             motivos,
             checkedItem
         ) { dialog, which ->
-            checkedItem=which
+            checkedItem = which
         }
 // add OK and Cancel buttons
 
         builder.setPositiveButton(
-            R.string.AlertOK
+            R.string.alertOK
         ) { dialog, which ->
             okReport(checkedItem)
         }
-        builder.setNegativeButton(R.string.AlertNO, null)
+        builder.setNegativeButton(R.string.alertNO, null)
 // create and show the alert dialog
         val dialog = builder.create()
         dialog.show()
     }
 
     private fun okReport(which: Int) {
-        val bigArray = resources.getStringArray(R.array.Motivos)
+        val bigArray = resources.getStringArray(R.array.motivos)
         val motive = bigArray[which]
-        binding.pockViewModel?.report(motive)
+        viewModel.report(motive)
     }
 
 }

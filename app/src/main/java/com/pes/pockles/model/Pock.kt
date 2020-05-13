@@ -13,6 +13,5 @@ data class Pock(
     var liked: Boolean = false,
     var userProfileImage: String? = "",
     var reports: Int =0,
-    var reported: Boolean = false,
-    var hidden: Boolean = false
+    var reported: Boolean = false
 )

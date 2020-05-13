@@ -84,10 +84,10 @@ class ViewPockViewModel @Inject constructor(
         val data = pock.value?.data?.let {
             getPock()
             if (it.reported) {
-                _errorMsg.value = R.string.Reported
+                _errorMsg.value = R.string.reported
             } else {
                 pockRepository.reportPock(it.id,motivo)
-                _errorMsg.value = R.string.ReportSend
+                _errorMsg.value = R.string.reportSend
 
             }
         }
