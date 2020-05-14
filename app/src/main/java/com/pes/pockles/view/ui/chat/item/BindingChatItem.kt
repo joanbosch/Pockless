@@ -21,16 +21,6 @@ class BindingChatItem : AbstractBindingItem<ChatItemBinding>() {
         chat?.let {
             binding.chat = it
         }
-
-    binding.chatItemCard.setOnClickListener {
-
-        val intent = Intent(it.context, ChatActivity::class.java).apply {
-            var chatData: ChatData = ChatData(chat?.id, null, chat?.user2!!.name, chat?.user2!!.profileImageUrl)
-            putExtra("chatData", chatData)
-        }
-        it.context.startActivity(intent)
-    }
-
     }
 
     override fun createBinding(

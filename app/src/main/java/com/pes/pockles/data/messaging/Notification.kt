@@ -14,16 +14,16 @@ enum class Notification {
             title: String?,
             extras: Map<String, String>
         ): Boolean {
-            val msg = Message(extras["chatId"] ?: error(""),
-                extras["text"] ?: error(""),
-                extras["senderId"] ?: error(""),
-                (extras["read"] ?: error("")).toBoolean(),
-                (extras["date"] ?: error("")).toLong(),
-                extras["chatId"] ?: error("")
+            val msg = Message(
+                extras["chatId"].toString(),
+                extras["text"].toString(),
+                extras["senderId"].toString(),
+                (extras["read"].toString()).toBoolean(),
+                (extras["date"].toString()).toLong(),
+                extras["chatId"].toString()
             )
             return repositoryProvider.chatRepository.onMessageReceived(msg)
         }
-
     },
     TRENDING {
         override fun onMessageReceived(

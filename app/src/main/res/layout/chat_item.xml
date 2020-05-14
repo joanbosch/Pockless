@@ -55,25 +55,25 @@
             android:id="@+id/lastMessageDate"
             android:layout_width="100dp"
             android:layout_height="21dp"
-            android:layout_marginStart="200dp"
             android:text="@{TimeUtils.getChatTime(chat)}"
             android:textAlignment="textEnd"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            app:layout_constraintStart_toEndOf="@+id/circularImageView2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/appCompatTextView5"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Date" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/lasMessageContent"
             android:layout_width="293dp"
-            android:layout_height="26dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@{chat.lastMessage}"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/circularImageView2"
+            app:layout_constraintStart_toEndOf="@+id/circularImageView2"
             app:layout_constraintTop_toBottomOf="@+id/appCompatTextView5"
             tools:text="Content" />
 
@@ -83,6 +83,7 @@
             android:layout_height="0.5dp"
             android:layout_marginTop="8dp"
             android:background="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/lasMessageContent"
             app:layout_constraintStart_toStartOf="@+id/lasMessageContent"
             app:layout_constraintTop_toBottomOf="@+id/lasMessageContent"
