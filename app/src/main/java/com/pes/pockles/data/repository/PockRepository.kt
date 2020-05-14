@@ -5,10 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
 import com.pes.pockles.data.Resource
 import com.pes.pockles.data.api.ApiService
-import com.pes.pockles.model.EditedPock
-import com.pes.pockles.model.Location
-import com.pes.pockles.model.NewPock
-import com.pes.pockles.model.Pock
+import com.pes.pockles.model.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
@@ -109,5 +106,9 @@ class PockRepository @Inject constructor(
 
     fun undoLikePock(id: String): LiveData<Resource<Pock>> {
         return callApi(Function { apiService -> apiService.undoLike(id) })
+    }
+
+    fun reportPock(id: String, motivo:ReportObject): LiveData<Resource<Pock>> {
+        return callApi(Function { apiService -> apiService.report(id,motivo) })
     }
 }

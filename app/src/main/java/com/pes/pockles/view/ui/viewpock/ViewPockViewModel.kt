@@ -11,6 +11,7 @@ import com.pes.pockles.data.repository.PockRepository
 import com.pes.pockles.data.succeeded
 import com.pes.pockles.domain.usecases.ViewPockUseCase
 import com.pes.pockles.model.Pock
+import com.pes.pockles.model.ReportObject
 import javax.inject.Inject
 
 class ViewPockViewModel @Inject constructor(
@@ -76,6 +77,21 @@ class ViewPockViewModel @Inject constructor(
                         _errorMsg.value = R.string.error_general_like
                     }
                 }
+            }
+        }
+    }
+
+    fun report(motivo: String) {
+        val data = pock.value?.data?.let {
+            if (it.reported) {
+                _errorMsg.value = R.string.reported
+            } else {
+                var send = ReportObject(
+                    motive = motivo
+                )
+                pockRepository.reportPock(it.id, send)
+                _errorMsg.value = R.string.reportSend
+
             }
         }
     }

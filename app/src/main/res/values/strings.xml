@@ -94,6 +94,24 @@
     <string name="error_general_like">Ha ocurrido un error con el like</string>
     <string name="error_no_pock">No se ha podido obtener el pock</string>
 
+    <!-- Report Pock Resources -->
+    <string name="alertTitleReport">Reportar Pock</string>
+    <string name="alertMessageReport">Reportar un Pock es algo muy serio y no puede ser revocado ¿Estas seguro de que quieres reportar este pock?</string>
+    <string name="alertOK">Reportar</string>
+    <string name="alertTitleMotivo">Elige un motivo</string>
+    <string name="alertNO">Cancelar</string>
+    <string name="reported">Ya has reportado este pock</string>
+    <string name="reportSend">Hemos enviado el reporte a nuestros sistemas</string>
+    <string-array name="motivos">
+        <item>SPAM</item>
+        <item>Racismo</item>
+        <item>Categoria inapropiada</item>
+        <item>Contenido inapropiado</item>
+        <item>Amenazas</item>
+        <item>Troll</item>
+        <item>Otros</item>
+    </string-array>
+
 
     <!-- Edit Pock Resources -->
     <string name="title_activity_edit_pock">EditPockActivity</string>

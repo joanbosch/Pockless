@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
@@ -64,7 +65,7 @@ class ViewPockActivity : BaseActivity() {
     }
 
     private fun goReport() {
-        Toast.makeText(this, "Report function not implemented yet!", Toast.LENGTH_SHORT).show()
+        basicAlert()
     }
 
     private fun goChat() {
@@ -101,4 +102,61 @@ class ViewPockActivity : BaseActivity() {
             window.setLayout((width * .7).toInt(), (height * .8).toInt())
         }
     }
+
+    //Alert for displaying the user agreement to report the pock
+    private fun basicAlert() {
+        let {
+            val builder = AlertDialog.Builder(it)
+            builder.setMessage(R.string.alertMessageReport)?.setTitle(R.string.alertTitleReport)
+            builder.apply {
+                setPositiveButton(
+                    R.string.alertOK
+                ) { dialog, id ->
+                    choiceAlert()
+                    // User clicked OK button
+                }
+                setNegativeButton(
+                    R.string.alertNO
+                ) { dialog, id ->
+                    // User cancelled the dialog, it simply closes it
+                }
+
+            }
+            builder.create()
+        }.show()
+    }
+
+    private fun choiceAlert() {
+        // setup the alert builder
+        val builder =
+            AlertDialog.Builder(this)
+        builder.setTitle(R.string.alertTitleMotivo)
+// add a radio button list
+        val motivos = R.array.motivos
+        var checkedItem = 1 // default
+        builder.setSingleChoiceItems(
+            motivos,
+            checkedItem
+        ) { dialog, which ->
+            checkedItem = which
+        }
+// add OK and Cancel buttons
+
+        builder.setPositiveButton(
+            R.string.alertOK
+        ) { dialog, which ->
+            okReport(checkedItem)
+        }
+        builder.setNegativeButton(R.string.alertNO, null)
+// create and show the alert dialog
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun okReport(which: Int) {
+        val bigArray = resources.getStringArray(R.array.motivos)
+        val motive = bigArray[which]
+        viewModel.report(motive)
+    }
+
 }
