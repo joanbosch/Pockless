@@ -1,7 +1,7 @@
 package com.pes.pockles.di.modules
 
 
-import com.pes.pockles.view.ui.ChatFragment
+import com.pes.pockles.view.ui.chat.AllChatsFragment
 import com.pes.pockles.view.ui.NotificationsFragment
 import com.pes.pockles.view.ui.map.MapFragment
 import com.pes.pockles.view.ui.profile.ProfileFragment
@@ -24,7 +24,7 @@ abstract class MainActivityFragmentModule {
     abstract fun contributeProfileFragment(): ProfileFragment
 
     @ContributesAndroidInjector
-    abstract fun contributeChatFragment(): ChatFragment
+    abstract fun contributeChatFragment(): AllChatsFragment
 
     @ContributesAndroidInjector
     abstract fun contributeNotificationsFragment(): NotificationsFragment

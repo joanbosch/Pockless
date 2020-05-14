@@ -140,4 +140,12 @@
     <string name="error_editing_the_profile">Ha ocurrido un error al actualizar tu perfil. Intentelo de nuevo más tarde</string>
     <string name="success_editing_the_profile">Se ha actualizado tu perfil</string>
     <string name="no_changes_editing_the_profile">Tu perfil ya esta actualizado</string>
+
+    <!-- Chat Strings -->
+    <string name="chats">Chats</string>
+    <string name="you_dont_have_any_chat">No tienes ningún chat</string>
+    <string name="cannot_load_chats">No se han podido obtener los chats</string>
+    <string name="title_activity_chat">Chat</string>
+    <string name="cannot_obtain_the_chat_messages">No se han podido obtener los mesnsajes del chat</string>
+    <string name="cannot_add_message">No se ha podido enviar el mensaje</string>
 </resources>
