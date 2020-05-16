@@ -101,7 +101,7 @@
                             android:id="@+id/LenguagesDropdown"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="" />
+                            android:text="@={viewmodel.lenguages}" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 

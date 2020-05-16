@@ -154,5 +154,12 @@
     <string name="leguage">Idioma</string>
     <string name="help">Ayuda</string>
 
+    <!-- Lenguages avaliables -->
+    <string-array name="lenguages">
+        <item>Español</item>
+        <item>English</item>
+        <item>Català</item>
+    </string-array>
+
 
 </resources>

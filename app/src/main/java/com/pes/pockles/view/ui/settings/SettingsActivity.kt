@@ -1,10 +1,9 @@
 package com.pes.pockles.view.ui.settings
 
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.pes.pockles.R
 import com.pes.pockles.databinding.ActivitySettingsBinding
 import com.pes.pockles.view.ui.base.BaseActivity
@@ -28,9 +27,8 @@ class SettingsActivity : BaseActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
 
-
         //Initialize observers
-        initializeObservers()
+        initializeDropDown()
 
         //Define Actions
         initializeListeners()
@@ -38,12 +36,21 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun initializeListeners() {
-
+        binding.toolbar.setNavigationOnClickListener {
+            onBackPressed()
+        }
     }
 
 
-    private fun initializeObservers() {
-
+    private fun initializeDropDown() {
+        val spinner = binding.LenguagesDropdown
+        spinner.setAdapter(
+            ArrayAdapter(
+                this,
+                android.R.layout.simple_spinner_dropdown_item,
+                resources.getStringArray(R.array.lenguages)
+            )
+        )
     }
 
 }

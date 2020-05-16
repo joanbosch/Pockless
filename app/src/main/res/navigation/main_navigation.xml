@@ -47,6 +47,6 @@
         tools:layout="@layout/activity_liked_pocks" />
     <activity
         android:id="@+id/settingsActivity"
-        android:name="com.pes.pockles.view.ui.chat.SettingsActivity"
+        android:name="com.pes.pockles.view.ui.settings.SettingsActivity"
         android:label="SettingsActivity" />
 </navigation>
