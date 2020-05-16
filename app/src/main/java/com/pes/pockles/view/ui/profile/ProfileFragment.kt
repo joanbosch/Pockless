@@ -11,10 +11,12 @@ import com.bumptech.glide.Glide
 import com.pes.pockles.R
 import com.pes.pockles.databinding.FragmentProfileBinding
 import com.pes.pockles.model.EditedUser
+import com.pes.pockles.util.livedata.Event
 import com.pes.pockles.util.livedata.EventObserver
 import com.pes.pockles.view.ui.base.BaseFragment
 import com.pes.pockles.view.ui.editprofile.EditProfileActivity
 import com.pes.pockles.view.ui.login.LaunchActivity
+import com.pes.pockles.view.ui.settings.SettingsActivity
 import java.io.Serializable
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
@@ -46,6 +48,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         )
 
         viewModel.navigateToLogin.observe(this, EventObserver(::navigateToLogin))
+
+        binding.settingsButton.setOnClickListener{
+            findNavController().navigate(R.id.action_userProfileFragment_to_settingsActivity)
+        }
+
         binding.likeButton.setOnClickListener {
             findNavController().navigate(R.id.action_userProfileFragment_to_likedPocksActivity)
         }
@@ -70,6 +77,12 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         if (bool) {
             startActivity(Intent(activity!!, LaunchActivity::class.java))
             activity!!.finish() // to prevent that back button on LaunchActivity goes to MainActivity
+        }
+    }
+
+    private fun navigateToSettings(bool: Boolean){
+        if (bool) {
+            startActivity(Intent(activity!!, SettingsActivity::class.java))
         }
     }
 

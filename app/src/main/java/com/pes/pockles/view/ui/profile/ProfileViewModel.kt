@@ -26,6 +26,10 @@ class ProfileViewModel @Inject constructor(
     val navigateToHistory: LiveData<Event<Boolean>>
         get() = _navigateToHistory
 
+    private val _navigateToSettings = MutableLiveData<Event<Boolean>>()
+    val navigateToSettings: LiveData<Event<Boolean>>
+        get() = _navigateToSettings
+
     private val doLogout = MutableLiveData<Boolean>()
     val navigateToLogin: LiveData<Event<Boolean>>
         get() = Transformations.switchMap(doLogout) {
@@ -46,6 +50,10 @@ class ProfileViewModel @Inject constructor(
 
     fun navigateToHistoryOnClick(v: View) {
         _navigateToHistory.value = Event(true)
+    }
+
+    fun navigateToSettingsOnClick(v: View) {
+        _navigateToSettings.value = Event(true)
     }
 
     fun logout(v: View) {
