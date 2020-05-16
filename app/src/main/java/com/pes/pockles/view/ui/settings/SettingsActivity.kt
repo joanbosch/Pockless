@@ -43,14 +43,14 @@ class SettingsActivity : BaseActivity() {
 
 
     private fun initializeDropDown() {
-        val spinner = binding.LenguagesDropdown
+        /*val spinner = binding.LenguagesDropdown
         spinner.setAdapter(
             ArrayAdapter(
                 this,
                 android.R.layout.simple_spinner_dropdown_item,
                 resources.getStringArray(R.array.lenguages)
             )
-        )
+        )*/
     }
 
 }
