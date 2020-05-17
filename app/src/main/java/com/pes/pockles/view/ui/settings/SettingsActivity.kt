@@ -1,56 +1,45 @@
 package com.pes.pockles.view.ui.settings
 
+
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProviders
+import android.preference.PreferenceFragment
+import android.view.MenuItem
 import com.pes.pockles.R
-import com.pes.pockles.databinding.ActivitySettingsBinding
 import com.pes.pockles.view.ui.base.BaseActivity
-import com.pes.pockles.view.ui.settings.SettingsViewModel
+
 
 class SettingsActivity : BaseActivity() {
 
-    private lateinit var binding: ActivitySettingsBinding
-    private val viewModel: SettingsViewModel by lazy {
-        ViewModelProviders.of(this, viewModelFactory).get(SettingsViewModel::class.java)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_settings)
-        binding.lifecycleOwner = this
-        binding.viewmodel = viewModel
 
-        //Add back button to toolbar
-        setSupportActionBar(binding.toolbar)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        supportActionBar!!.setDisplayShowHomeEnabled(true)
+        fragmentManager
+            .beginTransaction()
+            .replace(android.R.id.content, SettingsFragment())
+            .commit()
 
-        //Initialize observers
-        initializeDropDown()
+        this.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        this.supportActionBar?.setDisplayShowHomeEnabled(true)
 
-        //Define Actions
-        initializeListeners()
+        setTitle(R.string.settings)
 
     }
 
-    private fun initializeListeners() {
-        binding.toolbar.setNavigationOnClickListener {
-            onBackPressed()
+    class SettingsFragment : PreferenceFragment() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            addPreferencesFromResource(R.xml.preferences)
+
+            //Add Listeners for some preferences settings
         }
     }
 
-
-    private fun initializeDropDown() {
-        /*val spinner = binding.LenguagesDropdown
-        spinner.setAdapter(
-            ArrayAdapter(
-                this,
-                android.R.layout.simple_spinner_dropdown_item,
-                resources.getStringArray(R.array.lenguages)
-            )
-        )*/
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            onBackPressed()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }

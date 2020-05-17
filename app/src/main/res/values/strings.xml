@@ -153,13 +153,26 @@
     <string name="settings">Ajustes</string>
     <string name="leguage">Idioma</string>
     <string name="help">Ayuda</string>
+    <string name="version_title">Versión</string>
+    <string name="version_summary" translatable="false">1.0.0</string>
+    <string name="rate_app_title">Puntúa esta aplicación</string>
+
+
 
     <!-- Lenguages avaliables -->
-    <string-array name="lenguages">
+    <string-array name="language_list_titles">
         <item>Español</item>
         <item>English</item>
         <item>Català</item>
+        <item>Checo</item>
     </string-array>
 
+    <!-- Lenguages avaliables -->
+    <string-array name="language_list_values">
+        <item>es</item>
+        <item>en</item>
+        <item>ca</item>
+        <item>ch</item>
+    </string-array>
 
 </resources>
