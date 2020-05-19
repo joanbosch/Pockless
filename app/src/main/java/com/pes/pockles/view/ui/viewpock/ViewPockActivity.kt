@@ -18,6 +18,7 @@ import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.ViewPockBinding
 import com.pes.pockles.model.ChatData
 import com.pes.pockles.model.Pock
+import com.pes.pockles.util.TimeUtils
 import com.pes.pockles.view.ui.base.BaseActivity
 import com.pes.pockles.view.ui.chat.ChatActivity
 
@@ -84,8 +85,22 @@ class ViewPockActivity : BaseActivity() {
     }
 
     private fun sharePock() {
+        val shareText = (viewModel.getPock()?.username
+                + " "
+                + resources.getString(R.string.has_published_share_text)
+                + " "
+                + TimeUtils.getPockTime(viewModel.getPock()!!)
+                + ":\n"
+                + viewModel.getPock()?.message
+                + "\n["
+                + resources.getString(R.string.category_hint)
+                + ": "
+                + viewModel.getPock()?.category
+                + "]\n"
+                + resources.getString(R.string.shared_from_pockles)
+                )
         val shareIntent = Intent(Intent.ACTION_SEND)
-        shareIntent.setType("text/plain").putExtra(Intent.EXTRA_TEXT, viewModel.getPock()?.message)
+        shareIntent.setType("text/plain").putExtra(Intent.EXTRA_TEXT, shareText)
         startActivity(shareIntent)
     }
 

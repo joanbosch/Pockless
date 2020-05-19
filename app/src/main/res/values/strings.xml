@@ -112,6 +112,9 @@
         <item>Otros</item>
     </string-array>
 
+    <!-- Share Pock resources -->
+    <string name="has_published_share_text">ha publicado un nuevo pock el</string>
+    <string name="shared_from_pockles">Compartido desde Pockles</string>
 
     <!-- Edit Pock Resources -->
     <string name="title_activity_edit_pock">EditPockActivity</string>
