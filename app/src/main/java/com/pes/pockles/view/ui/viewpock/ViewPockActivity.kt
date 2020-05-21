@@ -78,7 +78,7 @@ class ViewPockActivity : BaseActivity() {
     }
 
     private fun setChatButton() {
-        if (!viewModel.getPock()!!.chatAccess!!) {
+        if (!viewModel.getPock()!!.chatAccess) {
             binding.chat.visibility = View.GONE
         }
     }

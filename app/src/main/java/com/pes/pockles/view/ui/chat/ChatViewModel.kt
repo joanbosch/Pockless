@@ -36,13 +36,13 @@ class ChatViewModel @Inject constructor(
     }
 
     private fun newMessageReceived(m : Message) {
-        var messageList = _messages.value
+        val messageList = _messages.value
         messageList?.data!!.add(m)
         _messages.postValue(messageList)
     }
 
     fun postMessage(message: NewMessage) {
-        var newmessage = useCaseNewMessage.execute(message)
+        val newmessage = useCaseNewMessage.execute(message)
         _newMsg.addSource(newmessage){
             _newMsg.value = it
             if(!it.loading) _newMsg.removeSource(newmessage)

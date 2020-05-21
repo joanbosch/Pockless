@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Bitmap.CompressFormat
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -28,8 +29,10 @@ import com.pes.pockles.databinding.ActivityEditPockBinding
 import com.pes.pockles.model.EditedPock
 import com.pes.pockles.model.Pock
 import com.pes.pockles.view.ui.base.BaseActivity
+import java.io.ByteArrayOutputStream
 import java.io.FileNotFoundException
 import java.io.InputStream
+
 
 class EditPockActivity : BaseActivity() {
 
@@ -55,10 +58,10 @@ class EditPockActivity : BaseActivity() {
             viewModel.updatePock()
         }
 
-        binding.categoriesDropdown.onItemClickListener = AdapterView.OnItemClickListener {
-                parent,view,position,id->
-            viewModel.setCategory(binding.categoriesDropdown.text.toString())
-        }
+        binding.categoriesDropdown.onItemClickListener =
+            AdapterView.OnItemClickListener { _, _, _, _ ->
+                viewModel.setCategory(binding.categoriesDropdown.text.toString())
+            }
 
         binding.deleteOldImg1Button.setOnClickListener {
             binding.deleteOldImg1Button.visibility = View.GONE
@@ -109,7 +112,7 @@ class EditPockActivity : BaseActivity() {
             ArrayAdapter(
                 this,
                 android.R.layout.simple_spinner_dropdown_item,
-                arrayOf(resources.getString(R.string.general_category))+resources.getStringArray(R.array.categories)
+                arrayOf(resources.getString(R.string.general_category)) + resources.getStringArray(R.array.categories)
             )
         )
 
@@ -178,12 +181,12 @@ class EditPockActivity : BaseActivity() {
         viewModel.errorSavingImages.observe(
             this,
             Observer { event ->
-            if (event) errorImages()
-        })
+                if (event) errorImages()
+            })
 
         viewModel.oldImages.observe(
             this,
-            Observer { value: List<String> ->
+            Observer {
                 setVisibilityButtons()
             })
     }
@@ -239,18 +242,19 @@ class EditPockActivity : BaseActivity() {
         }
     }
 
-    private fun setImage(bm: Bitmap) {
+    private fun setImage(bm: ByteArray, fileExtension: String = "png") {
         //Animation control
         if (viewModel.nImg.value != 4) setVisibilityButtons()
         //Shows in the newPock the image that the user wants to upload
+        val bitmap = BitmapFactory.decodeByteArray(bm, 0, bm.size)
         when (viewModel.actImg.value) {
-            1-> binding.image1.setImageBitmap(bm)
-            2-> binding.image2.setImageBitmap(bm)
-            3-> binding.image3.setImageBitmap(bm)
-            4-> binding.image4.setImageBitmap(bm)
+            1 -> binding.image1.setImageBitmap(bitmap)
+            2 -> binding.image2.setImageBitmap(bitmap)
+            3 -> binding.image3.setImageBitmap(bitmap)
+            4 -> binding.image4.setImageBitmap(bitmap)
         }
         //Store in the viewModel the image selected by the user
-        viewModel.setBm(bm)
+        viewModel.setBm(bm, fileExtension)
     }
 
     //Function that controls the animations when the user inserts the images
@@ -300,8 +304,9 @@ class EditPockActivity : BaseActivity() {
                 try {
                     val imageUri: Uri? = data?.data
                     val imageStream: InputStream? = contentResolver.openInputStream(imageUri!!)
-                    val selectedImage = BitmapFactory.decodeStream(imageStream)
-                    setImage(selectedImage)
+                    val extension = if (imageUri.path?.contains("gif")!!) "gif" else "png"
+                    imageStream?.readBytes()?.let { setImage(it, extension) }
+                    imageStream?.close()
                 } catch (e: FileNotFoundException) {
                     e.printStackTrace()
                     Snackbar.make(
@@ -314,20 +319,27 @@ class EditPockActivity : BaseActivity() {
         } else if (reqCode == 112) {
             if (resultCode == Activity.RESULT_OK) {
                 val imageBitmap = data?.extras?.get("data") as Bitmap
-                setImage(imageBitmap)
+                val blob = ByteArrayOutputStream()
+                imageBitmap.compress(CompressFormat.PNG, 0, blob)
+                setImage(blob.toByteArray())
             }
         }
     }
 
     private fun downloadMedia(media: List<String>?) {
-        val pockImages = listOf(binding.oldImage1, binding.oldImage2, binding.oldImage3, binding.oldImage4)
-        val deleteButtons = listOf(binding.deleteOldImg1Button, binding.deleteOldImg2Button, binding.deleteOldImg3Button, binding.deleteOldImg4Button)
+        val pockImages =
+            listOf(binding.oldImage1, binding.oldImage2, binding.oldImage3, binding.oldImage4)
+        val deleteButtons = listOf(
+            binding.deleteOldImg1Button,
+            binding.deleteOldImg2Button,
+            binding.deleteOldImg3Button,
+            binding.deleteOldImg4Button
+        )
         var k = 0
         media?.forEach { url ->
             Glide.with(this).load(url).into(pockImages[k])
             pockImages[k].visibility = View.VISIBLE
-            deleteButtons[k].visibility = View.VISIBLE
-            k++
+            deleteButtons[k++].visibility = View.VISIBLE
         }
     }
 

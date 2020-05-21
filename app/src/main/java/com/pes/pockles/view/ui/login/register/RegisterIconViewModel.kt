@@ -12,6 +12,7 @@ import com.pes.pockles.model.CreateUser
 import com.pes.pockles.model.User
 import com.pes.pockles.util.livedata.Event
 import timber.log.Timber
+import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
 class RegisterIconViewModel @Inject constructor(
@@ -47,7 +48,9 @@ class RegisterIconViewModel @Inject constructor(
     }
 
     fun uploadMedia(bitmap: Bitmap): LiveData<Resource<String>> {
-        return storageManager.uploadMedia(bitmap, "profileImages");
+        val blob = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, blob)
+        return storageManager.uploadMedia(blob.toByteArray(), childReference = "profileImages");
     }
 
     fun setImageUrl(data: String) {

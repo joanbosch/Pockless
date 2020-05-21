@@ -11,6 +11,7 @@
     <string name="pockear_button">Pockear</string>
     <string name="pock_content_error">¿Un pock sin contenido?</string>
     <string name="added_pock_message">Se ha publicado tu nuevo pock</string>
+    <string name="publishing_pock">Publicando</string>
     <string name="api_error_message">Ha habido algún problema con la publicación de tu pock</string>
 
     <string name="map_menu_item">Mapa</string>
