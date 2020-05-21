@@ -85,20 +85,11 @@ class ViewPockActivity : BaseActivity() {
     }
 
     private fun sharePock() {
-        val shareText = (viewModel.getPock()?.username
-                + " "
-                + resources.getString(R.string.has_published_share_text)
-                + " "
-                + TimeUtils.getPockTime(viewModel.getPock()!!)
-                + ":\n"
-                + viewModel.getPock()?.message
-                + "\n["
-                + resources.getString(R.string.category_hint)
-                + ": "
-                + viewModel.getPock()?.category
-                + "]\n"
-                + resources.getString(R.string.shared_from_pockles)
-                )
+        val shareText =
+            "${viewModel.getPock()?.username} ${resources.getString(R.string.has_published_share_text)} ${TimeUtils.getPockTime(viewModel.getPock()!!)}:\n" +
+                "${viewModel.getPock()?.message}\n" +
+                "[${resources.getString(R.string.category_hint)}: ${viewModel.getPock()?.category}]\n" +
+                resources.getString(R.string.shared_from_pockles)
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.setType("text/plain").putExtra(Intent.EXTRA_TEXT, shareText)
         startActivity(shareIntent)
