@@ -27,10 +27,10 @@ class NewPockViewModel @Inject constructor(
     val pockCategory = MutableLiveData<String>()
     private var hasImages = false
 
-    private  val _image1 = MutableLiveData<Bitmap>()
-    private  val _image2 = MutableLiveData<Bitmap>()
-    private  val _image3 = MutableLiveData<Bitmap>()
-    private  val _image4 = MutableLiveData<Bitmap>()
+    private val _image1 = MutableLiveData<StorageTaskBitmap>()
+    private val _image2 = MutableLiveData<StorageTaskBitmap>()
+    private val _image3 = MutableLiveData<StorageTaskBitmap>()
+    private val _image4 = MutableLiveData<StorageTaskBitmap>()
 
     //Number of images that the pock has
     private val _nImg = MutableLiveData<Int>()
@@ -74,21 +74,20 @@ class NewPockViewModel @Inject constructor(
             _errorHandler.value = true
         else {
             if (hasImages) {
-
                 //Store in storageTask the images saved locally
                 val storageTask = StorageTask.create(storageManager)
 
                 _image1.value?.let {
-                    storageTask.addBitmap(StorageTaskBitmap(_image1.value!!))
+                    storageTask.addBitmap(_image1.value!!)
                 }
                 _image2.value?.let {
-                    storageTask.addBitmap(StorageTaskBitmap(_image2.value!!))
+                    storageTask.addBitmap(_image2.value!!)
                 }
                 _image3.value?.let {
-                    storageTask.addBitmap(StorageTaskBitmap(_image3.value!!))
+                    storageTask.addBitmap(_image3.value!!)
                 }
                 _image4.value?.let {
-                    storageTask.addBitmap(StorageTaskBitmap(_image4.value!!))
+                    storageTask.addBitmap(_image4.value!!)
                 }
 
                 //Try to insert a pock when the images are upload in firebase
@@ -103,8 +102,7 @@ class NewPockViewModel @Inject constructor(
                 }, {
                     _errorSavingImages.value = true
                 }, "pockImages")
-            }
-            else {
+            } else {
                 _pockToInsert.value = NewPock(
                     message = pockContent.value!!,
                     category = category,
@@ -123,12 +121,12 @@ class NewPockViewModel @Inject constructor(
     }
 
     //Local storage of pock images
-    fun setBm(bm: Bitmap) {
+    fun setBm(bm: ByteArray, fileExtension: String = "png") {
         when (_actImg.value) {
-            1 -> _image1.value = bm
-            2 -> _image2.value = bm
-            3 -> _image3.value = bm
-            4 -> _image4.value = bm
+            1 -> _image1.value = StorageTaskBitmap(bm, fileExtension)
+            2 -> _image2.value = StorageTaskBitmap(bm, fileExtension)
+            3 -> _image3.value = StorageTaskBitmap(bm, fileExtension)
+            4 -> _image4.value = StorageTaskBitmap(bm, fileExtension)
         }
     }
 }

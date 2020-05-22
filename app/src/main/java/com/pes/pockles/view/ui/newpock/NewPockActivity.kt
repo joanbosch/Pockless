@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -20,6 +21,8 @@ import com.afollestad.materialdialogs.bottomsheets.BasicGridItem
 import com.afollestad.materialdialogs.bottomsheets.BottomSheet
 import com.afollestad.materialdialogs.bottomsheets.gridItems
 import com.afollestad.materialdialogs.bottomsheets.setPeekHeight
+import com.github.razir.progressbutton.hideProgress
+import com.github.razir.progressbutton.showProgress
 import com.google.android.material.snackbar.Snackbar
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
@@ -28,6 +31,7 @@ import com.pes.pockles.model.Location
 import com.pes.pockles.model.Pock
 import com.pes.pockles.util.LocationUtils.Companion.getLastLocation
 import com.pes.pockles.view.ui.base.BaseActivity
+import java.io.ByteArrayOutputStream
 import java.io.FileNotFoundException
 import java.io.InputStream
 
@@ -138,6 +142,7 @@ class NewPockActivity : BaseActivity() {
         })
     }
 
+    private var preventMultipleClicks = false
     private fun showLoading() {
         val inputManager: InputMethodManager =
             getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -145,12 +150,17 @@ class NewPockActivity : BaseActivity() {
             currentFocus?.windowToken,
             InputMethodManager.SHOW_FORCED
         )
-
-        binding.newPockProgressBar.visibility = View.VISIBLE
+        if (!preventMultipleClicks) {
+            preventMultipleClicks = true
+            binding.pockButton.showProgress {
+                progressColor = Color.WHITE
+                buttonTextRes = R.string.publishing_pock
+            }
+        }
     }
 
     private fun hideLoading() {
-        binding.newPockProgressBar.visibility = View.GONE
+        binding.pockButton.hideProgress(R.string.pockear_button)
     }
 
     private fun errorImages() {
@@ -180,7 +190,8 @@ class NewPockActivity : BaseActivity() {
                             }
                         }
                     } else {
-                        val photoPickerIntent = Intent(Intent.ACTION_PICK)
+                        val photoPickerIntent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+                        photoPickerIntent.addCategory(Intent.CATEGORY_OPENABLE)
                         photoPickerIntent.type = "image/*"
                         startActivityForResult(photoPickerIntent, 111)
                     }
@@ -189,18 +200,19 @@ class NewPockActivity : BaseActivity() {
         }
     }
 
-    private fun setImage(bm: Bitmap) {
+    private fun setImage(bm: ByteArray, fileExtension: String = "png") {
         //Animation control
         if (viewModel.nImg.value != 4) setVisibilityButtons()
         //Shows in the newPock the image that the user wants to upload
+        val bitmap = BitmapFactory.decodeByteArray(bm, 0, bm.size)
         when (viewModel.actImg.value) {
-            1-> binding.image1.setImageBitmap(bm)
-            2-> binding.image2.setImageBitmap(bm)
-            3-> binding.image3.setImageBitmap(bm)
-            4-> binding.image4.setImageBitmap(bm)
+            1 -> binding.image1.setImageBitmap(bitmap)
+            2 -> binding.image2.setImageBitmap(bitmap)
+            3 -> binding.image3.setImageBitmap(bitmap)
+            4 -> binding.image4.setImageBitmap(bitmap)
         }
         //Store in the viewModel the image selected by the user
-        viewModel.setBm(bm)
+        viewModel.setBm(bm, fileExtension)
     }
 
     //Function that controls the animations when the user inserts the images
@@ -211,8 +223,7 @@ class NewPockActivity : BaseActivity() {
         if (viewModel.nImg.value == 2) {
             binding.image3button.visibility = View.VISIBLE
             binding.image3.visibility = View.VISIBLE
-        }
-        else if (viewModel.nImg.value == 3) {
+        } else if (viewModel.nImg.value == 3) {
             binding.image4button.visibility = View.VISIBLE
             binding.image4.visibility = View.VISIBLE
         }
@@ -225,8 +236,9 @@ class NewPockActivity : BaseActivity() {
                 try {
                     val imageUri: Uri? = data?.data
                     val imageStream: InputStream? = contentResolver.openInputStream(imageUri!!)
-                    val selectedImage = BitmapFactory.decodeStream(imageStream)
-                    setImage(selectedImage)
+                    val extension = if (imageUri.path?.contains("gif")!!) "gif" else "png"
+                    imageStream?.readBytes()?.let { setImage(it, extension) }
+                    imageStream?.close()
                 } catch (e: FileNotFoundException) {
                     e.printStackTrace()
                     Snackbar.make(
@@ -239,7 +251,9 @@ class NewPockActivity : BaseActivity() {
         } else if (reqCode == 112) {
             if (resultCode == Activity.RESULT_OK) {
                 val imageBitmap = data?.extras?.get("data") as Bitmap
-                setImage(imageBitmap)
+                val blob = ByteArrayOutputStream()
+                imageBitmap.compress(Bitmap.CompressFormat.PNG, 0, blob)
+                setImage(blob.toByteArray())
             }
         }
     }
