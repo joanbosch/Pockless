@@ -52,7 +52,7 @@ class ApiManager constructor(
         val retrofit = Retrofit.Builder()
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(PROD_URL)
+            .baseUrl(DEV_URL)
             .client(client)
             .build()
 
