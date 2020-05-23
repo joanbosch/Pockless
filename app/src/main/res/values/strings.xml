@@ -52,6 +52,10 @@
     <string name="close_session_profile_button_text">Cerrar sesión</string>
     <string name="badge_profile_text">Badge</string>
     <string name="pocks_created_length_profile">%s pocks</string>
+    <string name="permission_title">Alerta de Permisos</string>
+    <string name="permission_description">Pockles necesita que le des acceso a tu ubicacion para funcionar, sin ella, solo podras acceder a tu perfil y chats previamente creados. ¿Quieres que te preguntemos de nuevo?</string>
+    <string name="permission_ok">Si</string>
+    <string name="permission_no">No</string>
 
     <string name="facebook_application_id" translatable="false">1291320611078328</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb1291320611078328</string>
