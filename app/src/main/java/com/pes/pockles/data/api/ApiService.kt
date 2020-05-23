@@ -75,7 +75,8 @@ interface ApiService {
     @GET("chat/{id}")
     fun allMessageChat(@Path("id") id: String): Single<List<Message>>
 
-
+    @GET("notifications")
+    fun notifications(): Single<List<Notification>>
 
     @PATCH("user")
     fun editProfile(@Body editProfile: EditedUser): Single<User>

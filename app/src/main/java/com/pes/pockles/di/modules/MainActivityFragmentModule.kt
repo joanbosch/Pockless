@@ -2,7 +2,7 @@ package com.pes.pockles.di.modules
 
 
 import com.pes.pockles.view.ui.chat.AllChatsFragment
-import com.pes.pockles.view.ui.NotificationsFragment
+import com.pes.pockles.view.ui.notifications.NotificationsFragment
 import com.pes.pockles.view.ui.map.MapFragment
 import com.pes.pockles.view.ui.profile.ProfileFragment
 import dagger.Module

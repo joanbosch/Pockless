@@ -1,0 +1,81 @@
+package com.pes.pockles.view.ui.notifications
+
+
+import android.content.Intent
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.adapters.ItemAdapter
+import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
+import com.pes.pockles.R
+import com.pes.pockles.data.Resource
+import com.pes.pockles.databinding.FragmentNotificationsBinding
+import com.pes.pockles.model.Notification
+import com.pes.pockles.view.ui.base.BaseFragment
+
+/**
+ * A simple [Fragment] subclass.
+ */
+class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
+
+    private val viewModel: NotificationsViewModel by lazy {
+        ViewModelProviders.of(this, viewModelFactory).get(NotificationsViewModel::class.java)
+    }
+
+    private val itemAdapter = ItemAdapter<BindingNotificationItem>()
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_notifications, container, false)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+
+        val fastAdapter = FastAdapter.with(itemAdapter)
+        binding.recycler.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = fastAdapter
+        }
+
+        viewModel.notifications.observe(this, Observer {
+            when (it) {
+                is Resource.Success<List<Notification>> -> populateData(it.data!!)
+            }
+        })
+
+        viewModel.refreshNotifications()
+    }
+
+    private fun populateData(data: List<Notification>) {
+        val items = data.map { BindingNotificationItem(it) }
+        val diffs: DiffUtil.DiffResult = FastAdapterDiffUtil.calculateDiff(itemAdapter, items)
+        FastAdapterDiffUtil[itemAdapter] = diffs
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == 15) {
+            viewModel.refreshNotifications()
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun getLayout(): Int {
+       return R.layout.fragment_notifications
+    }
+
+
+}
