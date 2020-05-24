@@ -91,9 +91,9 @@ class ViewUserActivity : BaseActivity() {
         val width: Int = size.x
         val height: Int = size.y
         if (height > width) {
-            window.setLayout((width * .9).toInt(), (height * .9).toInt())
+            window.setLayout((width * .9).toInt(), (height * .6).toInt())
         } else {
-            window.setLayout((width * .7).toInt(), (height * .8).toInt())
+            window.setLayout((width * .7).toInt(), (height).toInt())
         }
     }
 }

@@ -64,7 +64,7 @@
             android:theme="@style/customWindowActivity" />
         <activity
             android:name=".view.ui.viewuser.ViewUserActivity"
-            android:theme="@style/customWindowActivity" /> />
+            android:theme="@style/customWindowActivity" />
         <service
             android:name=".data.messaging.PocklesMessagingService"
             android:exported="false">
