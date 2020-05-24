@@ -15,7 +15,6 @@ import com.pes.pockles.util.livedata.EventObserver
 import com.pes.pockles.view.ui.base.BaseFragment
 import com.pes.pockles.view.ui.editprofile.EditProfileActivity
 import com.pes.pockles.view.ui.login.LaunchActivity
-import com.pes.pockles.view.ui.viewuser.ViewUserActivity
 import java.io.Serializable
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
@@ -56,14 +55,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                 putExtra("mail", viewModel.userdata.mail)
                 putExtra("birthDate", viewModel.userdata.birthDate)
                 putExtra("editableContent", EditedUser(viewModel.userdata.name, viewModel.userdata.profileImage, viewModel.userdata.radiusVisibility, viewModel.userdata.accentColor) as Serializable)
-            }
-            it.context.startActivity(intent)
-        }
-
-        binding.badge.setOnClickListener {
-            //Hardcoded (is not the right place, just for test)
-            val intent = Intent(it.context, ViewUserActivity::class.java).apply {
-                putExtra("userId", "5vOpcmB41XgHQpTPGHotRNrTh9d2")
             }
             it.context.startActivity(intent)
         }

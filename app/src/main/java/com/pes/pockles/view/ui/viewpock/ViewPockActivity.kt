@@ -65,7 +65,9 @@ class ViewPockActivity : BaseActivity() {
         }
 
         binding.username.setOnClickListener {
-            val intent = Intent(it.context, ViewUserActivity::class.java).apply {}
+            val intent = Intent(it.context, ViewUserActivity::class.java).apply {
+                putExtra("userId", viewModel.pock.value?.data?.user)
+            }
             it.context.startActivity(intent)
         }
 

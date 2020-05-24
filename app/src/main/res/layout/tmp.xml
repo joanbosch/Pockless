@@ -21,6 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:background="#00FFFFFF"
+        android:clickable="true"
+        android:focusable="true"
         android:padding="16dp">
 
         <com.mikhaellopez.circularimageview.CircularImageView
@@ -28,8 +30,6 @@
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:scaleType="centerCrop"
-            android:clickable="true"
-            android:focusable="true"
             app:civ_border_width="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,11 +37,8 @@
             app:srcUrl="@{chat.user2.profileImageUrl}" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/startChat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true"
             app:layout_constraintBottom_toBottomOf="@+id/circularImageView2"
             app:layout_constraintStart_toEndOf="@+id/circularImageView2"
             app:layout_constraintTop_toTopOf="@+id/circularImageView2">
@@ -58,8 +55,8 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.056"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/circularImageView2"
+                app:layout_constraintTop_toTopOf="@+id/circularImageView2"
                 tools:text="Username" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -69,7 +66,6 @@
                 android:text="@{TimeUtils.getChatTime(chat)}"
                 android:textAlignment="textEnd"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/appCompatTextView5"
                 app:layout_constraintTop_toTopOf="parent"
@@ -85,7 +81,7 @@
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="@+id/appCompatTextView5"
+                app:layout_constraintStart_toEndOf="@+id/circularImageView2"
                 app:layout_constraintTop_toBottomOf="@+id/appCompatTextView5"
                 tools:text="Content" />
 
