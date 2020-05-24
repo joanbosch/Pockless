@@ -62,7 +62,9 @@
         <activity
             android:name=".view.ui.viewpock.ViewPockActivity"
             android:theme="@style/ViewPock" />
-
+        <activity
+            android:name=".view.ui.viewuser.ViewUserActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <service
             android:name=".data.messaging.PocklesMessagingService"
             android:exported="false">

@@ -15,6 +15,7 @@ import com.pes.pockles.util.livedata.EventObserver
 import com.pes.pockles.view.ui.base.BaseFragment
 import com.pes.pockles.view.ui.editprofile.EditProfileActivity
 import com.pes.pockles.view.ui.login.LaunchActivity
+import com.pes.pockles.view.ui.viewuser.ViewUserActivity
 import java.io.Serializable
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
@@ -56,6 +57,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                 putExtra("birthDate", viewModel.userdata.birthDate)
                 putExtra("editableContent", EditedUser(viewModel.userdata.name, viewModel.userdata.profileImage, viewModel.userdata.radiusVisibility, viewModel.userdata.accentColor) as Serializable)
             }
+            it.context.startActivity(intent)
+        }
+
+        binding.badge.setOnClickListener {
+            val intent = Intent(it.context, ViewUserActivity::class.java).apply {}
             it.context.startActivity(intent)
         }
     }

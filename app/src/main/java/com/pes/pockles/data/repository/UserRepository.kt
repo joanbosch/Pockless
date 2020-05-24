@@ -39,6 +39,10 @@ class UserRepository @Inject constructor(
             ) { Timber.e(it) })
     }
 
+    fun getUser(id: String): LiveData<Resource<User>> {
+        return callApi(Function { apiService -> apiService.getUserById(id) })
+    }
+
     fun userExists(uid: String): LiveData<Resource<Boolean>> {
         return callApi(Function { apiService -> apiService.userExists(uid) })
     }

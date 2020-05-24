@@ -11,6 +11,7 @@ import com.pes.pockles.view.ui.login.register.RegisterActivityIcon
 import com.pes.pockles.view.ui.newpock.NewPockActivity
 import com.pes.pockles.view.ui.pockshistory.PocksHistoryActivity
 import com.pes.pockles.view.ui.viewpock.ViewPockActivity
+import com.pes.pockles.view.ui.viewuser.ViewUserActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -56,6 +57,9 @@ abstract class ActivitiesModule {
 
     @ContributesAndroidInjector
     abstract fun contributeEditProfileActivity(): EditProfileActivity
+
+    @ContributesAndroidInjector
+    abstract fun contributeViewUserActivity(): ViewUserActivity
 
 
 }
