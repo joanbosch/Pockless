@@ -7,7 +7,7 @@
     <data>
 
         <variable
-            name="viewUserViewModel"
+            name="viewModel"
             type="com.pes.pockles.view.ui.viewuser.ViewUserViewModel" />
 
         <import type="android.view.View" />
@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="#eee">
+        android:background="@drawable/rect_border_dark">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,11 +37,11 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="@{viewUserViewModel.user.data.name}"
+                android:text="@{viewModel.user.name}"
                 android:textAlignment="textStart"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@color/white"
-                android:visibility="@{viewUserViewModel.user.data != null ? View.VISIBLE: View.GONE}"
+                android:visibility="@{viewModel.user != null ? View.VISIBLE: View.GONE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/back"
@@ -55,8 +55,6 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@null"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/username"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -70,7 +68,6 @@
                 android:layout_height="wrap_content"
                 android:indeterminate="true"
                 app:layout_constraintBottom_toBottomOf="@+id/back"
-                app:loadingResource="@{viewUserViewModel.user}"
                 app:mpb_indeterminateTint="@color/md_yellow_400"
                 app:mpb_progressStyle="horizontal"
                 app:mpb_useIntrinsicPadding="false" />
@@ -83,8 +80,8 @@
             android:layout_height="wrap_content"
             android:background="#eee"
             android:padding="16dp"
-            app:layout_constraintEnd_toStartOf="@+id/rightBorder"
-            app:layout_constraintStart_toEndOf="@+id/leftBorder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayoutHeader">
 
             <com.mikhaellopez.circularimageview.CircularImageView
@@ -94,7 +91,8 @@
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcUrl="@{viewModel.user.profileImageUrl}" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -118,7 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="4dp"
-                    android:text="@{@string/pocks_created_length_profile(viewUserViewModel.user.data.createdPocksNumber)}"
+                    android:text="@{@string/pocks_created_length_profile(viewModel.user.pocks)}"
                     android:textColor="@color/md_black_1000"
                     android:textSize="13sp"
                     android:textStyle="bold"
@@ -183,26 +181,5 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/leftBorder"
-            android:layout_width="5dp"
-            android:layout_height="0dp"
-            android:background="@color/colorPrimary"
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayoutDown"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayoutHeader">
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/rightBorder"
-            android:layout_width="5dp"
-            android:layout_height="0dp"
-            android:background="@color/colorPrimary"
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayoutDown"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayoutHeader">
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

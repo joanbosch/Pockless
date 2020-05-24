@@ -61,7 +61,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         }
 
         binding.badge.setOnClickListener {
-            val intent = Intent(it.context, ViewUserActivity::class.java).apply {}
+            //Hardcoded (is not the right place, just for test)
+            val intent = Intent(it.context, ViewUserActivity::class.java).apply {
+                putExtra("userId", "5vOpcmB41XgHQpTPGHotRNrTh9d2")
+            }
             it.context.startActivity(intent)
         }
     }
