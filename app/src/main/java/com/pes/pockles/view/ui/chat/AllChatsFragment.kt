@@ -3,7 +3,6 @@ package com.pes.pockles.view.ui.chat
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -21,7 +20,6 @@ import com.mikepenz.fastadapter.binding.BindingViewHolder
 import com.mikepenz.fastadapter.listeners.ClickEventHook
 import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.ChatItemBinding
-import com.pes.pockles.databinding.LikeItemBinding
 import com.pes.pockles.model.Chat
 import com.pes.pockles.model.ChatData
 import com.pes.pockles.view.ui.chat.item.BindingChatItem
@@ -90,7 +88,6 @@ class AllChatsFragment : BaseFragment<FragmentChatBinding>() {
                 fastAdapter: FastAdapter<BindingChatItem>,
                 item: BindingChatItem
             ) {
-                Log.i("Chat", item.toString())
                 val intent = Intent(context, ViewUserActivity::class.java).apply {
                     putExtra("userId", item.chat!!.user2.id)
                 }

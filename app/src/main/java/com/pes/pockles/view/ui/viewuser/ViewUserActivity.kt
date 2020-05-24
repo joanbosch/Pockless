@@ -3,7 +3,6 @@ package com.pes.pockles.view.ui.viewuser
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -30,7 +29,6 @@ class ViewUserActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         val userId: String? = intent.extras?.getString("userId")
-        Log.i("ViewUserActivity", "id recived: " + userId)
 
         if (userId == null) {
             finish()
@@ -42,9 +40,8 @@ class ViewUserActivity : BaseActivity() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        Log.i("ViewUser", "arriba")
         userId?.let { loadContent(it) }
-        Log.i("ViewUser", "arriba")
+
         binding.back.setOnClickListener {
             onBackPressed()
         }
