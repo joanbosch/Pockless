@@ -93,7 +93,7 @@ class ViewUserActivity : BaseActivity() {
         if (height > width) {
             window.setLayout((width * .9).toInt(), (height * .6).toInt())
         } else {
-            window.setLayout((width * .7).toInt(), (height).toInt())
+            window.setLayout((width * .7).toInt(), (height * .8).toInt())
         }
     }
 }
