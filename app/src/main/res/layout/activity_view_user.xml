@@ -78,7 +78,7 @@
             android:id="@+id/constraintLayoutContent"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="#eee"
+            android:background="#FFFFFF"
             android:padding="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
