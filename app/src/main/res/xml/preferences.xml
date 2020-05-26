@@ -29,6 +29,7 @@
 
         <Preference
             android:icon="@drawable/ic_foreground"
+            android:key="AboutUs"
             android:title="@string/about_us" />
 
     </PreferenceCategory>

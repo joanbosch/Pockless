@@ -46,7 +46,7 @@
         <activity
             android:name=".view.ui.settings.SettingsActivity"
             android:label="@string/settings"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/SettingsTheme" />
 
         <activity android:name=".view.ui.MainActivity" />
         <activity android:name=".view.ui.login.register.RegisterActivity" />

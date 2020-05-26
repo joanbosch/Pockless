@@ -1,6 +1,7 @@
 package com.pes.pockles.view.ui.settings
 
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceFragment
@@ -8,6 +9,7 @@ import android.preference.PreferenceManager
 import android.view.MenuItem
 import com.pes.pockles.R
 import com.pes.pockles.view.ui.base.BaseActivity
+import com.pes.pockles.view.ui.editprofile.EditProfileActivity
 
 
 class SettingsActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -25,6 +27,7 @@ class SettingsActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceCha
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this)
 
+        // This should add the top bar to go back...
         this.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         this.supportActionBar?.setDisplayShowHomeEnabled(true)
 
@@ -51,6 +54,13 @@ class SettingsActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceCha
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             addPreferencesFromResource(R.xml.preferences)
+
+            findPreference("AboutUs")
+                .setOnPreferenceClickListener {
+                    val intent = Intent(activity, EditProfileActivity::class.java)
+                    startActivity(intent)
+                    return@setOnPreferenceClickListener true
+                }
         }
     }
 
