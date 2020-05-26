@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="Notificaciones">-->
-
-        <SwitchPreference
-            android:defaultValue="true"
-            android:icon="@drawable/ic_notifications_black_24dp"
-            android:key="NotificationsEnabled"
-            android:title="Activar notificaciones" />
-    </PreferenceCategory>
-
     <PreferenceCategory android:title="General">
 
         <ListPreference
@@ -17,7 +8,7 @@
             android:entries="@array/language_list_titles"
             android:entryValues="@array/language_list_values"
             android:icon="@drawable/ic_translate_black_24dp"
-            android:key="LocaleApp"
+            android:key="Language"
             android:title="@string/leguage" />
     </PreferenceCategory>
 
