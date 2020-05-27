@@ -43,10 +43,16 @@
             android:name=".view.ui.editprofile.EditProfileActivity"
             android:label="@string/title_toolbar_edit_profile"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".view.ui.settings.SettingsActivity"
             android:label="@string/settings"
             android:theme="@style/SettingsTheme" />
+
+        <activity
+            android:name=".view.ui.aboutus.AboutUsActivity"
+            android:label="@string/title_activity_chat"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity android:name=".view.ui.MainActivity" />
         <activity android:name=".view.ui.login.register.RegisterActivity" />
