@@ -52,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:paddingTop="30dp"
                     android:paddingBottom="30dp"
-                    android:text="Proyecto de PES - Q2 2019/20"
+                    android:text="@string/PES_project"
                     android:textAlignment="center"
                     android:textColor="@color/secondaryButtons"
                     android:textSize="18sp"

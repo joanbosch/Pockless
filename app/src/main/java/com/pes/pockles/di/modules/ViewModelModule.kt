@@ -16,7 +16,6 @@ import com.pes.pockles.view.ui.map.MapViewModel
 import com.pes.pockles.view.ui.newpock.NewPockViewModel
 import com.pes.pockles.view.ui.pockshistory.PocksHistoryViewModel
 import com.pes.pockles.view.ui.profile.ProfileViewModel
-import com.pes.pockles.view.ui.settings.SettingsViewModel
 import com.pes.pockles.view.ui.viewpock.ViewPockViewModel
 import dagger.Binds
 import dagger.Module
@@ -92,11 +91,6 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ChatViewModel::class)
     abstract fun chatViewModel(viewModel: ChatViewModel): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(SettingsViewModel::class)
-    abstract fun settingsViewModel(viewModel: SettingsViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
