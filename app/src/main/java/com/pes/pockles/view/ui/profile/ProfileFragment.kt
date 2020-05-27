@@ -80,12 +80,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         }
     }
 
-    private fun navigateToSettings(bool: Boolean){
-        if (bool) {
-            startActivity(Intent(activity!!, SettingsActivity::class.java))
-        }
-    }
-
     override fun getLayout(): Int {
         return R.layout.fragment_profile
     }
