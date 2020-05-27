@@ -45,6 +45,9 @@ interface ApiService {
     @GET("user")
     fun getUser(): Single<User>
 
+    @GET("user/{id}")
+    fun getUserById(@Path("id") id: String): Single<ViewUser>
+
     @GET("user/{id}/exists")
     fun userExists(@Path("id") id: String): Single<Boolean>
 
@@ -74,8 +77,6 @@ interface ApiService {
 
     @GET("chat/{id}")
     fun allMessageChat(@Path("id") id: String): Single<List<Message>>
-
-
 
     @PATCH("user")
     fun editProfile(@Body editProfile: EditedUser): Single<User>
