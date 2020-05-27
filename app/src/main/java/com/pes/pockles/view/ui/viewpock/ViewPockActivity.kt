@@ -21,6 +21,7 @@ import com.pes.pockles.model.Pock
 import com.pes.pockles.util.TimeUtils
 import com.pes.pockles.view.ui.base.BaseActivity
 import com.pes.pockles.view.ui.chat.ChatActivity
+import com.pes.pockles.view.ui.viewuser.ViewUserActivity
 
 
 class ViewPockActivity : BaseActivity() {
@@ -62,6 +63,13 @@ class ViewPockActivity : BaseActivity() {
 
         binding.report.setOnClickListener {
             goReport()
+        }
+
+        binding.username.setOnClickListener {
+            val intent = Intent(it.context, ViewUserActivity::class.java).apply {
+                putExtra("userId", viewModel.pock.value?.data?.user)
+            }
+            it.context.startActivity(intent)
         }
 
         initializeObservers()

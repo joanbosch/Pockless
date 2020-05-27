@@ -6,11 +6,7 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.pes.pockles.data.Resource
 import com.pes.pockles.data.api.ApiService
 import com.pes.pockles.data.database.AppDatabase
-import com.pes.pockles.model.CreateUser
-import com.pes.pockles.model.InsertToken
-import com.pes.pockles.model.Pock
-import com.pes.pockles.model.User
-import com.pes.pockles.model.EditedUser
+import com.pes.pockles.model.*
 import com.pes.pockles.util.AppExecutors
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Function
@@ -37,6 +33,10 @@ class UserRepository @Inject constructor(
             .subscribe(
                 ::saveUser
             ) { Timber.e(it) })
+    }
+
+    fun getUser(id: String): LiveData<Resource<ViewUser>> {
+        return callApi(Function { apiService -> apiService.getUserById(id) })
     }
 
     fun userExists(uid: String): LiveData<Resource<Boolean>> {
