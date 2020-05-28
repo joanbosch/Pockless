@@ -27,9 +27,9 @@
             android:id="@+id/action_userProfileFragment_to_likedPocksActivity"
             app:destination="@id/likedPocksActivity" />
         <action
-            android:id="@id/action_userProfileFragment_to_show_achievements"
-            app:destination="@id/AchievementsActivity"
-            tools:layout="@layout/achievements"/>
+            android:id="@+id/action_userProfileFragment_to_achievementsActivity"
+            app:destination="@id/achievementsActivity"
+            tools:layout = "@layout/achievements"/>
 
     </fragment>
     <fragment
@@ -47,4 +47,8 @@
         android:name="com.pes.pockles.view.ui.likes.LikedPocksActivity"
         android:label="LikedPocksActivity"
         tools:layout="@layout/activity_liked_pocks" />
+    <activity
+        android:id="@+id/achievementsActivity"
+        android:name="com.pes.pockles.view.ui.achievements.AchievementsActivity"
+        android:label="AchievementsActivity" />
 </navigation>
