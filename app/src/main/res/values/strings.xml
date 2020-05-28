@@ -53,8 +53,10 @@
     <string name="badge_profile_text">Badge</string>
     <string name="pocks_created_length_profile">%s pocks</string>
 
-    <string name="facebook_application_id" translatable="false">1291320611078328</string>
-    <string name="facebook_login_protocol_scheme" translatable="false">fb1291320611078328</string>
+    <string name="facebook_application_id" translatable="false">268555780995029</string>
+    <!-- Facebook Application ID, prefixed by 'fb'. Enables Chrome Custom tabs. -->
+    <string name="facebook_login_protocol_scheme" translatable="false">fb268555780995029</string>
+
     <string name="google_signin">Iniciar sesión con Google</string>
     <string name="facebook_sign_in">Iniciar sesión con Facebook</string>
     <string name="email_sign_in">Iniciar sesión con tu e-mail</string>

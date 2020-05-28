@@ -16,9 +16,6 @@ class BindingNotificationItem(val notification: Notification) : AbstractBindingI
         binding.notification = notification
     }
 
-    override var identifier: Long
-        get() = notification.id.hashCode().toLong()
-        set(value) {}
 
     override fun createBinding(
         inflater: LayoutInflater,

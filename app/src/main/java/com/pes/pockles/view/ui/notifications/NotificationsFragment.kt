@@ -54,8 +54,7 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
 
     private fun populateData(data: List<Notification>) {
         val items = data.map { BindingNotificationItem(it) }
-        val diffs: DiffUtil.DiffResult = FastAdapterDiffUtil.calculateDiff(itemAdapter, items)
-        FastAdapterDiffUtil[itemAdapter] = diffs
+        itemAdapter.setNewList(items)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
