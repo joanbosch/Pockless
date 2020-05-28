@@ -4,6 +4,7 @@ package com.pes.pockles.view.ui.map
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.util.DisplayMetrics
@@ -14,10 +15,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.assent.Permission
+import com.afollestad.assent.askForPermissions
+import com.afollestad.assent.isAllGranted
 import com.afollestad.assent.runWithPermissions
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -115,9 +119,59 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         dialog.show()
     }
 
+    private fun showPermissionDialog() {
+        val dialog: AlertDialog = AlertDialog.Builder(context!!)
+            .setTitle(R.string.permission_title)
+            .setMessage(R.string.permission_description)
+            .setPositiveButton(R.string.permission_ok) { dialog, _ ->
+                askForPermissions(
+                    Permission.ACCESS_COARSE_LOCATION,
+                    Permission.ACCESS_FINE_LOCATION
+                ) {
+                    val ft: FragmentTransaction = fragmentManager!!.beginTransaction()
+                    if (Build.VERSION.SDK_INT >= 26) {
+                        ft.setReorderingAllowed(false)
+                    }
+                    ft.detach(this).attach(this).commit()
+                }
+            }
+            .setNegativeButton(R.string.permission_no) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+
+        dialog.show()
+    }
+
 
     override fun onMapReady(googleMap: GoogleMap) {
         this.googleMap = googleMap
+        val permissionsGranted: Boolean =
+            isAllGranted(Permission.ACCESS_COARSE_LOCATION, Permission.ACCESS_FINE_LOCATION)
+
+        if (!permissionsGranted) {
+            askForPermissions(Permission.ACCESS_COARSE_LOCATION, Permission.ACCESS_FINE_LOCATION) {
+                val permissionDenied: Boolean = it.isAllDenied(
+                    Permission.ACCESS_COARSE_LOCATION,
+                    Permission.ACCESS_FINE_LOCATION
+                )
+                if (permissionDenied) {
+                    showPermissionDialog()
+                }
+                val perGranted: Boolean =
+                    it.isAllGranted(
+                        Permission.ACCESS_COARSE_LOCATION,
+                        Permission.ACCESS_FINE_LOCATION
+                    )
+                if (perGranted) {
+                    val ft: FragmentTransaction = fragmentManager!!.beginTransaction()
+                    if (Build.VERSION.SDK_INT >= 26) {
+                        ft.setReorderingAllowed(false)
+                    }
+                    ft.detach(this).attach(this).commit()
+                }
+            }
+        }
         runWithPermissions(Permission.ACCESS_COARSE_LOCATION, Permission.ACCESS_FINE_LOCATION) {
             googleMap.setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(
@@ -154,6 +208,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
                     }
                 })
         }
+
         createBottomSheet()
     }
 
@@ -231,8 +286,6 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         )
     }
 
-    /*Link to know how to customize markers
-     *https://developers.google.com/maps/documentation/android-sdk/marker?hl=es*/
     private fun handleSuccess(list: Resource.Success<List<Pock>>) {
         googleMap!!.clear()
         list.data?.let {

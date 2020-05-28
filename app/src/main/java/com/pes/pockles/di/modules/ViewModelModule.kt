@@ -18,6 +18,7 @@ import com.pes.pockles.view.ui.notifications.NotificationsViewModel
 import com.pes.pockles.view.ui.pockshistory.PocksHistoryViewModel
 import com.pes.pockles.view.ui.profile.ProfileViewModel
 import com.pes.pockles.view.ui.viewpock.ViewPockViewModel
+import com.pes.pockles.view.ui.viewuser.ViewUserViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -97,6 +98,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(NotificationsViewModel::class)
     abstract fun notificationsViewModel(viewModel: NotificationsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ViewUserViewModel::class)
+    abstract fun ViewUserViewModel(viewModel: ViewUserViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
