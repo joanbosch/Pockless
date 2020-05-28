@@ -14,6 +14,7 @@ import com.pes.pockles.view.ui.login.register.RegisterActivityViewModel
 import com.pes.pockles.view.ui.login.register.RegisterIconViewModel
 import com.pes.pockles.view.ui.map.MapViewModel
 import com.pes.pockles.view.ui.newpock.NewPockViewModel
+import com.pes.pockles.view.ui.notifications.NotificationsViewModel
 import com.pes.pockles.view.ui.pockshistory.PocksHistoryViewModel
 import com.pes.pockles.view.ui.profile.ProfileViewModel
 import com.pes.pockles.view.ui.viewpock.ViewPockViewModel
@@ -92,6 +93,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ChatViewModel::class)
     abstract fun chatViewModel(viewModel: ChatViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(NotificationsViewModel::class)
+    abstract fun notificationsViewModel(viewModel: NotificationsViewModel): ViewModel
 
     @Binds
     @IntoMap

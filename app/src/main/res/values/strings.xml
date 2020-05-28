@@ -57,8 +57,10 @@
     <string name="permission_ok">Si</string>
     <string name="permission_no">No</string>
 
-    <string name="facebook_application_id" translatable="false">1291320611078328</string>
-    <string name="facebook_login_protocol_scheme" translatable="false">fb1291320611078328</string>
+    <string name="facebook_application_id" translatable="false">268555780995029</string>
+    <!-- Facebook Application ID, prefixed by 'fb'. Enables Chrome Custom tabs. -->
+    <string name="facebook_login_protocol_scheme" translatable="false">fb268555780995029</string>
+
     <string name="google_signin">Iniciar sesión con Google</string>
     <string name="facebook_sign_in">Iniciar sesión con Facebook</string>
     <string name="email_sign_in">Iniciar sesión con tu e-mail</string>
@@ -156,4 +158,7 @@
     <string name="title_activity_chat">Chat</string>
     <string name="cannot_obtain_the_chat_messages">No se han podido obtener los mesnsajes del chat</string>
     <string name="cannot_add_message">No se ha podido enviar el mensaje</string>
+
+    <!-- Notifications Strings -->
+    <string name="notifications_fragment_title">Notificaciones</string>
 </resources>

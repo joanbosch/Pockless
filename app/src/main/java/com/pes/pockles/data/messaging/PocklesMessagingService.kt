@@ -39,12 +39,12 @@ class PocklesMessagingService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        val notification: Notification =
+        val notificationEnum: NotificationEnum =
             mapAPIMessageTypeToNotificationType(remoteMessage.data["category"]?.toInt())
         /*In some cases this method will do nothing, it is added because in some yes,
         * and maybe in the future we want to add functionality at receiving this notifications
         * that actually we don't want an special treatment on it*/
-        val handled = notification.onMessageReceived(
+        val handled = notificationEnum.onMessageReceived(
             repositoryProvider,
             remoteMessage.data["body"],
             remoteMessage.data["title"],
@@ -96,15 +96,15 @@ class PocklesMessagingService : FirebaseMessagingService() {
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
     }
 
-    private fun mapAPIMessageTypeToNotificationType(messageType: Int?): Notification {
+    private fun mapAPIMessageTypeToNotificationType(messageType: Int?): NotificationEnum {
         when (messageType) {
-            0 -> return Notification.CHAT
-            1 -> return Notification.TRENDING
-            2 -> return Notification.REPORTS
-            3 -> return Notification.ACHIEVEMENT
-            4 -> return Notification.BAN
+            0 -> return NotificationEnum.CHAT
+            1 -> return NotificationEnum.TRENDING
+            2 -> return NotificationEnum.REPORTS
+            3 -> return NotificationEnum.ACHIEVEMENT
+            4 -> return NotificationEnum.BAN
         }
-        return Notification.DEFAULT
+        return NotificationEnum.DEFAULT
     }
 
 }

@@ -6,7 +6,7 @@ import com.pes.pockles.data.repository.RepositoryProvider
 import com.pes.pockles.model.Message
 import com.pes.pockles.view.ui.chat.ChatActivity
 
-enum class Notification {
+enum class NotificationEnum {
     CHAT {
         override fun onMessageReceived(
             repositoryProvider: RepositoryProvider,
