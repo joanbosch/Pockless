@@ -1,6 +1,5 @@
 package com.pes.pockles.view.ui.editpock
 
-import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -28,10 +27,10 @@ class EditPockViewModel @Inject constructor(
     private var pockId: String = ""
     private var hasImages = false
 
-    private val _image1 = MutableLiveData<Bitmap>()
-    private val _image2 = MutableLiveData<Bitmap>()
-    private val _image3 = MutableLiveData<Bitmap>()
-    private val _image4 = MutableLiveData<Bitmap>()
+    private val _image1 = MutableLiveData<StorageTaskBitmap>()
+    private val _image2 = MutableLiveData<StorageTaskBitmap>()
+    private val _image3 = MutableLiveData<StorageTaskBitmap>()
+    private val _image4 = MutableLiveData<StorageTaskBitmap>()
 
     //Number of images that the pock has
     private val _nImg = MutableLiveData<Int>()
@@ -79,34 +78,34 @@ class EditPockViewModel @Inject constructor(
     }
 
     fun updatePock() {
-        val category: String = if (_pockCategory.value == null)
-            "General"
-        else _pockCategory.value.toString()
+        val category: String =
+            if (_pockCategory.value == null) "General" else _pockCategory.value.toString()
 
-        if (pockContent.value == null)
+        if (pockContent.value == null) {
             _errorHandler.value = true
-        else {
+        } else {
             if (hasImages) {
                 //Store in storageTask the images saved locally
                 val storageTask = StorageTask.create(storageManager)
 
                 _image1.value?.let {
-                    storageTask.addBitmap(StorageTaskBitmap(_image1.value!!))
+                    storageTask.addBitmap(_image1.value!!)
                 }
                 _image2.value?.let {
-                    storageTask.addBitmap(StorageTaskBitmap(_image2.value!!))
+                    storageTask.addBitmap(_image2.value!!)
                 }
                 _image3.value?.let {
-                    storageTask.addBitmap(StorageTaskBitmap(_image3.value!!))
+                    storageTask.addBitmap(_image3.value!!)
                 }
                 _image4.value?.let {
-                    storageTask.addBitmap(StorageTaskBitmap(_image4.value!!))
+                    storageTask.addBitmap(_image4.value!!)
                 }
 
                 //Try to insert a pock when the images are upload in firebase
                 storageTask.upload({
                     var newMedia = it
-                    if (_oldImages.value != null && _oldImages.value!!.isNotEmpty()) newMedia = _oldImages.value!! + newMedia
+                    if (_oldImages.value != null && _oldImages.value!!.isNotEmpty()) newMedia =
+                        _oldImages.value!! + newMedia
                     _pockToUpdate.value = EditedPock(
                         message = pockContent.value!!,
                         category = category,
@@ -116,8 +115,7 @@ class EditPockViewModel @Inject constructor(
                 }, {
                     _errorSavingImages.value = true
                 }, "pockImages")
-            }
-            else {
+            } else {
                 _pockToUpdate.value = EditedPock(
                     message = pockContent.value!!,
                     category = category,
@@ -135,19 +133,19 @@ class EditPockViewModel @Inject constructor(
     }
 
     //Local storage of pock images
-    fun setBm(bm: Bitmap) {
+    fun setBm(bm: ByteArray, fileExtension: String = "png") {
         when (_actImg.value) {
-            1 -> _image1.value = bm
-            2 -> _image2.value = bm
-            3 -> _image3.value = bm
-            4 -> _image4.value = bm
+            1 -> _image1.value = StorageTaskBitmap(bm, fileExtension)
+            2 -> _image2.value = StorageTaskBitmap(bm, fileExtension)
+            3 -> _image3.value = StorageTaskBitmap(bm, fileExtension)
+            4 -> _image4.value = StorageTaskBitmap(bm, fileExtension)
         }
     }
 
-    fun deleteOldImage (imgNumber: Int) {
+    fun deleteOldImage(imgNumber: Int) {
         //Deleting image from list is done in this way to force a change on oldImages and execute the code associated to the observer
         val temp: MutableList<String> = _oldImages.value!!.toMutableList()
-        temp.remove(allOldImages[imgNumber-1])
+        temp.remove(allOldImages[imgNumber - 1])
         _oldImages.value = temp.toList()
     }
 

@@ -1,6 +1,5 @@
 package com.pes.pockles.data.storage
 
-import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.google.firebase.auth.FirebaseAuth
@@ -8,7 +7,6 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.pes.pockles.data.Resource
-import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Singleton
@@ -31,18 +29,18 @@ class StorageManager {
      * To upload a file just treat this like a backend api call, observe the changes in the resource
      * and when it is success, the public URL of the uploaded image will be in the data.
      *
-     * @param bitmap            The bitmap to upload
+     * @param data            The bitmap to upload
      * @param childReference    The path to upload the data on the server. Optional
      */
     fun uploadMedia(
-        bitmap: Bitmap,
+        data: ByteArray,
         fileExtension: String = "png",
         childReference: String = "other"
     ): LiveData<Resource<String>> {
         val result = MediatorLiveData<Resource<String>>()
         result.value = Resource.Loading<Nothing>()
 
-        uploadMedia(bitmap, {
+        uploadMedia(data, {
             result.value = Resource.Success(it)
         }, {
             result.value = Resource.Error(it)
@@ -55,7 +53,7 @@ class StorageManager {
      * The same as [uploadMedia] but it emits the results on the given callbacks
      */
     fun uploadMedia(
-        bitmap: Bitmap,
+        data: ByteArray,
         success: (String) -> Unit,
         failure: ((Throwable) -> Unit)? = null,
         fileExtension: String = "png",
@@ -71,9 +69,6 @@ class StorageManager {
             val imageRef =
                 storageRef.child("$childReference/${it.uid}_${date}_$sufix.$fileExtension")
 
-            val baos = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
-            val data = baos.toByteArray()
 
             val uploadTask = imageRef.putBytes(data)
             uploadTask.addOnSuccessListener {

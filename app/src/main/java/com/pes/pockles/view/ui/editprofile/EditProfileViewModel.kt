@@ -9,6 +9,7 @@ import com.pes.pockles.data.storage.StorageManager
 import com.pes.pockles.domain.usecases.EditProfileUseCase
 import com.pes.pockles.model.EditedUser
 import com.pes.pockles.model.User
+import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
 class EditProfileViewModel @Inject constructor(
@@ -24,7 +25,7 @@ class EditProfileViewModel @Inject constructor(
     private val _savedList = mutableListOf<Any>()
 
     private val _mail = MutableLiveData<String>()
-        val mail: LiveData<String>
+    val mail: LiveData<String>
         get() = _mail
 
     private val _birthDate = MutableLiveData<String>()
@@ -62,7 +63,9 @@ class EditProfileViewModel @Inject constructor(
     }
 
     fun uploadMedia(bitmap: Bitmap): LiveData<Resource<String>> {
-        return storageManager.uploadMedia(bitmap, "profileImages");
+        val blob = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, blob)
+        return storageManager.uploadMedia(blob.toByteArray(), childReference = "profileImages");
     }
 
     fun setImageUrl(data: String) {
@@ -73,7 +76,7 @@ class EditProfileViewModel @Inject constructor(
         }
     }
 
-    fun setUsername (newName: String) {
+    fun setUsername(newName: String) {
         val u = editableContent.value
         u?.let {
             it.name = newName
@@ -89,7 +92,7 @@ class EditProfileViewModel @Inject constructor(
         }
     }
 
-    fun save() : LiveData<Resource<User>>{
+    fun save(): LiveData<Resource<User>> {
         _savedList[0] = _editableContent.value!!.name
         _savedList[1] = _editableContent.value!!.profileImageUrl
         _savedList[2] = _editableContent.value!!.accentColor
