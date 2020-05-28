@@ -26,6 +26,11 @@
         <action
             android:id="@+id/action_userProfileFragment_to_likedPocksActivity"
             app:destination="@id/likedPocksActivity" />
+        <action
+            android:id="@id/action_userProfileFragment_to_show_achievements"
+            app:destination="@id/AchievementsActivity"
+            tools:layout="@layout/achievements"/>
+
     </fragment>
     <fragment
         android:id="@+id/notificationsFragment"
