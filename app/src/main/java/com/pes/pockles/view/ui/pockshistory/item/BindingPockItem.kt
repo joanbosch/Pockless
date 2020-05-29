@@ -18,12 +18,7 @@ class BindingPockItem : AbstractBindingItem<PockHistoryItemBinding>() {
     override fun bindView(binding: PockHistoryItemBinding, payloads: List<Any>) {
         pock?.let {
             binding.pock = it
-        }
-
-        if (showEdit) {
-            binding.editButton.visibility = View.VISIBLE
-        } else {
-            binding.editButton.visibility = View.GONE
+            binding.showEdit = showEdit
         }
     }
 
