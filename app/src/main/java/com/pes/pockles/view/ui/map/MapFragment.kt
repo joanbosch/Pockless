@@ -38,6 +38,7 @@ import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
+import com.pes.pockles.data.loading
 import com.pes.pockles.databinding.FragmentMapBinding
 import com.pes.pockles.model.Pock
 import com.pes.pockles.util.LocationUtils.Companion.getLastLocation
@@ -45,7 +46,6 @@ import com.pes.pockles.util.dp2px
 import com.pes.pockles.view.ui.base.BaseFragment
 import com.pes.pockles.view.ui.pockshistory.item.BindingPockItem
 import com.pes.pockles.view.ui.viewpock.ViewPockActivity
-import timber.log.Timber
 import kotlin.math.cos
 import kotlin.math.ln
 import kotlin.math.roundToInt
@@ -89,7 +89,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         super.onCreateView(inflater, container, savedInstanceState)
 
 
-        binding.mapViewModel = viewModel
+        binding.viewModel = viewModel
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment?
         mapFragment!!.getMapAsync(this)
@@ -194,6 +194,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
                             is Resource.Success<*> -> handleSuccess(value as Resource.Success<List<Pock>>)
                             is Resource.Error -> handleError()
                         }
+                        setLoading(value.loading)
                     }
                 })
 
@@ -321,6 +322,10 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
                 googleMap!!.addTileOverlay(TileOverlayOptions().tileProvider(mProvider))
             }
         }
+    }
+
+    private fun setLoading(b: Boolean) {
+        binding.loader.visibility = if (b) View.VISIBLE else View.GONE
     }
 
     private fun handleError() {
