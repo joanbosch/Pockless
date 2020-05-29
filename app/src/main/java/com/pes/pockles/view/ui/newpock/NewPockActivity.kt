@@ -1,14 +1,10 @@
 package com.pes.pockles.view.ui.newpock
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
@@ -16,11 +12,6 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.bottomsheets.BasicGridItem
-import com.afollestad.materialdialogs.bottomsheets.BottomSheet
-import com.afollestad.materialdialogs.bottomsheets.gridItems
-import com.afollestad.materialdialogs.bottomsheets.setPeekHeight
 import com.github.razir.progressbutton.hideProgress
 import com.github.razir.progressbutton.showProgress
 import com.google.android.material.snackbar.Snackbar
@@ -31,9 +22,7 @@ import com.pes.pockles.model.Location
 import com.pes.pockles.model.Pock
 import com.pes.pockles.util.LocationUtils.Companion.getLastLocation
 import com.pes.pockles.view.ui.base.BaseActivity
-import java.io.ByteArrayOutputStream
-import java.io.FileNotFoundException
-import java.io.InputStream
+import com.pes.pockles.view.widget.PhotoPicker
 
 class NewPockActivity : BaseActivity() {
 
@@ -41,6 +30,8 @@ class NewPockActivity : BaseActivity() {
     private val viewModel: NewPockViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(NewPockViewModel::class.java)
     }
+
+    private val photoPicker = PhotoPicker(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -172,32 +163,7 @@ class NewPockActivity : BaseActivity() {
     }
 
     private fun goUploadImage() {
-        val items = listOf(
-            BasicGridItem(R.drawable.ic_icon_camera, getString(R.string.take_photo_dialog_option)),
-            BasicGridItem(R.drawable.ic_image, getString(R.string.select_photo_dialog_option))
-        )
-
-        MaterialDialog(this, BottomSheet()).show {
-            title(text = getString(R.string.upload_image_dialog_title))
-            cornerRadius(16f)
-            setPeekHeight(res = R.dimen.register_menu_peek_height)
-            gridItems(items) { _, index, _ ->
-                run {
-                    if (index == 0) {
-                        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-                            takePictureIntent.resolveActivity(packageManager)?.also {
-                                startActivityForResult(takePictureIntent, 112)
-                            }
-                        }
-                    } else {
-                        val photoPickerIntent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-                        photoPickerIntent.addCategory(Intent.CATEGORY_OPENABLE)
-                        photoPickerIntent.type = "image/*"
-                        startActivityForResult(photoPickerIntent, 111)
-                    }
-                }
-            }
-        }
+        photoPicker.createPhotoPicker(getString(R.string.upload_image_dialog_title))
     }
 
     private fun setImage(bm: ByteArray, fileExtension: String = "png") {
@@ -231,31 +197,10 @@ class NewPockActivity : BaseActivity() {
 
     override fun onActivityResult(reqCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(reqCode, resultCode, data)
-        if (reqCode == 111) {
-            if (resultCode == Activity.RESULT_OK) {
-                try {
-                    val imageUri: Uri? = data?.data
-                    val imageStream: InputStream? = contentResolver.openInputStream(imageUri!!)
-                    val extension = if (imageUri.path?.contains("gif")!!) "gif" else "png"
-                    imageStream?.readBytes()?.let { setImage(it, extension) }
-                    imageStream?.close()
-                } catch (e: FileNotFoundException) {
-                    e.printStackTrace()
-                    Snackbar.make(
-                        binding.newPock,
-                        getString(R.string.error_selecting_image),
-                        Snackbar.LENGTH_LONG
-                    ).show()
-                }
-            }
-        } else if (reqCode == 112) {
-            if (resultCode == Activity.RESULT_OK) {
-                val imageBitmap = data?.extras?.get("data") as Bitmap
-                val blob = ByteArrayOutputStream()
-                imageBitmap.compress(Bitmap.CompressFormat.PNG, 0, blob)
-                setImage(blob.toByteArray())
-            }
-        }
+        photoPicker.processResult(reqCode, resultCode, data, { bytes, extension ->
+            setImage(bytes, extension)
+        }, { error ->
+            Snackbar.make(binding.newPock, error, Snackbar.LENGTH_LONG).show()
+        })
     }
-
 }

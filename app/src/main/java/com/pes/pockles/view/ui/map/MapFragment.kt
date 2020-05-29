@@ -124,7 +124,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         val dialog: AlertDialog = AlertDialog.Builder(context!!)
             .setTitle(R.string.permission_title)
             .setMessage(R.string.permission_description)
-            .setPositiveButton(R.string.permission_ok) { dialog, _ ->
+            .setPositiveButton(R.string.permission_ok) { _, _ ->
                 askForPermissions(
                     Permission.ACCESS_COARSE_LOCATION,
                     Permission.ACCESS_FINE_LOCATION

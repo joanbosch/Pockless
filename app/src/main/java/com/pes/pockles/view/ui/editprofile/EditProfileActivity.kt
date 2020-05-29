@@ -1,13 +1,10 @@
 package com.pes.pockles.view.ui.editprofile
 
-import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -15,11 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.bottomsheets.BasicGridItem
-import com.afollestad.materialdialogs.bottomsheets.BottomSheet
-import com.afollestad.materialdialogs.bottomsheets.gridItems
-import com.afollestad.materialdialogs.bottomsheets.setPeekHeight
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.pes.pockles.R
@@ -28,10 +21,9 @@ import com.pes.pockles.databinding.ActivityEditProfileBinding
 import com.pes.pockles.model.EditedUser
 import com.pes.pockles.model.User
 import com.pes.pockles.view.ui.base.BaseActivity
+import com.pes.pockles.view.widget.PhotoPicker
 import com.xw.repo.BubbleSeekBar
 import dev.sasikanth.colorsheet.ColorSheet
-import java.io.FileNotFoundException
-import java.io.InputStream
 
 class EditProfileActivity : BaseActivity() {
 
@@ -40,6 +32,8 @@ class EditProfileActivity : BaseActivity() {
     private val viewModel: EditProfileViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(EditProfileViewModel::class.java)
     }
+
+    private val photoPicker = PhotoPicker(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -180,38 +174,15 @@ class EditProfileActivity : BaseActivity() {
     }
 
     private fun photoPicker() {
-        val items = listOf(
-            BasicGridItem(R.drawable.ic_icon_camera, getString(R.string.take_photo_dialog_option)),
-            BasicGridItem(R.drawable.ic_image, getString(R.string.select_photo_dialog_option)),
+        photoPicker.createPhotoPicker(
+            getString(R.string.upload_image_dialog_title),
+            { pos ->
+                if (pos == 2) {
+                    viewModel.deleteImage()
+                }
+            },
             BasicGridItem(R.drawable.ic_delete, getString(R.string.delete))
         )
-
-        MaterialDialog(this, BottomSheet()).show {
-            title(text = getString(R.string.upload_image_dialog_title))
-            cornerRadius(16f)
-            setPeekHeight(res = R.dimen.register_menu_peek_height)
-            gridItems(items) { _, index, _ ->
-                run {
-                    when (index) {
-                        0 -> {
-                            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-                                takePictureIntent.resolveActivity(packageManager)?.also {
-                                    startActivityForResult(takePictureIntent, 112)
-                                }
-                            }
-                        }
-                        1 -> {
-                            val photoPickerIntent = Intent(Intent.ACTION_PICK)
-                            photoPickerIntent.type = "image/*"
-                            startActivityForResult(photoPickerIntent, 111)
-                        }
-                        else -> {
-                            viewModel.deleteImage()
-                        }
-                    }
-                }
-            }
-        }
     }
 
     private fun setPhoto(bitmap: Bitmap) {
@@ -244,28 +215,11 @@ class EditProfileActivity : BaseActivity() {
 
     override fun onActivityResult(reqCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(reqCode, resultCode, data)
-        if (reqCode == 111) {
-            if (resultCode == Activity.RESULT_OK) {
-                try {
-                    val imageUri: Uri? = data?.data
-                    val imageStream: InputStream? = contentResolver.openInputStream(imageUri!!)
-                    val selectedImage = BitmapFactory.decodeStream(imageStream)
-                    setPhoto(selectedImage)
-                } catch (e: FileNotFoundException) {
-                    e.printStackTrace()
-                    Snackbar.make(
-                        binding.editProfile,
-                        getString(R.string.error_selecting_image),
-                        Snackbar.LENGTH_LONG
-                    ).show()
-                }
-            }
-        } else if (reqCode == 112) {
-            if (resultCode == Activity.RESULT_OK) {
-                val imageBitmap = data?.extras?.get("data") as Bitmap
-                setPhoto(imageBitmap)
-            }
-        }
+        photoPicker.processResult(reqCode, resultCode, data, { bytes, _ ->
+            setPhoto(BitmapFactory.decodeByteArray(bytes, 0, bytes.size))
+        }, { error ->
+            Snackbar.make(binding.editProfile, error, Snackbar.LENGTH_LONG).show()
+        })
     }
 
     private fun close() {
