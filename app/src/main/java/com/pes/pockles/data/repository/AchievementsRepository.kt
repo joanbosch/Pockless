@@ -7,15 +7,12 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import io.reactivex.functions.Function
 
-
-class AchievementsRepository {
     @Singleton
-    class NotificationRepository @Inject constructor(
+    class AchievementsRepository @Inject constructor(
             private var apiService: ApiService
         ) : BaseRepository(apiService){
 
             fun getAchievements(): LiveData<Resource<List<Achievement>>> {
-                    return callApi(Function { apiService -> apiService. })
+                    return callApi(Function { apiService -> apiService.getAchievements()})
                }
         }
-}

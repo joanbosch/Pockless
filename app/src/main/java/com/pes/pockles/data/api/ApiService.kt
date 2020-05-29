@@ -83,4 +83,7 @@ interface ApiService {
 
     @POST("pock/{id}/report")
     fun report(@Path("id") id: String, @Body motive: ReportObject): Single<Pock>
+
+    @GET("achievement")
+    fun getAchievements(): Single<List<Achievement>>
 }
