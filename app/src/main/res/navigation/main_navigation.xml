@@ -32,7 +32,7 @@
     </fragment>
     <fragment
         android:id="@+id/notificationsFragment"
-        android:name="com.pes.pockles.view.ui.NotificationsFragment"
+        android:name="com.pes.pockles.view.ui.notifications.NotificationsFragment"
         android:label="fragment_notifications"
         tools:layout="@layout/fragment_notifications" />
     <activity
