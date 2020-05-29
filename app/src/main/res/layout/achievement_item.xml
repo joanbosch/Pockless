@@ -26,7 +26,7 @@
             android:id="@+id/circularImageView1"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/ic_pock_icon"
+            app:srcUrl="@{achievement.icon}"
             app:civ_border_width="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
