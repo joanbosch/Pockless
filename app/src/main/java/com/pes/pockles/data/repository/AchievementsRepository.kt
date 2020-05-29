@@ -14,7 +14,7 @@ class AchievementsRepository {
             private var apiService: ApiService
         ) : BaseRepository(apiService){
 
-            fun getNotifications(): LiveData<Resource<List<Achievement>>> {
+            fun getAchievements(): LiveData<Resource<List<Achievement>>> {
                     return callApi(Function { apiService -> apiService. })
                }
         }

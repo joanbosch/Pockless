@@ -47,8 +47,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:onRefreshListener="@{() -> viewModel.refreshInformation()}"
-            app:refreshingResource="@{viewModel.likedPocks}">
+            app:onRefreshListener="@{() -> viewModel.refreshAchievements()}"
+            app:refreshingResource="@{viewModel.achievement}">
 
             <LinearLayout
                 android:layout_width="match_parent"

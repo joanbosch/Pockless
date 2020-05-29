@@ -2,6 +2,7 @@ package com.pes.pockles.view.ui.achievements
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.pes.pockles.data.Resource
 import com.pes.pockles.data.loading
@@ -12,16 +13,19 @@ import javax.inject.Inject
 class AchievementsViewModel @Inject constructor(
         private var repository: AchievementsRepository
     ) : ViewModel() {
-        val notifications: LiveData<Resource<List<Achievement>>>
-            get() = _notifications
+        val achievement: LiveData<Resource<List<Achievement>>>
+            get() = _achievement
 
-        private val _notifications = MediatorLiveData<Resource<List<Achievement>>>()
+        private val _achievement = MediatorLiveData<Resource<List<Achievement>>>()
+    private val _errorMsg = MutableLiveData<Int>()
+    val errorMsg: LiveData<Int>
+        get() = _errorMsg
 
-        fun refreshNotifications() {
-                val data = repository.getNotifications()
-                _notifications.addSource(data) {
-                        _notifications.value = it
-                        if (!it.loading) _notifications.removeSource(data)
+        fun refreshAchievements() {
+                val data = repository.getAchievements()
+                _achievement.addSource(data) {
+                        _achievement.value = it
+                        if (!it.loading) _achievement.removeSource(data)
                    }
             }
     }
