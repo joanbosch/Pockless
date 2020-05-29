@@ -29,7 +29,7 @@
         <action
             android:id="@+id/action_userProfileFragment_to_achievementsActivity"
             app:destination="@id/achievementsActivity"
-            tools:layout = "@layout/achievements"/>
+            tools:layout = "@layout/activity_achievements"/>
 
     </fragment>
     <fragment
