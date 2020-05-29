@@ -1,6 +1,7 @@
 package com.pes.pockles.di.modules
 
 import com.pes.pockles.view.ui.MainActivity
+import com.pes.pockles.view.ui.aboutus.AboutUsActivity
 import com.pes.pockles.view.ui.chat.ChatActivity
 import com.pes.pockles.view.ui.editpock.EditPockActivity
 import com.pes.pockles.view.ui.editprofile.EditProfileActivity
@@ -10,6 +11,7 @@ import com.pes.pockles.view.ui.login.register.RegisterActivity
 import com.pes.pockles.view.ui.login.register.RegisterActivityIcon
 import com.pes.pockles.view.ui.newpock.NewPockActivity
 import com.pes.pockles.view.ui.pockshistory.PocksHistoryActivity
+import com.pes.pockles.view.ui.settings.SettingsActivity
 import com.pes.pockles.view.ui.viewpock.ViewPockActivity
 import com.pes.pockles.view.ui.viewuser.ViewUserActivity
 import dagger.Module
@@ -61,5 +63,10 @@ abstract class ActivitiesModule {
     @ContributesAndroidInjector
     abstract fun contributeViewUserActivity(): ViewUserActivity
 
+    @ContributesAndroidInjector
+    abstract fun contributeSettingsActivity(): SettingsActivity
+
+    @ContributesAndroidInjector
+    abstract fun contributeAboutUsActivity(): AboutUsActivity
 
 }
