@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.assent.Permission
 import com.afollestad.assent.askForPermissions
@@ -36,6 +37,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.maps.android.heatmaps.HeatmapTileProvider
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
 import com.pes.pockles.data.loading
@@ -54,7 +56,6 @@ import kotlin.math.roundToInt
 /**
  * A [Fragment] subclass for map view.
  */
-// TODO: Add a fucking loader -> DANI
 open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback {
 
     override fun getLayout(): Int {
@@ -303,13 +304,14 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
             }
 
             val pockListBinding: List<BindingPockItem> = it.map { pock ->
-                val binding =
-                    BindingPockItem()
+                val binding = BindingPockItem()
                 binding.pock = pock
                 binding
             }
             //Fill and set the items to the ItemAdapter
-            itemAdapter.setNewList(pockListBinding)
+            val diffs: DiffUtil.DiffResult =
+                FastAdapterDiffUtil.calculateDiff(itemAdapter, pockListBinding)
+            FastAdapterDiffUtil[itemAdapter] = diffs
         }
     }
 
@@ -342,12 +344,13 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         val behaviour = BottomSheetBehavior.from(binding.bottomSheet)
         behaviour.peekHeight = dp2px(context!!, 120f).roundToInt()
         val fastAdapter = FastAdapter.with(itemAdapter)
+
         binding.nearPockList.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = fastAdapter
         }
 
-        fastAdapter.onClickListener = { _, _, item, position ->
+        fastAdapter.onClickListener = { _, _, item, _ ->
             val intent = Intent(activity, ViewPockActivity::class.java)
             intent.putExtra("markerId", item.pock?.id as String)
             startActivity(intent)
