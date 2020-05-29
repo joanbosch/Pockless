@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.pes.pockles.R
-import com.pes.pockles.databinding.AchievementsBinding
+import com.pes.pockles.databinding.ActivityAchievementsBinding
 import com.pes.pockles.view.ui.achievements.item.BindingAchievementItem
 import com.pes.pockles.view.ui.base.BaseActivity
 import com.pes.pockles.view.ui.likes.item.BindingLikeItem
@@ -15,7 +15,7 @@ import com.pes.pockles.view.ui.likes.item.BindingLikeItem
 
 class AchievementsActivity : BaseActivity() {
 
-    private lateinit var binding: BindingAchievementItem
+    private lateinit var binding: ActivityAchievementsBinding
 
     private val viewModel: AchievementsViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(AchievementsViewModel::class.java)
