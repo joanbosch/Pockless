@@ -50,6 +50,16 @@
             android:theme="@style/AppTheme.NoActionBar"
             />
 
+        <activity
+            android:name=".view.ui.settings.SettingsActivity"
+            android:label="@string/settings"
+            android:theme="@style/SettingsTheme" />
+
+        <activity
+            android:name=".view.ui.aboutus.AboutUsActivity"
+            android:label="@string/title_activity_chat"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".view.ui.MainActivity" />
         <activity android:name=".view.ui.login.register.RegisterActivity" />
         <activity android:name=".view.ui.login.register.RegisterActivityIcon" />

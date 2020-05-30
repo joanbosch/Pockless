@@ -224,7 +224,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
                 .build();
             googleMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(center))
         }, {
-            Timber.d(it)
+
         })
 
         googleMap!!.setOnMarkerClickListener { marker ->
