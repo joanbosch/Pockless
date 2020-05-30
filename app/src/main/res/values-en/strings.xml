@@ -14,7 +14,7 @@
     <string name="notifications_menu_item">Notifications</string>
     <string name="profile_menu_item">Profile</string>
     <string name="close_filter_button">Close</string>
-    <string name="filter_dialog_text">Select the pock categories you wish to see in the map...</string>
+    <string name="filter_dialog_text">Select the pock categories you wish to see in the map…</string>
     <string name="change_image">Change image</string>
     <string name="pocks_history_button">Pock History</string>
     <string name="title_activity_pocks_history">NewPocksHistory</string>
@@ -54,7 +54,7 @@
     <string name="invalid_date">Invalid date</string>
     <string name="register_back_button_text">Back</string>
     <string name="error_try_later">" An error has occurred, please try again later"</string>
-    <string name="checking_data">Checking data...</string>
+    <string name="checking_data">Checking data…</string>
     <string name="cancel_register_dialog_title">Abort sign-in</string>
     <string name="cancel_register_dialog_description">Are you sure you want to cancel the registration?</string>
     <string name="yes">Yes</string>
@@ -116,4 +116,33 @@
     <string name="version_title">Version</string>
     <string name="rate_app_title">Rate this app</string>
     <string name="about_us">About us</string>
+
+    <string-array name="categories">
+        <item>Notices</item>
+        <item>Buy and Sell</item>
+        <item>Sports</item>
+        <item>Entertainment</item>
+        <item>Pets</item>
+        <item>Health</item>
+        <item>Technology</item>
+        <item>Tourism</item>
+        <item>+18</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="motivos">
+        <item>SPAM</item>
+        <item>Racisim</item>
+        <item>Wrong category</item>
+        <item>Inappropriate content</item>
+        <item>Threats</item>
+        <item>Troll</item>
+        <item>Other</item>
+    </string-array>
+    <string-array name="language_list_titles">
+        <item>Spanish</item>
+        <item>English</item>
+        <item>Catalan</item>
+        <item>Czech</item>
+    </string-array>
 </resources>

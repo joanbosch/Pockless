@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Pockles</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="title_activity_new_pock" translatable="false">NewPockActivity</string>
     <string name="title_login_activity" translatable="false">LoginActivity</string>
@@ -93,7 +93,6 @@
     <string name="error_uploading_images">Ha ocurrido un error al subir las imagenes</string>
     <string name="error_selecting_image">Ha ocurrido un error al seleccionar la imagen</string>
     <string name="upload_image_dialog_title">Subir imagen</string>
-    <string name="take_photo_dialog_option">Tomar foto</string>
     <string name="select_photo_dialog_option">Seleccionar foto</string>
     <string name="error_creating_profile">Ha ocurrido un error al crear el perfil. Intentelo de nuevo más tarde</string>
     <string name="save">guardar</string>
@@ -131,8 +130,7 @@
     <string name="update_pock_button">Guardar cambios</string>
     <string name="updated_pock_message">Se ha actualizado el contenido de tu pock</string>
     <string name="api_error_updating_message">Ha habido algún problema actualizando el contenido de tu pock</string>
-    <string name="liked_pock_activity_title">Me gusta</string>
-    <string name="error_obtaining_liked_pocks">Ha ocurrido un error al obtener los pocks gustados</string>
+    <string name="error_obtaining_liked_pocks">Ha ocurrido un error al obtener los likes</string>
     <string name="error_removing_like">Ha ocurrido un error al eliminar el me gusta del pock</string>
 
     <!-- Edit Profile Resources -->
@@ -183,10 +181,12 @@
         <item>es</item>
         <item>en</item>
         <item>ca</item>
-        <item>ch</item>
+        <item>cs</item>
     </string-array>
 
 
     <!-- Notifications Strings -->
     <string name="notifications_fragment_title">Notificaciones</string>
+    <string name="take_photo_dialog_option">Sacar foto</string>
+    <string name="liked_pock_activity_title">Me gusta</string>
 </resources>

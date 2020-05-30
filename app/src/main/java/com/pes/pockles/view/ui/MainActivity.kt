@@ -29,6 +29,7 @@ class MainActivity : BaseActivity() {
         binding.fab.setOnClickListener {
             startActivity(Intent(this, NewPockActivity::class.java))
         }
+
     }
 
 }

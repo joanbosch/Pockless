@@ -116,4 +116,33 @@
     <string name="about_us">Sobre nosaltres</string>
     <string name="notifications_fragment_title">Notificacions</string>
     <string name="leguage">Idioma</string>
+
+    <string-array name="categories">
+        <item>Anuncis</item>
+        <item>Compra i Venta</item>
+        <item>Esports</item>
+        <item>Entretenimient</item>
+        <item>Mascotes</item>
+        <item>Salut</item>
+        <item>Tecnología</item>
+        <item>Turisme</item>
+        <item>+18</item>
+        <item>Altres</item>
+    </string-array>
+
+    <string-array name="motivos">
+        <item>SPAM</item>
+        <item>Racisme</item>
+        <item>Categoria inapropiada</item>
+        <item>Contingut inapropiat</item>
+        <item>Amenaces</item>
+        <item>Troll</item>
+        <item>Altres</item>
+    </string-array>
+    <string-array name="language_list_titles">
+        <item>Espanyol</item>
+        <item>Anglés</item>
+        <item>Català</item>
+        <item>txec</item>
+    </string-array>
 </resources>

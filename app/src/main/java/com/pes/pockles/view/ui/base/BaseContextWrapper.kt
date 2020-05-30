@@ -2,9 +2,10 @@ package com.pes.pockles.view.ui.base
 
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.os.Build
 import android.os.LocaleList
-import android.preference.PreferenceManager
 import timber.log.Timber
 import java.util.*
 
@@ -23,13 +24,10 @@ class BaseContextWrapper(base: Context?) : ContextWrapper(base) {
                 configuration.setLocales(localeList)
                 con = context.createConfigurationContext(configuration)
             } else {
-               // con = context.createConfigurationContext(configuration)
-                configuration.setLocale(newLocale)
-                resources.updateConfiguration(configuration, null)
-                val sharedPreferences =
-                    PreferenceManager.getDefaultSharedPreferences(con)
-                val name = sharedPreferences.getString("Language", "")
-                Timber.i(name)
+                Locale.setDefault(newLocale)
+                configuration.locale = newLocale
+                resources.updateConfiguration(configuration, resources.displayMetrics)
+
             }
             return ContextWrapper(con)
         }
