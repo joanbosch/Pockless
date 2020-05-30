@@ -32,6 +32,7 @@ class NewPockActivity : BaseActivity() {
     }
 
     private val photoPicker = PhotoPicker(this)
+    private var uploadingPock = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,11 +47,14 @@ class NewPockActivity : BaseActivity() {
         }
 
         binding.pockButton.setOnClickListener {
-            getLastLocation(this, {
-                viewModel.insertPock(Location(it.latitude, it.longitude))
-            }, {
-                handleError(true)
-            })
+            if (!uploadingPock) {
+                uploadingPock = true
+                getLastLocation(this, {
+                    viewModel.insertPock(Location(it.latitude, it.longitude))
+                }, {
+                    handleError(true)
+                })
+            }
         }
 
         binding.image1button.setOnClickListener {
@@ -151,6 +155,7 @@ class NewPockActivity : BaseActivity() {
     }
 
     private fun hideLoading() {
+        uploadingPock = false
         binding.pockButton.hideProgress(R.string.pockear_button)
     }
 
