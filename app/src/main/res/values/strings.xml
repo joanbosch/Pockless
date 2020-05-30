@@ -189,4 +189,5 @@
 
     <!-- Notifications Strings -->
     <string name="notifications_fragment_title">Notificaciones</string>
+    <string name="loading">Loading...</string>
 </resources>

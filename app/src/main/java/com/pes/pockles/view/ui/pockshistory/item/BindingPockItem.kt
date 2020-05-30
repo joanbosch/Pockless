@@ -1,7 +1,6 @@
 package com.pes.pockles.view.ui.pockshistory.item
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
 import com.pes.pockles.R
@@ -9,8 +8,8 @@ import com.pes.pockles.databinding.PockHistoryItemBinding
 import com.pes.pockles.model.Pock
 
 class BindingPockItem : AbstractBindingItem<PockHistoryItemBinding>() {
-    public var pock: Pock? = null
-    public var showEdit: Boolean = false
+    var pock: Pock? = null
+    var showEdit: Boolean = false
 
     override val type: Int
         get() = R.id.card
