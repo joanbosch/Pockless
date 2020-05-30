@@ -18,9 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/profile_light_background"
-        android:orientation="vertical"
-        app:snackbarError="@{viewModel.errorMsg}"
-        app:snackbarErrorEnabled="@{viewModel.errorMsg != null}">
+        android:orientation="vertical">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
