@@ -132,6 +132,7 @@
     <string name="updated_pock_message">Se ha actualizado el contenido de tu pock</string>
     <string name="api_error_updating_message">Ha habido algún problema actualizando el contenido de tu pock</string>
     <string name="liked_pock_activity_title">Me gusta</string>
+    <string name="achievements_activity_title">Mis logros</string>
     <string name="error_obtaining_liked_pocks">Ha ocurrido un error al obtener los pocks gustados</string>
     <string name="error_removing_like">Ha ocurrido un error al eliminar el me gusta del pock</string>
 
