@@ -23,7 +23,6 @@ abstract class BaseActivity : DaggerAppCompatActivity() {
         val sharedPreferences =
             PreferenceManager.getDefaultSharedPreferences(newBase)
         locale = sharedPreferences.getString("Language", "es")
-        Timber.i(locale)
         super.attachBaseContext(locale?.let { BaseContextWrapper.wrap(newBase, it) })
     }
 }
