@@ -372,7 +372,35 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
             "Anuncios" to iconAn,
             "Deportes" to iconDep,
             "General" to iconGen,
-            "Mascotas" to iconMas
+            "Mascotas" to iconMas, //catalan
+            "Turisme" to iconTuri,
+            "Altres" to iconVar,
+            "Salut" to iconSal,
+            "Entretenimient" to iconEntre,
+            "Tecnología" to iconTec,
+            "Compra i Venta" to iconVar,
+            "Anuncis" to iconAn,
+            "Esports" to iconDep,
+            "General" to iconGen,
+            "Mascotes" to iconMas, //ingles
+            "Tourism" to iconTuri,
+            "Other" to iconVar,
+            "Health" to iconSal,
+            "Entertainment" to iconEntre,
+            "Technology" to iconTec,
+            "Buy and Sell" to iconVar,
+            "Notices" to iconAn,
+            "Sports" to iconDep,
+            "Pets" to iconMas, //czech
+            "Cestovní ruch" to iconTuri,
+            "Ostatní" to iconVar,
+            "Zdraví" to iconSal,
+            "Zábava" to iconEntre,
+            "Technika" to iconTec,
+            "Nákup a prodej" to iconVar,
+            "Oznámení" to iconAn,
+            "Sportovní" to iconDep,
+            "Domácí mazlíčci" to iconMas
         ) as Map<String, BitmapDescriptor>
     }
 

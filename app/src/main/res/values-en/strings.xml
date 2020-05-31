@@ -103,7 +103,7 @@
     <string name="error_editing_the_profile">An error occurred while updating your profile. Try it again later</string>
     <string name="no_changes_editing_the_profile">Your profile has been updated</string>
     <string name="chats">Chats</string>
-    <string name="you_dont_have_any_chat">You don\'t have any chat</string>
+    <string name="you_dont_have_any_chat">You don\'t have any chats</string>
     <string name="cannot_load_chats">Chats couldn\'t been obtained</string>
     <string name="title_activity_chat">Chat</string>
     <string name="cannot_obtain_the_chat_messages">"Could not get chat messages "</string>

@@ -120,12 +120,12 @@
     <string-array name="categories">
         <item>Oznámení</item>
         <item>Nákup a prodej</item>
-        <item>sportovní</item>
+        <item>Sportovní</item>
         <item>Zábava</item>
         <item>Domácí mazlíčci</item>
         <item>Zdraví</item>
         <item>Technika</item>
-        <item>cestovní ruch</item>
+        <item>Cestovní ruch</item>
         <item>+18</item>
         <item>Ostatní</item>
     </string-array>
