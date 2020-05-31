@@ -6,7 +6,7 @@ import android.os.Parcelable
 data class ChatData(
     var chatId: String?,
     var pockId: String?,
-    var user_name: String,
+    var userName: String,
     var profileImageUrl: String?
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
@@ -20,7 +20,7 @@ data class ChatData(
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(chatId)
         parcel.writeString(pockId)
-        parcel.writeString(user_name)
+        parcel.writeString(userName)
         parcel.writeString(profileImageUrl)
     }
 

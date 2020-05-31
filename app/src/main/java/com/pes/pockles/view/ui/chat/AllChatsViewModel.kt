@@ -34,14 +34,14 @@ class AllChatsViewModel @Inject constructor(
     }
 
     fun setUpNotificationObserver() {
-        for (chat in chats.value?.data!!) {
-            chatRepository.observe(chat.id, ::newMessageReceived)
+        chats.value?.data?.let {
+            it.forEach { chat -> chatRepository.observe(chat.id, ::newMessageReceived) }
         }
     }
 
-    private fun newMessageReceived(m : Message) {
+    private fun newMessageReceived(m: Message) {
         val allChats = _chats.value
-        for (chat in allChats?.data!!){
+        for (chat in allChats?.data!!) {
             if (chat.id == m.chatId) {
                 chat.lastMessage = m.text
             }

@@ -2,6 +2,7 @@ package com.pes.pockles.view.ui.chat
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.KeyEvent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -16,11 +17,10 @@ import com.pes.pockles.model.NewMessage
 import com.pes.pockles.view.ui.base.BaseActivity
 import com.pes.pockles.view.ui.chat.item.MessageAdapter
 import com.pes.pockles.view.ui.viewuser.ViewUserActivity
-import timber.log.Timber
 
 class ChatActivity : BaseActivity() {
 
-    private lateinit var adapter: MessageAdapter
+    private lateinit var messageAdapter: MessageAdapter
 
     private lateinit var binding: ChatActivityBinding
     private val viewModel: ChatViewModel by lazy {
@@ -36,8 +36,8 @@ class ChatActivity : BaseActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.chat_activity)
         binding.lifecycleOwner = this
         binding.viewmodel = viewModel
-        binding.rvChat.layoutManager = LinearLayoutManager(this)
-        adapter = MessageAdapter(this)
+
+        attachKeyboardListeners(binding.constraintLayout3)
 
         //Add back button to toolbar
         setSupportActionBar(binding.toolbar)
@@ -48,6 +48,13 @@ class ChatActivity : BaseActivity() {
         chatInformation = intent.extras?.getParcelable("chatData")!!
         userId = intent.extras?.getString("userId")!!
         binding.chat = chatInformation
+        title = chatInformation.userName
+
+        messageAdapter = MessageAdapter(this)
+        binding.rvChat.apply {
+            layoutManager = LinearLayoutManager(this@ChatActivity)
+            adapter = adapter
+        }
 
         // Set the notification binding to the activity
         chatInformation.chatId?.let { viewModel.setUpNotificationObserver(it) }
@@ -67,8 +74,33 @@ class ChatActivity : BaseActivity() {
             onBackPressed()
         }
 
+        binding.txtMessage.setOnKeyListener { _, keyCode, _ ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                postMessage()
+            }
+            true
+        }
         binding.btnSend.setOnClickListener {
-            val txt = binding.txtMessage.text.toString()
+            postMessage()
+        }
+
+        binding.toolbar.setOnClickListener {
+            it.context.startActivity(Intent(it.context, ViewUserActivity::class.java).apply {
+                putExtra("userId", userId)
+            })
+        }
+
+        binding.circularImageView2.setOnClickListener {
+            val intent = Intent(it.context, ViewUserActivity::class.java).apply {
+                putExtra("userId", userId)
+            }
+            it.context.startActivity(intent)
+        }
+    }
+
+    private fun postMessage() {
+        val txt = binding.txtMessage.text.toString().trimEnd()
+        if (!txt.isBlank()) {
             viewModel.postMessage(
                 if (!chatInformation.chatId.isNullOrEmpty()) {
                     NewMessage(txt, chatInformation.chatId, null)
@@ -77,20 +109,6 @@ class ChatActivity : BaseActivity() {
                 }
             )
             binding.txtMessage.text!!.clear()
-        }
-
-        binding.username.setOnClickListener {
-            val intent = Intent(it.context, ViewUserActivity::class.java).apply {
-                putExtra("userId", userId)
-            }
-            it.context.startActivity(intent)
-        }
-
-        binding.circularImageView2.setOnClickListener {
-            val intent = Intent(it.context, ViewUserActivity::class.java).apply {
-                putExtra("userId", userId)
-            }
-            it.context.startActivity(intent)
         }
     }
 
@@ -120,19 +138,18 @@ class ChatActivity : BaseActivity() {
     private fun handleError(s: String) {
         Snackbar.make(
             binding.constraintLayout3,
-            getString(R.string.cannot_load_chats),
+            s,
             Snackbar.LENGTH_SHORT
         ).show()
     }
 
     private fun setDataRecyclerView(messages: MutableList<Message>) {
-        adapter.setMessages(messages)
-        binding.rvChat.adapter = adapter
+        messageAdapter.setMessages(messages)
+        binding.rvChat.adapter = messageAdapter
         binding.rvChat.scrollToPosition(messages.size - 1);
         chatPosition = messages.size - 1
     }
 
-    // Non-used, but can be useful in future
     private fun refreshMessages(msg: Message?) {
         chatInformation.chatId = msg!!.chatId
         chatInformation.chatId?.let { viewModel.refreshMessages(it) }
@@ -141,5 +158,9 @@ class ChatActivity : BaseActivity() {
     override fun onDestroy() {
         viewModel.finalize()
         super.onDestroy()
+    }
+
+    override fun onKeyboardVisibilityChanged(visible: Boolean) {
+        binding.rvChat.scrollToPosition(chatPosition)
     }
 }

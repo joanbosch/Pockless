@@ -8,12 +8,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.binding.BindingViewHolder
+import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import com.mikepenz.fastadapter.listeners.ClickEventHook
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
@@ -55,7 +57,7 @@ class AllChatsFragment : BaseFragment<FragmentChatBinding>() {
 
             override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
                 return viewHolder.asBinding<ChatItemBinding> {
-                    it.chatItemCard.startChat
+                    it.chatItemCard
                 }
             }
 
@@ -66,9 +68,16 @@ class AllChatsFragment : BaseFragment<FragmentChatBinding>() {
                 item: BindingChatItem
             ) {
                 val intent = Intent(context, ChatActivity::class.java).apply {
-                    var chatData: ChatData = ChatData(item.chat?.id, null, item.chat?.user2!!.name, item.chat?.user2!!.profileImageUrl)
-                    putExtra("chatData", chatData)
-                    putExtra("userId", item.chat!!.user2.id)
+                    putExtra(
+                        "chatData",
+                        ChatData(
+                            item.chat.id,
+                            null,
+                            item.chat.user2.name,
+                            item.chat.user2.profileImageUrl
+                        )
+                    )
+                    putExtra("userId", item.chat.user2.id)
                 }
                 context!!.startActivity(intent)
             }
@@ -89,7 +98,7 @@ class AllChatsFragment : BaseFragment<FragmentChatBinding>() {
                 item: BindingChatItem
             ) {
                 val intent = Intent(context, ViewUserActivity::class.java).apply {
-                    putExtra("userId", item.chat!!.user2.id)
+                    putExtra("userId", item.chat.user2.id)
                 }
                 context!!.startActivity(intent)
             }
@@ -100,6 +109,12 @@ class AllChatsFragment : BaseFragment<FragmentChatBinding>() {
     override fun onStart() {
         super.onStart()
         initializeObservers()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.setUpNotificationObserver()
+        viewModel.getAllChats()
     }
 
     private fun initializeListeners() {
@@ -136,7 +151,9 @@ class AllChatsFragment : BaseFragment<FragmentChatBinding>() {
             binding.layoutNoChats.visibility = View.GONE
 
             //Fill and set the items to the ItemAdapter
-            itemAdapter.setNewList(chats.map { BindingChatItem(it) })
+            val diffs: DiffUtil.DiffResult =
+                FastAdapterDiffUtil.calculateDiff(itemAdapter, chats.map { BindingChatItem(it) })
+            FastAdapterDiffUtil[itemAdapter] = diffs
 
             // Set up the notification observers
             viewModel.setUpNotificationObserver()

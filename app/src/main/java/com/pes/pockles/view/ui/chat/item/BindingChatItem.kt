@@ -17,6 +17,10 @@ class BindingChatItem constructor(val chat: Chat) : AbstractBindingItem<ChatItem
         binding.chat = chat
     }
 
+    override var identifier: Long
+        get() = chat.id.hashCode().toLong() + chat.lastMessage.hashCode().toLong()
+        set(value) {}
+
     override fun createBinding(
         inflater: LayoutInflater,
         parent: ViewGroup?
