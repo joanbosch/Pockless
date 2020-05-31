@@ -26,10 +26,18 @@
         <action
             android:id="@+id/action_userProfileFragment_to_likedPocksActivity"
             app:destination="@id/likedPocksActivity" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_achievementsActivity"
+            app:destination="@id/achievementsActivity"
+            tools:layout = "@layout/activity_achievements"/>
+
+        <action
+            android:id="@+id/action_userProfileFragment_to_settingsActivity"
+            app:destination="@id/settingsActivity" />
     </fragment>
     <fragment
         android:id="@+id/notificationsFragment"
-        android:name="com.pes.pockles.view.ui.NotificationsFragment"
+        android:name="com.pes.pockles.view.ui.notifications.NotificationsFragment"
         android:label="fragment_notifications"
         tools:layout="@layout/fragment_notifications" />
     <activity
@@ -42,4 +50,12 @@
         android:name="com.pes.pockles.view.ui.likes.LikedPocksActivity"
         android:label="LikedPocksActivity"
         tools:layout="@layout/activity_liked_pocks" />
+    <activity
+        android:id="@+id/settingsActivity"
+        android:name="com.pes.pockles.view.ui.settings.SettingsActivity"
+        android:label="SettingsActivity" />
+    <activity
+        android:id="@+id/achievementsActivity"
+        android:name="com.pes.pockles.view.ui.achievements.AchievementsActivity"
+        android:label="AchievementsActivity" />
 </navigation>

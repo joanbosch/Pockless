@@ -1,5 +1,6 @@
 package com.pes.pockles.view.ui.chat
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -14,6 +15,8 @@ import com.pes.pockles.model.Message
 import com.pes.pockles.model.NewMessage
 import com.pes.pockles.view.ui.base.BaseActivity
 import com.pes.pockles.view.ui.chat.item.MessageAdapter
+import com.pes.pockles.view.ui.viewuser.ViewUserActivity
+import timber.log.Timber
 
 class ChatActivity : BaseActivity() {
 
@@ -25,6 +28,7 @@ class ChatActivity : BaseActivity() {
     }
 
     private lateinit var chatInformation: ChatData
+    private lateinit var userId: String
     private var chatPosition = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +46,7 @@ class ChatActivity : BaseActivity() {
 
         //Obtaining the ChatInformation
         chatInformation = intent.extras?.getParcelable("chatData")!!
+        userId = intent.extras?.getString("userId")!!
         binding.chat = chatInformation
 
         // Set the notification binding to the activity
@@ -72,6 +77,20 @@ class ChatActivity : BaseActivity() {
                 }
             )
             binding.txtMessage.text!!.clear()
+        }
+
+        binding.username.setOnClickListener {
+            val intent = Intent(it.context, ViewUserActivity::class.java).apply {
+                putExtra("userId", userId)
+            }
+            it.context.startActivity(intent)
+        }
+
+        binding.circularImageView2.setOnClickListener {
+            val intent = Intent(it.context, ViewUserActivity::class.java).apply {
+                putExtra("userId", userId)
+            }
+            it.context.startActivity(intent)
         }
     }
 

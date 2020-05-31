@@ -45,6 +45,9 @@ interface ApiService {
     @GET("user")
     fun getUser(): Single<User>
 
+    @GET("user/{id}")
+    fun getUserById(@Path("id") id: String): Single<ViewUser>
+
     @GET("user/{id}/exists")
     fun userExists(@Path("id") id: String): Single<Boolean>
 
@@ -75,11 +78,15 @@ interface ApiService {
     @GET("chat/{id}")
     fun allMessageChat(@Path("id") id: String): Single<List<Message>>
 
-
+    @GET("notifications")
+    fun notifications(): Single<List<Notification>>
 
     @PATCH("user")
     fun editProfile(@Body editProfile: EditedUser): Single<User>
 
     @POST("pock/{id}/report")
     fun report(@Path("id") id: String, @Body motive: ReportObject): Single<Pock>
+
+    @GET("achievement")
+    fun getAchievements(): Single<List<Achievement>>
 }

@@ -23,6 +23,8 @@ import com.pes.pockles.model.Chat
 import com.pes.pockles.model.ChatData
 import com.pes.pockles.view.ui.base.BaseFragment
 import com.pes.pockles.view.ui.chat.item.BindingChatItem
+import com.pes.pockles.view.ui.viewuser.ViewUserActivity
+import kotlinx.android.synthetic.main.chat_item.view.*
 
 /**
  * A simple [Fragment] subclass
@@ -50,9 +52,10 @@ class AllChatsFragment : BaseFragment<FragmentChatBinding>() {
         }
 
         fastAdapter.addEventHook(object : ClickEventHook<BindingChatItem>() {
+
             override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
                 return viewHolder.asBinding<ChatItemBinding> {
-                    it.chatItemCard
+                    it.chatItemCard.startChat
                 }
             }
 
@@ -63,14 +66,30 @@ class AllChatsFragment : BaseFragment<FragmentChatBinding>() {
                 item: BindingChatItem
             ) {
                 val intent = Intent(context, ChatActivity::class.java).apply {
-                    putExtra(
-                        "chatData", ChatData(
-                            item.chat.id,
-                            null,
-                            item.chat.user2.name,
-                            item.chat.user2.profileImageUrl
-                        )
-                    )
+                    var chatData: ChatData = ChatData(item.chat?.id, null, item.chat?.user2!!.name, item.chat?.user2!!.profileImageUrl)
+                    putExtra("chatData", chatData)
+                    putExtra("userId", item.chat!!.user2.id)
+                }
+                context!!.startActivity(intent)
+            }
+        })
+
+        fastAdapter.addEventHook(object : ClickEventHook<BindingChatItem>() {
+
+            override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
+                return viewHolder.asBinding<ChatItemBinding> {
+                    it.chatItemCard.circularImageView2
+                }
+            }
+
+            override fun onClick(
+                v: View,
+                position: Int,
+                fastAdapter: FastAdapter<BindingChatItem>,
+                item: BindingChatItem
+            ) {
+                val intent = Intent(context, ViewUserActivity::class.java).apply {
+                    putExtra("userId", item.chat!!.user2.id)
                 }
                 context!!.startActivity(intent)
             }

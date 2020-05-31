@@ -4,6 +4,7 @@ package com.pes.pockles.view.ui.map
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.util.DisplayMetrics
@@ -14,10 +15,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.assent.Permission
+import com.afollestad.assent.askForPermissions
+import com.afollestad.assent.isAllGranted
 import com.afollestad.assent.runWithPermissions
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -32,8 +37,10 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.maps.android.heatmaps.HeatmapTileProvider
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
+import com.pes.pockles.data.loading
 import com.pes.pockles.databinding.FragmentMapBinding
 import com.pes.pockles.model.Pock
 import com.pes.pockles.util.LocationUtils.Companion.getLastLocation
@@ -41,7 +48,6 @@ import com.pes.pockles.util.dp2px
 import com.pes.pockles.view.ui.base.BaseFragment
 import com.pes.pockles.view.ui.pockshistory.item.BindingPockItem
 import com.pes.pockles.view.ui.viewpock.ViewPockActivity
-import timber.log.Timber
 import kotlin.math.cos
 import kotlin.math.ln
 import kotlin.math.roundToInt
@@ -50,7 +56,6 @@ import kotlin.math.roundToInt
 /**
  * A [Fragment] subclass for map view.
  */
-// TODO: Add a fucking loader -> DANI
 open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback {
 
     override fun getLayout(): Int {
@@ -85,7 +90,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         super.onCreateView(inflater, container, savedInstanceState)
 
 
-        binding.mapViewModel = viewModel
+        binding.viewModel = viewModel
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment?
         mapFragment!!.getMapAsync(this)
@@ -115,9 +120,59 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         dialog.show()
     }
 
+    private fun showPermissionDialog() {
+        val dialog: AlertDialog = AlertDialog.Builder(context!!)
+            .setTitle(R.string.permission_title)
+            .setMessage(R.string.permission_description)
+            .setPositiveButton(R.string.permission_ok) { _, _ ->
+                askForPermissions(
+                    Permission.ACCESS_COARSE_LOCATION,
+                    Permission.ACCESS_FINE_LOCATION
+                ) {
+                    val ft: FragmentTransaction = fragmentManager!!.beginTransaction()
+                    if (Build.VERSION.SDK_INT >= 26) {
+                        ft.setReorderingAllowed(false)
+                    }
+                    ft.detach(this).attach(this).commit()
+                }
+            }
+            .setNegativeButton(R.string.permission_no) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+
+        dialog.show()
+    }
+
 
     override fun onMapReady(googleMap: GoogleMap) {
         this.googleMap = googleMap
+        val permissionsGranted: Boolean =
+            isAllGranted(Permission.ACCESS_COARSE_LOCATION, Permission.ACCESS_FINE_LOCATION)
+
+        if (!permissionsGranted) {
+            askForPermissions(Permission.ACCESS_COARSE_LOCATION, Permission.ACCESS_FINE_LOCATION) {
+                val permissionDenied: Boolean = it.isAllDenied(
+                    Permission.ACCESS_COARSE_LOCATION,
+                    Permission.ACCESS_FINE_LOCATION
+                )
+                if (permissionDenied) {
+                    showPermissionDialog()
+                }
+                val perGranted: Boolean =
+                    it.isAllGranted(
+                        Permission.ACCESS_COARSE_LOCATION,
+                        Permission.ACCESS_FINE_LOCATION
+                    )
+                if (perGranted) {
+                    val ft: FragmentTransaction = fragmentManager!!.beginTransaction()
+                    if (Build.VERSION.SDK_INT >= 26) {
+                        ft.setReorderingAllowed(false)
+                    }
+                    ft.detach(this).attach(this).commit()
+                }
+            }
+        }
         runWithPermissions(Permission.ACCESS_COARSE_LOCATION, Permission.ACCESS_FINE_LOCATION) {
             googleMap.setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(
@@ -140,6 +195,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
                             is Resource.Success<*> -> handleSuccess(value as Resource.Success<List<Pock>>)
                             is Resource.Error -> handleError()
                         }
+                        setLoading(value.loading)
                     }
                 })
 
@@ -154,6 +210,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
                     }
                 })
         }
+
         createBottomSheet()
     }
 
@@ -169,7 +226,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
                 .build();
             googleMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(center))
         }, {
-            Timber.d(it)
+
         })
 
         googleMap!!.setOnMarkerClickListener { marker ->
@@ -231,8 +288,6 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         )
     }
 
-    /*Link to know how to customize markers
-     *https://developers.google.com/maps/documentation/android-sdk/marker?hl=es*/
     private fun handleSuccess(list: Resource.Success<List<Pock>>) {
         googleMap!!.clear()
         list.data?.let {
@@ -249,13 +304,14 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
             }
 
             val pockListBinding: List<BindingPockItem> = it.map { pock ->
-                val binding =
-                    BindingPockItem()
+                val binding = BindingPockItem()
                 binding.pock = pock
                 binding
             }
             //Fill and set the items to the ItemAdapter
-            itemAdapter.setNewList(pockListBinding)
+            val diffs: DiffUtil.DiffResult =
+                FastAdapterDiffUtil.calculateDiff(itemAdapter, pockListBinding)
+            FastAdapterDiffUtil[itemAdapter] = diffs
         }
     }
 
@@ -268,6 +324,10 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
                 googleMap!!.addTileOverlay(TileOverlayOptions().tileProvider(mProvider))
             }
         }
+    }
+
+    private fun setLoading(b: Boolean) {
+        binding.loader.visibility = if (b) View.VISIBLE else View.GONE
     }
 
     private fun handleError() {
@@ -284,12 +344,13 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         val behaviour = BottomSheetBehavior.from(binding.bottomSheet)
         behaviour.peekHeight = dp2px(context!!, 120f).roundToInt()
         val fastAdapter = FastAdapter.with(itemAdapter)
+
         binding.nearPockList.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = fastAdapter
         }
 
-        fastAdapter.onClickListener = { _, _, item, position ->
+        fastAdapter.onClickListener = { _, _, item, _ ->
             val intent = Intent(activity, ViewPockActivity::class.java)
             intent.putExtra("markerId", item.pock?.id as String)
             startActivity(intent)

@@ -48,6 +48,7 @@ class ProfileViewModel @Inject constructor(
         _navigateToHistory.value = Event(true)
     }
 
+
     fun logout(v: View) {
         doLogout.value = true
     }

@@ -13,6 +13,10 @@
             name="pock"
             type="com.pes.pockles.model.Pock" />
 
+        <variable
+            name="showEdit"
+            type="boolean" />
+
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -65,7 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/edit_button"
-                android:visibility="gone" />
+                android:visibility="@{showEdit ? View.VISIBLE : View.GONE}" />
 
         </LinearLayout>
 

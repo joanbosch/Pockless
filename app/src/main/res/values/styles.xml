@@ -25,7 +25,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="ViewPock" parent="AppTheme">
+    <style name="customWindowActivity" parent="AppTheme">
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowActionModeOverlay">true</item>
@@ -39,6 +39,15 @@
     <style name="AppTheme.BrandedLaunch" parent="AppTheme">
         <item name="android:windowBackground">@drawable/branded_logo</item>
         <item name="android:navigationBarColor">@color/primary</item>
+    </style>
+
+    <!-- Settings Theme. -->
+    <style name="SettingsTheme" parent="Theme.MaterialComponents.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:statusBarColor">@color/primary</item>
     </style>
 
 </resources>

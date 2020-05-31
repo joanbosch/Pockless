@@ -7,19 +7,21 @@ import android.os.Bundle
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.firebase.auth.FirebaseAuth
 import com.pes.pockles.R
 import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.ViewPockBinding
 import com.pes.pockles.model.ChatData
 import com.pes.pockles.model.Pock
+import com.pes.pockles.util.TimeUtils
 import com.pes.pockles.view.ui.base.BaseActivity
 import com.pes.pockles.view.ui.chat.ChatActivity
+import com.pes.pockles.view.ui.viewuser.ViewUserActivity
 
 
 class ViewPockActivity : BaseActivity() {
@@ -63,29 +65,48 @@ class ViewPockActivity : BaseActivity() {
             goReport()
         }
 
+        binding.username.setOnClickListener {
+            val intent = Intent(it.context, ViewUserActivity::class.java).apply {
+                putExtra("userId", viewModel.pock.value?.data?.user)
+            }
+            it.context.startActivity(intent)
+        }
+
         initializeObservers()
     }
 
     private fun initializeObservers() {
         viewModel.pock.observe(this, Observer {
             it?.let {
-                when(it) {
-                    is Resource.Success<Pock> -> setChatButton()
+                when (it) {
+                    is Resource.Success<Pock> -> hideUnnecessaryButtons()
                 }
             }
         }
         )
     }
 
-    private fun setChatButton() {
-        if (!viewModel.getPock()!!.chatAccess!!) {
+    private fun hideUnnecessaryButtons() {
+        val user = FirebaseAuth.getInstance().currentUser
+        if (!viewModel.getPock()!!.chatAccess || (user != null && viewModel.getPock()!!.user == user.uid)) {
             binding.chat.visibility = View.GONE
+        }
+
+        if (user != null && viewModel.getPock()!!.user == user.uid) {
+            binding.report.visibility = View.GONE
         }
     }
 
     private fun sharePock() {
+        val shareText =
+            "${viewModel.getPock()?.username} ${resources.getString(R.string.has_published_share_text)} ${TimeUtils.getPockTime(
+                viewModel.getPock()!!
+            )}:\n" +
+                    "${viewModel.getPock()?.message}\n" +
+                    "[${resources.getString(R.string.category_hint)}: ${viewModel.getPock()?.category}]\n" +
+                    resources.getString(R.string.shared_from_pockles)
         val shareIntent = Intent(Intent.ACTION_SEND)
-        shareIntent.setType("text/plain").putExtra(Intent.EXTRA_TEXT, viewModel.getPock()?.message)
+        shareIntent.setType("text/plain").putExtra(Intent.EXTRA_TEXT, shareText)
         startActivity(shareIntent)
     }
 
@@ -94,10 +115,17 @@ class ViewPockActivity : BaseActivity() {
     }
 
     private fun goChat(pockId: String) {
-
         val intent = Intent(this, ChatActivity::class.java).apply {
-            var chatData: ChatData = ChatData(null, pockId, viewModel.pock.value?.data!!.username, viewModel.pock.value?.data!!.userProfileImage)
-            putExtra("chatData", chatData)
+            putExtra(
+                "chatData",
+                ChatData(
+                    null,
+                    pockId,
+                    viewModel.pock.value?.data!!.username,
+                    viewModel.pock.value?.data!!.userProfileImage
+                )
+            )
+            putExtra("userId", viewModel.pock.value?.data?.user)
         }
         startActivity(intent)
 
@@ -142,14 +170,15 @@ class ViewPockActivity : BaseActivity() {
             builder.apply {
                 setPositiveButton(
                     R.string.alertOK
-                ) { dialog, id ->
+                ) { _, _ ->
                     choiceAlert()
                     // User clicked OK button
                 }
                 setNegativeButton(
                     R.string.alertNO
-                ) { dialog, id ->
+                ) { dialog, _ ->
                     // User cancelled the dialog, it simply closes it
+                    dialog.dismiss()
                 }
 
             }
@@ -159,27 +188,25 @@ class ViewPockActivity : BaseActivity() {
 
     private fun choiceAlert() {
         // setup the alert builder
-        val builder =
-            AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this)
         builder.setTitle(R.string.alertTitleMotivo)
-// add a radio button list
-        val motivos = R.array.motivos
+        // add a radio button list
+        val options = R.array.motivos
         var checkedItem = 1 // default
         builder.setSingleChoiceItems(
-            motivos,
+            options,
             checkedItem
-        ) { dialog, which ->
+        ) { _, which ->
             checkedItem = which
         }
-// add OK and Cancel buttons
-
+        // add OK and Cancel buttons
         builder.setPositiveButton(
             R.string.alertOK
-        ) { dialog, which ->
+        ) { _, _ ->
             okReport(checkedItem)
         }
         builder.setNegativeButton(R.string.alertNO, null)
-// create and show the alert dialog
+        // create and show the alert dialog
         val dialog = builder.create()
         dialog.show()
     }

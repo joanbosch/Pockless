@@ -69,7 +69,7 @@ class StorageTask private constructor(private val manager: StorageManager) {
             val b: StorageTaskBitmap? = bitmaps.poll()
             b?.let {
                 manager.uploadMedia(
-                    it.bitmap,
+                    it.data,
                     { uri ->
                         run {
                             resources.add(uri)
@@ -112,4 +112,4 @@ class StorageTask private constructor(private val manager: StorageManager) {
     }
 }
 
-data class StorageTaskBitmap(val bitmap: Bitmap, val fileExtension: String = "png")
+data class StorageTaskBitmap(val data: ByteArray, val fileExtension: String = "png")

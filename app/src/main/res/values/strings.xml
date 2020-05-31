@@ -11,6 +11,7 @@
     <string name="pockear_button">Pockear</string>
     <string name="pock_content_error">¿Un pock sin contenido?</string>
     <string name="added_pock_message">Se ha publicado tu nuevo pock</string>
+    <string name="publishing_pock">Publicando</string>
     <string name="api_error_message">Ha habido algún problema con la publicación de tu pock</string>
 
     <string name="map_menu_item">Mapa</string>
@@ -51,9 +52,15 @@
     <string name="close_session_profile_button_text">Cerrar sesión</string>
     <string name="badge_profile_text">Badge</string>
     <string name="pocks_created_length_profile">%s pocks</string>
+    <string name="permission_title">Alerta de Permisos</string>
+    <string name="permission_description">Pockles necesita que le des acceso a tu ubicacion para funcionar, sin ella, solo podras acceder a tu perfil y chats previamente creados. ¿Quieres que te preguntemos de nuevo?</string>
+    <string name="permission_ok">Si</string>
+    <string name="permission_no">No</string>
 
-    <string name="facebook_application_id" translatable="false">1291320611078328</string>
-    <string name="facebook_login_protocol_scheme" translatable="false">fb1291320611078328</string>
+    <string name="facebook_application_id" translatable="false">268555780995029</string>
+    <!-- Facebook Application ID, prefixed by 'fb'. Enables Chrome Custom tabs. -->
+    <string name="facebook_login_protocol_scheme" translatable="false">fb268555780995029</string>
+
     <string name="google_signin">Iniciar sesión con Google</string>
     <string name="facebook_sign_in">Iniciar sesión con Facebook</string>
     <string name="email_sign_in">Iniciar sesión con tu e-mail</string>
@@ -112,6 +119,9 @@
         <item>Otros</item>
     </string-array>
 
+    <!-- Share Pock resources -->
+    <string name="has_published_share_text">ha publicado un nuevo pock el</string>
+    <string name="shared_from_pockles">Compartido desde Pockles</string>
 
     <!-- Edit Pock Resources -->
     <string name="title_activity_edit_pock">EditPockActivity</string>
@@ -122,6 +132,7 @@
     <string name="updated_pock_message">Se ha actualizado el contenido de tu pock</string>
     <string name="api_error_updating_message">Ha habido algún problema actualizando el contenido de tu pock</string>
     <string name="liked_pock_activity_title">Me gusta</string>
+    <string name="achievements_activity_title">Mis logros</string>
     <string name="error_obtaining_liked_pocks">Ha ocurrido un error al obtener los pocks gustados</string>
     <string name="error_removing_like">Ha ocurrido un error al eliminar el me gusta del pock</string>
 
@@ -148,5 +159,37 @@
     <string name="title_activity_chat">Chat</string>
     <string name="cannot_obtain_the_chat_messages">No se han podido obtener los mesnsajes del chat</string>
     <string name="cannot_add_message">No se ha podido enviar el mensaje</string>
+
+    <!-- Settings Strings -->
+    <string name="settings">Ajustes</string>
+    <string name="leguage">Idioma</string>
+    <string name="help">Ayuda</string>
+    <string name="version_title">Versión</string>
+    <string name="version_summary" translatable="false">1.0.0</string>
+    <string name="rate_app_title">Puntúa esta aplicación</string>
+    <string name="about_us">Sobre Nosotros</string>
+    <string name="PES_project">Proyecto de PES - Q2 2019/20</string>
+
+
+    <!-- Lenguages avaliables -->
+    <string-array name="language_list_titles">
+        <item>Español</item>
+        <item>English</item>
+        <item>Català</item>
+        <item>Checo</item>
+    </string-array>
+
+    <!-- Lenguages avaliables -->
+    <string-array name="language_list_values">
+        <item>es</item>
+        <item>en</item>
+        <item>ca</item>
+        <item>ch</item>
+    </string-array>
+
+
+    <!-- Notifications Strings -->
+    <string name="notifications_fragment_title">Notificaciones</string>
+    <string name="loading">Loading...</string>
     <string name="enter_message">Mensaje...</string>
 </resources>
