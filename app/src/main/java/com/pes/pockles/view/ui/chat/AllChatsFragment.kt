@@ -6,11 +6,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
-import com.pes.pockles.R
-import com.pes.pockles.databinding.FragmentChatBinding
-import com.pes.pockles.view.ui.base.BaseFragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
@@ -18,11 +15,13 @@ import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.binding.BindingViewHolder
 import com.mikepenz.fastadapter.listeners.ClickEventHook
+import com.pes.pockles.R
 import com.pes.pockles.data.Resource
 import com.pes.pockles.databinding.ChatItemBinding
-import com.pes.pockles.databinding.LikeItemBinding
+import com.pes.pockles.databinding.FragmentChatBinding
 import com.pes.pockles.model.Chat
 import com.pes.pockles.model.ChatData
+import com.pes.pockles.view.ui.base.BaseFragment
 import com.pes.pockles.view.ui.chat.item.BindingChatItem
 
 /**
@@ -45,6 +44,7 @@ class AllChatsFragment : BaseFragment<FragmentChatBinding>() {
         binding.viewmodel = viewModel
 
         val fastAdapter = FastAdapter.with(itemAdapter)
+
         binding.rvChats.let {
             it.layoutManager = LinearLayoutManager(activity)
             it.adapter = fastAdapter
@@ -65,29 +65,37 @@ class AllChatsFragment : BaseFragment<FragmentChatBinding>() {
             ) {
 
                 val intent = Intent(context, ChatActivity::class.java).apply {
-                    var chatData: ChatData = ChatData(item.chat?.id, null, item.chat?.user2!!.name, item.chat?.user2!!.profileImageUrl)
+                    var chatData: ChatData = ChatData(
+                        item.chat?.id,
+                        null,
+                        item.chat?.user2!!.name,
+                        item.chat?.user2!!.profileImageUrl
+                    )
                     putExtra("chatData", chatData)
                 }
                 context!!.startActivity(intent)
             }
         })
 
-        initializeObservers()
-
-        initilizeListeners()
+        initializeListeners()
 
     }
 
-    private fun initilizeListeners() {
+    override fun onStart() {
+        super.onStart()
+        initializeObservers()
+    }
+
+    private fun initializeListeners() {
         // Add refresh action
         binding.swipeChats.setOnRefreshListener {
             viewModel.getAllChats()
         }
-
     }
 
     private fun initializeObservers() {
-        viewModel.chats.observe(this, Observer {value: Resource<List<Chat>> ->
+        viewModel.chats.removeObservers(this)
+        viewModel.chats.observe(this, Observer { value: Resource<List<Chat>> ->
             value?.let {
                 when (value) {
                     is Resource.Success<List<Chat>> -> setDataRecyclerView(it.data!!)
@@ -128,6 +136,11 @@ class AllChatsFragment : BaseFragment<FragmentChatBinding>() {
 
     override fun getLayout(): Int {
         return R.layout.fragment_chat
+    }
+
+    override fun onPause() {
+        viewModel.finalize()
+        super.onPause()
     }
 
     inline fun <reified T : ViewBinding> RecyclerView.ViewHolder.asBinding(block: (T) -> View): View? {

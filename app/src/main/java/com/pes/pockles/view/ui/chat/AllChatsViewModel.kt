@@ -50,7 +50,7 @@ class AllChatsViewModel @Inject constructor(
         _chats.postValue(allChats)
     }
 
-    protected fun finalize() {
+    fun finalize() {
         for (chat in chats.value?.data!!) {
             chatRepository.removeObserver(chat.id)
         }

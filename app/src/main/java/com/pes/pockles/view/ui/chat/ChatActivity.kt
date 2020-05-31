@@ -1,7 +1,6 @@
 package com.pes.pockles.view.ui.chat
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -65,13 +64,13 @@ class ChatActivity : BaseActivity() {
 
         binding.btnSend.setOnClickListener {
             val txt = binding.txtMessage.text.toString()
-            var message: NewMessage
-            message = if (!chatInformation.chatId.isNullOrEmpty()) {
-                NewMessage(txt, chatInformation.chatId, null)
-            } else {
-                NewMessage(txt, null, chatInformation.pockId)
-            }
-            viewModel.postMessage(message)
+            viewModel.postMessage(
+                if (!chatInformation.chatId.isNullOrEmpty()) {
+                    NewMessage(txt, chatInformation.chatId, null)
+                } else {
+                    NewMessage(txt, null, chatInformation.pockId)
+                }
+            )
             binding.txtMessage.text!!.clear()
         }
     }
@@ -80,7 +79,7 @@ class ChatActivity : BaseActivity() {
     private fun initializeObservers() {
         viewModel.messages.observe(this, Observer {
             it?.let {
-                when(it) {
+                when (it) {
                     is Resource.Success<MutableList<Message>> -> setDataRecyclerView(it.data!!)
                     is Resource.Error -> handleError(getString(R.string.cannot_obtain_the_chat_messages))
                 }
@@ -90,7 +89,7 @@ class ChatActivity : BaseActivity() {
 
         viewModel.newMsg.observe(this, Observer {
             it?.let {
-                when(it) {
+                when (it) {
                     is Resource.Success<Message> -> refreshMessages(it.data)
                     is Resource.Error -> handleError(getString(R.string.cannot_add_message))
                 }
@@ -100,7 +99,6 @@ class ChatActivity : BaseActivity() {
     }
 
     private fun handleError(s: String) {
-        val text = getString(R.string.cannot_load_chats)
         Snackbar.make(
             binding.constraintLayout3,
             getString(R.string.cannot_load_chats),
@@ -119,5 +117,10 @@ class ChatActivity : BaseActivity() {
     private fun refreshMessages(msg: Message?) {
         chatInformation.chatId = msg!!.chatId
         chatInformation.chatId?.let { viewModel.refreshMessages(it) }
+    }
+
+    override fun onDestroy() {
+        viewModel.finalize()
+        super.onDestroy()
     }
 }
