@@ -145,4 +145,5 @@
         <item>Catalan</item>
         <item>Czech</item>
     </string-array>
+    <string name="achievements_activity_title">My Achivements</string>
 </resources>

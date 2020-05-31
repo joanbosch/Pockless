@@ -145,4 +145,5 @@
         <item>Katalánština</item>
         <item>čeština</item>
     </string-array>
+    <string name="achievements_activity_title">Mé úspěchy</string>
 </resources>

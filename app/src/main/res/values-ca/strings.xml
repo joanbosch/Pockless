@@ -145,4 +145,5 @@
         <item>Català</item>
         <item>txec</item>
     </string-array>
+    <string name="achievements_activity_title">Els meus Éxits</string>
 </resources>
