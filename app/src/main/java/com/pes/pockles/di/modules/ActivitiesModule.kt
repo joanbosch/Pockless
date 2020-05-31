@@ -1,6 +1,7 @@
 package com.pes.pockles.di.modules
 
 import com.pes.pockles.view.ui.MainActivity
+import com.pes.pockles.view.ui.achievements.AchievementsActivity
 import com.pes.pockles.view.ui.aboutus.AboutUsActivity
 import com.pes.pockles.view.ui.chat.ChatActivity
 import com.pes.pockles.view.ui.editpock.EditPockActivity
@@ -68,5 +69,8 @@ abstract class ActivitiesModule {
 
     @ContributesAndroidInjector
     abstract fun contributeAboutUsActivity(): AboutUsActivity
+    @ContributesAndroidInjector
+    abstract fun contributeGetAchievements(): AchievementsActivity
+
 
 }

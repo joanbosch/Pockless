@@ -16,6 +16,7 @@ import com.pes.pockles.model.NewMessage
 import com.pes.pockles.view.ui.base.BaseActivity
 import com.pes.pockles.view.ui.chat.item.MessageAdapter
 import com.pes.pockles.view.ui.viewuser.ViewUserActivity
+import timber.log.Timber
 
 class ChatActivity : BaseActivity() {
 
@@ -97,7 +98,7 @@ class ChatActivity : BaseActivity() {
     private fun initializeObservers() {
         viewModel.messages.observe(this, Observer {
             it?.let {
-                when(it) {
+                when (it) {
                     is Resource.Success<MutableList<Message>> -> setDataRecyclerView(it.data!!)
                     is Resource.Error -> handleError(getString(R.string.cannot_obtain_the_chat_messages))
                 }
@@ -107,7 +108,7 @@ class ChatActivity : BaseActivity() {
 
         viewModel.newMsg.observe(this, Observer {
             it?.let {
-                when(it) {
+                when (it) {
                     is Resource.Success<Message> -> refreshMessages(it.data)
                     is Resource.Error -> handleError(getString(R.string.cannot_add_message))
                 }

@@ -65,6 +65,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             }
             it.context.startActivity(intent)
         }
+
+        binding.cardView2.setOnClickListener {
+            findNavController().navigate(R.id.action_userProfileFragment_to_achievementsActivity)
+        }
+
     }
 
     private fun navigateToHistory(bool: Boolean) {

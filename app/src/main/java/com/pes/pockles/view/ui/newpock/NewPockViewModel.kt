@@ -1,6 +1,6 @@
 package com.pes.pockles.view.ui.newpock
 
-import android.graphics.Bitmap
+import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -21,8 +21,8 @@ class NewPockViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _errorHandler = MutableLiveData<Boolean>()
-    private val _chatEnabled = MutableLiveData<Boolean>()
     private val _pockToInsert = MutableLiveData<NewPock?>()
+    val chatEnabled = MutableLiveData<Boolean>()
     val pockContent = MutableLiveData<String>()
     val pockCategory = MutableLiveData<String>()
     private var hasImages = false
@@ -61,7 +61,7 @@ class NewPockViewModel @Inject constructor(
         _image4.value = null
         _actImg.value = 0
         _nImg.value = 0
-        _chatEnabled.value = false
+        chatEnabled.value = false
         _errorSavingImages.value = false
     }
 
@@ -95,7 +95,7 @@ class NewPockViewModel @Inject constructor(
                     _pockToInsert.value = NewPock(
                         message = pockContent.value!!,
                         category = category,
-                        chatAccess = _chatEnabled.value!!,
+                        chatAccess = chatEnabled.value!!,
                         location = location,
                         media = it
                     )
@@ -106,7 +106,7 @@ class NewPockViewModel @Inject constructor(
                 _pockToInsert.value = NewPock(
                     message = pockContent.value!!,
                     category = category,
-                    chatAccess = _chatEnabled.value!!,
+                    chatAccess = chatEnabled.value!!,
                     location = location,
                     media = null
                 )

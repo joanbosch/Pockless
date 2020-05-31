@@ -242,7 +242,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
-            android:checked="true"
+            android:checked="@={newPockViewModel.chatEnabled}"
             android:hint="@string/chat_switch_hint"
             android:textColorHint="#5C5C5C"
             app:layout_constraintEnd_toEndOf="@+id/textInputLayout4"

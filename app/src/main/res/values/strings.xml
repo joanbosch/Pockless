@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">Pockles</string>
 
-
-    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
-    <string name="title_activity_new_pock" translatable="false">NewPockActivity</string>
-    <string name="title_login_activity" translatable="false">LoginActivity</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_new_pock">NewPockActivity</string>
+    <string name="title_login_activity">LoginActivity</string>
     <string name="pock_something_hint">Pockea algo</string>
     <string name="category_hint">Categoría</string>
     <string name="chat_switch_hint">Chat</string>
@@ -65,7 +65,7 @@
     <string name="facebook_sign_in">Iniciar sesión con Facebook</string>
     <string name="email_sign_in">Iniciar sesión con tu e-mail</string>
     <string name="register_text_p1">¿No tienes cuenta?</string>
-    <string name="register_text_p2">Utiliza cualqueira de las opciones anteriores para registrarte</string>
+    <string name="register_text_p2">Utiliza cualqueira de las opciones\nanteriores para registrarte</string>
 
     <string name="create_profile_register_activity_text">Crear perfil</string>
     <string name="register_name_hint">Nombre</string>
@@ -93,6 +93,7 @@
     <string name="error_uploading_images">Ha ocurrido un error al subir las imagenes</string>
     <string name="error_selecting_image">Ha ocurrido un error al seleccionar la imagen</string>
     <string name="upload_image_dialog_title">Subir imagen</string>
+    <string name="take_photo_dialog_option">Tomar foto</string>
     <string name="select_photo_dialog_option">Seleccionar foto</string>
     <string name="error_creating_profile">Ha ocurrido un error al crear el perfil. Intentelo de nuevo más tarde</string>
     <string name="save">guardar</string>
@@ -123,14 +124,16 @@
     <string name="shared_from_pockles">Compartido desde Pockles</string>
 
     <!-- Edit Pock Resources -->
-    <string name="title_activity_edit_pock" translatable="false">EditPockActivity</string>
+    <string name="title_activity_edit_pock">EditPockActivity</string>
     <string name="title_toolbar_edit_pock">Editar Pock</string>
     <string name="correct_pock_hint">Corrige tu Pock</string>
     <string name="general_category">General</string>
     <string name="update_pock_button">Guardar cambios</string>
     <string name="updated_pock_message">Se ha actualizado el contenido de tu pock</string>
     <string name="api_error_updating_message">Ha habido algún problema actualizando el contenido de tu pock</string>
-    <string name="error_obtaining_liked_pocks">Ha ocurrido un error al obtener los likes</string>
+    <string name="liked_pock_activity_title">Me gusta</string>
+    <string name="achievements_activity_title">Mis logros</string>
+    <string name="error_obtaining_liked_pocks">Ha ocurrido un error al obtener los pocks gustados</string>
     <string name="error_removing_like">Ha ocurrido un error al eliminar el me gusta del pock</string>
 
     <!-- Edit Profile Resources -->
@@ -165,7 +168,7 @@
     <string name="version_summary" translatable="false">1.0.0</string>
     <string name="rate_app_title">Puntúa esta aplicación</string>
     <string name="about_us">Sobre Nosotros</string>
-    <string name="PES_project" translatable="false">Proyecto de PES - Q2 2019/20</string>
+    <string name="PES_project">Proyecto de PES - Q2 2019/20</string>
 
 
     <!-- Lenguages avaliables -->
@@ -181,12 +184,11 @@
         <item>es</item>
         <item>en</item>
         <item>ca</item>
-        <item>cs</item>
+        <item>ch</item>
     </string-array>
 
 
     <!-- Notifications Strings -->
     <string name="notifications_fragment_title">Notificaciones</string>
-    <string name="take_photo_dialog_option">Sacar foto</string>
-    <string name="liked_pock_activity_title">Me gusta</string>
+    <string name="loading">Loading...</string>
 </resources>
