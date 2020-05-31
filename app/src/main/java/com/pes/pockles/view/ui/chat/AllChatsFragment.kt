@@ -36,12 +36,11 @@ class AllChatsFragment : BaseFragment<FragmentChatBinding>() {
     // Create the ItemAdapter holding your Items
     private val itemAdapter = ItemAdapter<BindingChatItem>()
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.swipeChats.isRefreshing = true
-        binding.viewmodel = viewModel
+        binding.viewModel = viewModel
 
         val fastAdapter = FastAdapter.with(itemAdapter)
 
@@ -63,22 +62,20 @@ class AllChatsFragment : BaseFragment<FragmentChatBinding>() {
                 fastAdapter: FastAdapter<BindingChatItem>,
                 item: BindingChatItem
             ) {
-
                 val intent = Intent(context, ChatActivity::class.java).apply {
-                    var chatData: ChatData = ChatData(
-                        item.chat?.id,
-                        null,
-                        item.chat?.user2!!.name,
-                        item.chat?.user2!!.profileImageUrl
+                    putExtra(
+                        "chatData", ChatData(
+                            item.chat.id,
+                            null,
+                            item.chat.user2.name,
+                            item.chat.user2.profileImageUrl
+                        )
                     )
-                    putExtra("chatData", chatData)
                 }
                 context!!.startActivity(intent)
             }
         })
-
         initializeListeners()
-
     }
 
     override fun onStart() {
@@ -96,12 +93,11 @@ class AllChatsFragment : BaseFragment<FragmentChatBinding>() {
     private fun initializeObservers() {
         viewModel.chats.removeObservers(this)
         viewModel.chats.observe(this, Observer { value: Resource<List<Chat>> ->
-            value?.let {
-                when (value) {
-                    is Resource.Success<List<Chat>> -> setDataRecyclerView(it.data!!)
-                    is Resource.Error -> handleError()
-                }
+            when (value) {
+                is Resource.Success<List<Chat>> -> setDataRecyclerView(value.data!!)
+                is Resource.Error -> handleError()
             }
+
         })
     }
 
@@ -115,18 +111,13 @@ class AllChatsFragment : BaseFragment<FragmentChatBinding>() {
     private fun setDataRecyclerView(chats: List<Chat>) {
         binding.swipeChats.isRefreshing = false
 
-        binding.txtNoChats.visibility = View.GONE
         if (chats.isEmpty()) {
-            binding.txtNoChats.visibility = View.VISIBLE
+            binding.layoutNoChats.visibility = View.VISIBLE
         } else {
-            val chatListBinding: List<BindingChatItem> = chats.map { chat ->
-                val binding =
-                    BindingChatItem()
-                binding.chat = chat
-                binding
-            }
+            binding.layoutNoChats.visibility = View.GONE
+
             //Fill and set the items to the ItemAdapter
-            itemAdapter.setNewList(chatListBinding)
+            itemAdapter.setNewList(chats.map { BindingChatItem(it) })
 
             // Set up the notification observers
             viewModel.setUpNotificationObserver()

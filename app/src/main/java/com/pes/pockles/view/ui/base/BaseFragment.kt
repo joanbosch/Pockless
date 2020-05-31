@@ -15,7 +15,7 @@ import javax.inject.Inject
  * Base [Fragment] that injects the viewModelFactory. It also sets the fragment as injectable
  * so Dagger can inject the dependencies automatically.
  *
- * It also inflates the layout and assigns them to the binding. No need to write repetitive
+ * It also inflates the layout and assigns it to the binding. No need to write repetitive
  * code anymore
  */
 abstract class BaseFragment<DataBinding : ViewDataBinding> : DaggerFragment() {

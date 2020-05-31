@@ -148,4 +148,5 @@
     <string name="title_activity_chat">Chat</string>
     <string name="cannot_obtain_the_chat_messages">No se han podido obtener los mesnsajes del chat</string>
     <string name="cannot_add_message">No se ha podido enviar el mensaje</string>
+    <string name="enter_message">Mensaje...</string>
 </resources>

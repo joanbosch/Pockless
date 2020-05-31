@@ -23,7 +23,6 @@ class AllChatsViewModel @Inject constructor(
 
     init {
         getAllChats()
-
     }
 
     fun getAllChats() {
@@ -41,7 +40,7 @@ class AllChatsViewModel @Inject constructor(
     }
 
     private fun newMessageReceived(m : Message) {
-        var allChats = _chats.value
+        val allChats = _chats.value
         for (chat in allChats?.data!!){
             if (chat.id == m.chatId) {
                 chat.lastMessage = m.text
