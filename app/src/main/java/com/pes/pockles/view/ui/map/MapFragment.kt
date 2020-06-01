@@ -290,7 +290,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
 
     private fun handleSuccess(list: Resource.Success<List<Pock>>) {
         googleMap!!.clear()
-        list.data?.let {
+        list.data?.let { it ->
             it.forEach { pock ->
                 val latLng = LatLng(
                     pock.location.latitude,
@@ -302,12 +302,15 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
                     marker.setIcon(images[pock.category])
                 }
             }
-
-            val pockListBinding: List<BindingPockItem> = it.map { pock ->
+            val pockListBinding: List<BindingPockItem> = it.sortedByDescending{it.dateInserted}.map { pock ->
                 val binding = BindingPockItem()
                 binding.pock = pock
                 binding
             }
+
+            //            val pockListBinding: List<BindingLikeItem> = it.map {
+            //                BindingLikeItem(it)
+            //            }
             //Fill and set the items to the ItemAdapter
             val diffs: DiffUtil.DiffResult =
                 FastAdapterDiffUtil.calculateDiff(itemAdapter, pockListBinding)
