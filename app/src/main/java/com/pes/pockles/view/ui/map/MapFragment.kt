@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -34,6 +35,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED
 import com.google.maps.android.heatmaps.HeatmapTileProvider
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
@@ -359,7 +361,21 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
             startActivity(intent)
             true
         }
+
+        val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (behaviour.state != STATE_COLLAPSED) {
+                    behaviour.state = STATE_COLLAPSED
+                } else {
+                    isEnabled = false
+                    requireActivity().onBackPressed()
+                }
+            }
+
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback);
     }
+
 
     private fun loadImages() {
         val iconTuri = BitmapDescriptorFactory.fromResource(R.raw.icono_turismo)

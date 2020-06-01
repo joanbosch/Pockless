@@ -57,7 +57,7 @@ class ChatViewModel @Inject constructor(
         }
     }
 
-    private fun finalize() {
+    fun finalize() {
         chatRepository.removeObserver(chatId)
     }
 }

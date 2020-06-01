@@ -29,6 +29,7 @@ class MessageAdapter(val context: Context) : RecyclerView.Adapter<MessageViewHol
     inner class MyMessageViewHolder(view: View) : MessageViewHolder(view) {
         private var messageText: TextView = view.txtMyMessage
         private var timeText: TextView = view.txtMyMessageTime
+//        txtMsgFrom.setText(Html.fromHtml(convertToHtml(txtMsgFrom.getText().toString()) + " &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;"))
 
         override fun bind(message: Message) {
             messageText.text = message.text

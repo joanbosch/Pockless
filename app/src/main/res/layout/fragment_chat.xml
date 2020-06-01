@@ -8,7 +8,7 @@
         <import type="android.view.View" />
 
         <variable
-            name="viewmodel"
+            name="viewModel"
             type="com.pes.pockles.view.ui.chat.AllChatsViewModel" />
 
     </data>
@@ -16,8 +16,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/profile_light_background"
-        android:orientation="vertical">
+        android:background="@color/profile_light_background">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
@@ -31,7 +30,7 @@
                 android:layout_height="wrap_content"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:title="@string/chats"/>
+                app:title="@string/chats" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -45,26 +44,42 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/txtNoChats"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:id="@+id/layout_no_chats"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/you_dont_have_any_chat"
-                    android:textAlignment="center"
-                    android:textAppearance="?attr/textAppearanceHeadline6"
-                    android:visibility="invisible" />
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="150dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/animationView"
+                        android:layout_width="300dp"
+                        android:layout_height="300dp"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="false"
+                        app:lottie_rawRes="@raw/no_chat_anim" />
+
+                    <TextView
+                        android:id="@+id/txtNoChats"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/you_dont_have_any_chat"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvChats"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
-            </LinearLayout>
+            </FrameLayout>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

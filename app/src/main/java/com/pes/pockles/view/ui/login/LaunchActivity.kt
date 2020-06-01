@@ -33,6 +33,7 @@ class LaunchActivity : BaseActivity() {
             createSignInIntent()
         } else {
             startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
     }
 

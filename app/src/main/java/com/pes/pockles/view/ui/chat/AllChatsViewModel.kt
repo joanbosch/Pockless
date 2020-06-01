@@ -23,7 +23,6 @@ class AllChatsViewModel @Inject constructor(
 
     init {
         getAllChats()
-
     }
 
     fun getAllChats() {
@@ -35,14 +34,14 @@ class AllChatsViewModel @Inject constructor(
     }
 
     fun setUpNotificationObserver() {
-        for (chat in chats.value?.data!!) {
-            chatRepository.observe(chat.id, ::newMessageReceived)
+        chats.value?.data?.let {
+            it.forEach { chat -> chatRepository.observe(chat.id, ::newMessageReceived) }
         }
     }
 
-    private fun newMessageReceived(m : Message) {
-        var allChats = _chats.value
-        for (chat in allChats?.data!!){
+    private fun newMessageReceived(m: Message) {
+        val allChats = _chats.value
+        for (chat in allChats?.data!!) {
             if (chat.id == m.chatId) {
                 chat.lastMessage = m.text
             }
@@ -50,7 +49,7 @@ class AllChatsViewModel @Inject constructor(
         _chats.postValue(allChats)
     }
 
-    protected fun finalize() {
+    fun finalize() {
         for (chat in chats.value?.data!!) {
             chatRepository.removeObserver(chat.id)
         }
