@@ -65,7 +65,7 @@ class ChatActivity : BaseActivity() {
         //Define Actions
         initializeListeners()
 
-        chatInformation.chatId?.let { viewModel.refreshMessages(it) }
+        viewModel.refreshMessages(chatInformation)
     }
 
     private fun initializeListeners() {
@@ -152,7 +152,7 @@ class ChatActivity : BaseActivity() {
 
     private fun refreshMessages(msg: Message?) {
         chatInformation.chatId = msg!!.chatId
-        chatInformation.chatId?.let { viewModel.refreshMessages(it) }
+        viewModel.refreshMessages(chatInformation)
     }
 
     override fun onDestroy() {

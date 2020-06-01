@@ -7,9 +7,9 @@ import com.pes.pockles.data.api.ApiService
 import com.pes.pockles.model.Chat
 import com.pes.pockles.model.Message
 import com.pes.pockles.model.NewMessage
+import io.reactivex.functions.Function
 import javax.inject.Inject
 import javax.inject.Singleton
-import io.reactivex.functions.Function
 
 @Singleton
 class ChatRepository @Inject constructor(
@@ -26,6 +26,10 @@ class ChatRepository @Inject constructor(
         return callApi(Function { apiService -> apiService.allMessageChat(chatId) })
     }
 
+    fun getChatFromPock(pockId: String): LiveData<Resource<List<Message>>> {
+        return callApi(Function { apiService -> apiService.allMessageChat(pockId, true) })
+    }
+
     fun newMessage(message: NewMessage): LiveData<Resource<Message>> {
         return callApi(Function { apiService -> apiService.newMessage(message) })
     }
@@ -38,11 +42,11 @@ class ChatRepository @Inject constructor(
         observers.remove(chatId)
     }
 
-    fun onMessageReceived(message: Message) : Boolean {
+    fun onMessageReceived(message: Message): Boolean {
         if (observers.contains(message.chatId)) {
             observers[message.chatId]!!(message)
             return true
-        } else if (message.senderId == FirebaseAuth.getInstance().uid){
+        } else if (message.senderId == FirebaseAuth.getInstance().uid) {
             return true
         }
         return false

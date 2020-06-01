@@ -8,9 +8,9 @@ import com.pes.pockles.data.loading
 import com.pes.pockles.data.repository.ChatRepository
 import com.pes.pockles.domain.usecases.ChatMessagesUseCase
 import com.pes.pockles.domain.usecases.NewMessageUseCase
+import com.pes.pockles.model.ChatData
 import com.pes.pockles.model.Message
 import com.pes.pockles.model.NewMessage
-import com.pes.pockles.util.extensions.forceRefresh
 import javax.inject.Inject
 
 class ChatViewModel @Inject constructor(
@@ -19,7 +19,7 @@ class ChatViewModel @Inject constructor(
     private var chatRepository: ChatRepository
 ) : ViewModel() {
 
-    private lateinit var chatId: String
+    private var chatId: String? = null
     val messages: LiveData<Resource<MutableList<Message>>>
         get() = _messages
 
@@ -35,7 +35,7 @@ class ChatViewModel @Inject constructor(
         chatRepository.observe(chatID, ::newMessageReceived)
     }
 
-    private fun newMessageReceived(m : Message) {
+    private fun newMessageReceived(m: Message) {
         val messageList = _messages.value
         messageList?.data!!.add(m)
         _messages.postValue(messageList)
@@ -43,21 +43,26 @@ class ChatViewModel @Inject constructor(
 
     fun postMessage(message: NewMessage) {
         val newmessage = useCaseNewMessage.execute(message)
-        _newMsg.addSource(newmessage){
+        _newMsg.addSource(newmessage) {
             _newMsg.value = it
-            if(!it.loading) _newMsg.removeSource(newmessage)
+            if (!it.loading) _newMsg.removeSource(newmessage)
         }
     }
 
-    fun refreshMessages(chatID: String) {
-        val source = useCase.execute(chatID)
-        _messages.addSource(source){
+    fun refreshMessages(chatInformation: ChatData) {
+        val source =
+            if (chatInformation.pockId != null) chatRepository.getChatFromPock(chatInformation.pockId!!)
+            else useCase.execute(chatInformation.chatId!!)
+
+        _messages.addSource(source) {
             _messages.value = it as Resource<MutableList<Message>>?
-            if(!it.loading) _messages.removeSource(source)
+            if (!it.loading) _messages.removeSource(source)
         }
     }
 
     fun finalize() {
-        chatRepository.removeObserver(chatId)
+        chatId?.let {
+            chatRepository.removeObserver(it)
+        }
     }
 }

@@ -50,8 +50,8 @@ class AllChatsViewModel @Inject constructor(
     }
 
     fun finalize() {
-        for (chat in chats.value?.data!!) {
-            chatRepository.removeObserver(chat.id)
+        chats.value?.data?.let {
+            it.forEach { chat ->   chatRepository.removeObserver(chat.id)}
         }
     }
 

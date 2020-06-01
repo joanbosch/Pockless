@@ -76,7 +76,7 @@ interface ApiService {
     fun allChats(): Single<List<Chat>>
 
     @GET("chat/{id}")
-    fun allMessageChat(@Path("id") id: String): Single<List<Message>>
+    fun allMessageChat(@Path("id") id: String, @Query("fromPock") fromPock: Boolean = false): Single<List<Message>>
 
     @GET("notifications")
     fun notifications(): Single<List<Notification>>
