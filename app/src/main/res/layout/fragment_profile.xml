@@ -12,6 +12,7 @@
         <variable
             name="viewModel"
             type="com.pes.pockles.view.ui.profile.ProfileViewModel" />
+
     </data>
 
     <ScrollView

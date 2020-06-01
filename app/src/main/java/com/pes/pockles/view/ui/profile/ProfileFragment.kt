@@ -11,12 +11,10 @@ import com.bumptech.glide.Glide
 import com.pes.pockles.R
 import com.pes.pockles.databinding.FragmentProfileBinding
 import com.pes.pockles.model.EditedUser
-import com.pes.pockles.util.livedata.Event
 import com.pes.pockles.util.livedata.EventObserver
 import com.pes.pockles.view.ui.base.BaseFragment
 import com.pes.pockles.view.ui.editprofile.EditProfileActivity
 import com.pes.pockles.view.ui.login.LaunchActivity
-import com.pes.pockles.view.ui.settings.SettingsActivity
 import java.io.Serializable
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
@@ -49,7 +47,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
         viewModel.navigateToLogin.observe(this, EventObserver(::navigateToLogin))
 
-        binding.settingsButton.setOnClickListener{
+        binding.settingsButton.setOnClickListener {
             findNavController().navigate(R.id.action_userProfileFragment_to_settingsActivity)
         }
 
@@ -61,7 +59,15 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             val intent = Intent(it.context, EditProfileActivity::class.java).apply {
                 putExtra("mail", viewModel.userdata.mail)
                 putExtra("birthDate", viewModel.userdata.birthDate)
-                putExtra("editableContent", EditedUser(viewModel.userdata.name, viewModel.userdata.profileImage, viewModel.userdata.radiusVisibility, viewModel.userdata.accentColor) as Serializable)
+                putExtra(
+                    "editableContent",
+                    EditedUser(
+                        viewModel.userdata.name,
+                        viewModel.userdata.profileImage,
+                        viewModel.userdata.radiusVisibility,
+                        viewModel.userdata.accentColor
+                    ) as Serializable
+                )
             }
             it.context.startActivity(intent)
         }
