@@ -146,4 +146,5 @@
         <item>Czech</item>
     </string-array>
     <string name="achievements_activity_title">My Achivements</string>
+    <string name="enter_message">Message ...</string>
 </resources>

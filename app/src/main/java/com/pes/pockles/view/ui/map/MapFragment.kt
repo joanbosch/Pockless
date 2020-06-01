@@ -48,7 +48,7 @@ import com.pes.pockles.model.Pock
 import com.pes.pockles.util.LocationUtils.Companion.getLastLocation
 import com.pes.pockles.util.dp2px
 import com.pes.pockles.view.ui.base.BaseFragment
-import com.pes.pockles.view.ui.pockshistory.item.BindingPockItem
+import com.pes.pockles.view.ui.map.item.BindingNearbyItem
 import com.pes.pockles.view.ui.viewpock.ViewPockActivity
 import kotlin.math.cos
 import kotlin.math.ln
@@ -304,20 +304,18 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
                     marker.setIcon(images[pock.category])
                 }
             }
-            val pockListBinding: List<BindingPockItem> = it.sortedByDescending{it.dateInserted}.map { pock ->
-                val binding = BindingPockItem()
-                binding.pock = pock
-                binding
-            }
 
-            //            val pockListBinding: List<BindingLikeItem> = it.map {
-            //                BindingLikeItem(it)
-            //            }
+            val pockListBinding: List<BindingNearbyItem> =
+                it.sortedByDescending { it.dateInserted }.map {
+                    BindingNearbyItem(it)
+                }
+
             //Fill and set the items to the ItemAdapter
             val diffs: DiffUtil.DiffResult =
                 FastAdapterDiffUtil.calculateDiff(itemAdapter, pockListBinding)
             FastAdapterDiffUtil[itemAdapter] = diffs
         }
+
     }
 
     private fun handleSuccessHeatMap(pocksLocations: Resource.Success<List<LatLng>>) {
@@ -342,7 +340,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         toast.show()
     }
 
-    private val itemAdapter = ItemAdapter<BindingPockItem>()
+    private val itemAdapter = ItemAdapter<BindingNearbyItem>()
 
     //BOTTOM SHEET
     private fun createBottomSheet() {
@@ -361,7 +359,6 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
             startActivity(intent)
             true
         }
-
         val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (behaviour.state != STATE_COLLAPSED) {
