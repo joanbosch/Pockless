@@ -147,4 +147,5 @@
     </string-array>
     <string name="achievements_activity_title">Els meus Éxits</string>
     <string name="enter_message">Missatge..</string>
+    <string name="changedLanguage">Cambiant idioma..</string>
 </resources>

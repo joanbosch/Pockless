@@ -147,4 +147,5 @@
     </string-array>
     <string name="achievements_activity_title">My Achivements</string>
     <string name="enter_message">Message ...</string>
+    <string name="changedLanguage">Changing language...</string>
 </resources>

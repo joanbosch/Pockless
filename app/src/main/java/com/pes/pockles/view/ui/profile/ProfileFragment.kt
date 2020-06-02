@@ -1,9 +1,13 @@
 package com.pes.pockles.view.ui.profile
 
+import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ScrollView
+import androidx.core.app.ActivityCompat.recreate
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -15,12 +19,13 @@ import com.pes.pockles.util.livedata.EventObserver
 import com.pes.pockles.view.ui.base.BaseFragment
 import com.pes.pockles.view.ui.editprofile.EditProfileActivity
 import com.pes.pockles.view.ui.login.LaunchActivity
+import com.pes.pockles.view.ui.settings.SettingsActivity
 import java.io.Serializable
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     private var shouldRefreshOnResume = false
-
+    val REQUEST = 12345  // The request code
     private val viewModel: ProfileViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(ProfileViewModel::class.java)
     }
@@ -49,6 +54,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
         binding.settingsButton.setOnClickListener {
             findNavController().navigate(R.id.action_userProfileFragment_to_settingsActivity)
+            val intent = Intent(activity, SettingsActivity::class.java)
+            startActivityForResult(intent, REQUEST)
         }
 
         binding.likeButton.setOnClickListener {
@@ -75,7 +82,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         binding.cardView2.setOnClickListener {
             findNavController().navigate(R.id.action_userProfileFragment_to_achievementsActivity)
         }
-
     }
 
     private fun navigateToHistory(bool: Boolean) {
@@ -107,5 +113,15 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     override fun onStop() {
         super.onStop()
         shouldRefreshOnResume = true
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        // Check which request we're responding to
+        if (requestCode == REQUEST) {
+            // Make sure the request was successful
+            if (resultCode == Activity.RESULT_OK) {
+                activity?.let { recreate(it) }
+            }
+        }
     }
 }

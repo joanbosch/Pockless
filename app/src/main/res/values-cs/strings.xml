@@ -147,4 +147,5 @@
     </string-array>
     <string name="achievements_activity_title">Mé úspěchy</string>
     <string name="enter_message">Zpráva ...</string>
+    <string name="changedLanguage">Mění se jazyk ...</string>
 </resources>

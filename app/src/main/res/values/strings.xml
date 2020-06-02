@@ -192,4 +192,5 @@
     <string name="notifications_fragment_title">Notificaciones</string>
     <string name="loading" translatable="false">Loading...</string>
     <string name="enter_message">Mensaje...</string>
+    <string name="changedLanguage">Cambiando idioma...</string>
 </resources>
