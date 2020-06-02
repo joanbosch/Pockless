@@ -1,7 +1,9 @@
 package com.pes.pockles.view.ui.base
 
 
+import android.content.Context
 import android.graphics.Rect
+import android.preference.PreferenceManager
 import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.lifecycle.ViewModelProvider
@@ -10,7 +12,7 @@ import javax.inject.Inject
 
 
 /**
- * Base [Activity] that injects the viewModelFactory. It also sets the activity as injectable
+ * Base Activity that injects the viewModelFactory. It also sets the activity as injectable
  * so Dagger can inject the dependencies automatically
  */
 abstract class BaseActivity : DaggerAppCompatActivity() {
@@ -21,6 +23,7 @@ abstract class BaseActivity : DaggerAppCompatActivity() {
 
     @Inject
     internal lateinit var viewModelFactory: ViewModelProvider.Factory
+    private var locale: String? = null
 
     private val keyboardLayoutListener = OnGlobalLayoutListener {
         val r = Rect()
@@ -62,5 +65,14 @@ abstract class BaseActivity : DaggerAppCompatActivity() {
             )
         }
     }
+
+
+    override fun attachBaseContext(newBase: Context) {
+        val sharedPreferences =
+            PreferenceManager.getDefaultSharedPreferences(newBase)
+        locale = sharedPreferences.getString("Language", "es")
+        super.attachBaseContext(locale?.let { BaseContextWrapper.wrap(newBase, it) })
+    }
+
 
 }

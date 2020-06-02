@@ -48,7 +48,7 @@ import com.pes.pockles.model.Pock
 import com.pes.pockles.util.LocationUtils.Companion.getLastLocation
 import com.pes.pockles.util.dp2px
 import com.pes.pockles.view.ui.base.BaseFragment
-import com.pes.pockles.view.ui.pockshistory.item.BindingPockItem
+import com.pes.pockles.view.ui.map.item.BindingNearbyItem
 import com.pes.pockles.view.ui.viewpock.ViewPockActivity
 import kotlin.math.cos
 import kotlin.math.ln
@@ -292,7 +292,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
 
     private fun handleSuccess(list: Resource.Success<List<Pock>>) {
         googleMap!!.clear()
-        list.data?.let {
+        list.data?.let { it ->
             it.forEach { pock ->
                 val latLng = LatLng(
                     pock.location.latitude,
@@ -305,16 +305,17 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
                 }
             }
 
-            val pockListBinding: List<BindingPockItem> = it.map { pock ->
-                val binding = BindingPockItem()
-                binding.pock = pock
-                binding
-            }
+            val pockListBinding: List<BindingNearbyItem> =
+                it.sortedByDescending { it.dateInserted }.map {
+                    BindingNearbyItem(it)
+                }
+
             //Fill and set the items to the ItemAdapter
             val diffs: DiffUtil.DiffResult =
                 FastAdapterDiffUtil.calculateDiff(itemAdapter, pockListBinding)
             FastAdapterDiffUtil[itemAdapter] = diffs
         }
+
     }
 
     private fun handleSuccessHeatMap(pocksLocations: Resource.Success<List<LatLng>>) {
@@ -339,7 +340,7 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
         toast.show()
     }
 
-    private val itemAdapter = ItemAdapter<BindingPockItem>()
+    private val itemAdapter = ItemAdapter<BindingNearbyItem>()
 
     //BOTTOM SHEET
     private fun createBottomSheet() {
@@ -358,7 +359,6 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
             startActivity(intent)
             true
         }
-
         val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (behaviour.state != STATE_COLLAPSED) {
@@ -396,7 +396,35 @@ open class MapFragment : BaseFragment<FragmentMapBinding>(), OnMapReadyCallback 
             "Anuncios" to iconAn,
             "Deportes" to iconDep,
             "General" to iconGen,
-            "Mascotas" to iconMas
+            "Mascotas" to iconMas, //catalan
+            "Turisme" to iconTuri,
+            "Altres" to iconVar,
+            "Salut" to iconSal,
+            "Entretenimient" to iconEntre,
+            "Tecnología" to iconTec,
+            "Compra i Venta" to iconVar,
+            "Anuncis" to iconAn,
+            "Esports" to iconDep,
+            "General" to iconGen,
+            "Mascotes" to iconMas, //ingles
+            "Tourism" to iconTuri,
+            "Other" to iconVar,
+            "Health" to iconSal,
+            "Entertainment" to iconEntre,
+            "Technology" to iconTec,
+            "Buy and Sell" to iconVar,
+            "Notices" to iconAn,
+            "Sports" to iconDep,
+            "Pets" to iconMas, //czech
+            "Cestovní ruch" to iconTuri,
+            "Ostatní" to iconVar,
+            "Zdraví" to iconSal,
+            "Zábava" to iconEntre,
+            "Technika" to iconTec,
+            "Nákup a prodej" to iconVar,
+            "Oznámení" to iconAn,
+            "Sportovní" to iconDep,
+            "Domácí mazlíčci" to iconMas
         ) as Map<String, BitmapDescriptor>
     }
 

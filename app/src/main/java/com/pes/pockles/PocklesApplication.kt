@@ -4,6 +4,7 @@ import android.app.Application
 import com.facebook.stetho.Stetho
 import com.google.firebase.FirebaseApp
 import com.pes.pockles.di.injector.initInjector
+import com.yariksoffice.lingver.Lingver
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
@@ -26,6 +27,8 @@ class PocklesApplication : Application(), HasAndroidInjector {
         FirebaseApp.initializeApp(this)
 
         initInjector(this)
+
+        Lingver.init(this, "es")
     }
 
     override fun androidInjector(): AndroidInjector<Any> = androidInjector
