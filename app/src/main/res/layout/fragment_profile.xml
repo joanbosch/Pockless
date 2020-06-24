@@ -36,7 +36,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/achievement_profile_button_background"
+                    android:background="@drawable/profile_header_test"
                     android:padding="16dp">
 
                     <com.mikhaellopez.circularimageview.CircularImageView
@@ -92,17 +92,18 @@
                             tools:text="FOLLOW">
 
                             <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="65dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:background="@color/colorPrimary"
                                 android:fontFamily="@font/montserrat"
                                 android:text="@string/follow_button_text"
+                                android:textAlignment="center"
                                 android:textColor="@color/md_white_1000"
                                 android:textSize="12sp"
                                 tools:layout_editor_absoluteX="0dp"
                                 tools:layout_editor_absoluteY="0dp"
-                                tools:ignore="MissingConstraints" />
+                                tools:ignore="MissingConstraints,RtlCompat" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                     </androidx.cardview.widget.CardView>
 
