@@ -101,11 +101,20 @@
                                 android:textAlignment="center"
                                 android:textColor="@color/md_white_1000"
                                 android:textSize="12sp"
-                                tools:layout_editor_absoluteX="0dp"
-                                tools:layout_editor_absoluteY="0dp"
                                 tools:ignore="MissingConstraints,RtlCompat" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                     </androidx.cardview.widget.CardView>
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="16dp"
+                        android:contentDescription="@null"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toTopOf=""
+                        android:layout_marginTop="20dp"
+                        app:srcCompat="@drawable/ic_menu_abierto"
+                        app:tint="@color/md_white_1000" />
 
                     <LinearLayout
                         android:id="@+id/badge"
