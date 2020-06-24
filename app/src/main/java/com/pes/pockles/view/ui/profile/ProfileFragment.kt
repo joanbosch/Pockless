@@ -72,7 +72,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             it.context.startActivity(intent)
         }
 
-        binding.cardView2.setOnClickListener {
+        binding.cardView3.setOnClickListener {
             findNavController().navigate(R.id.action_userProfileFragment_to_achievementsActivity)
         }
 
