@@ -339,7 +339,7 @@
                     android:textSize="18sp" />
             </LinearLayout>
 
-<!--            Fake view to have bottom padding-->
+            <!--            Fake view to have bottom padding-->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="100dp"/>
