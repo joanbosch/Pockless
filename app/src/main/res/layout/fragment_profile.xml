@@ -26,48 +26,56 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline6"
+                android:layout_width="wrap_content"
+                android:layout_height="21dp"
+                android:orientation="horizontal" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/profile_header_test"
-                    >
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/profile_header_test">
+
                 <View
                     android:id="@+id/background"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:alpha="0.3"
                     android:background="@color/md_black_1000"
-                    android:alpha="0.25"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
-                    <com.mikhaellopez.circularimageview.CircularImageView
-                        android:id="@+id/profile_image"
-                        android:layout_width="115dp"
-                        android:layout_height="112dp"
-                        android:layout_marginTop="4dp"
-                        android:elevation="8dp"
-                        android:scaleType="centerCrop"
-                        app:civ_border_width="0dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.011"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/profile_username"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:text="@{user.name}"
-                        android:fontFamily="@font/montserrat_bold"
-                        android:textColor="@color/md_white_1000"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.011"
-                        app:layout_constraintStart_toStartOf="@+id/guideline2"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="NAME" />
+                <com.mikhaellopez.circularimageview.CircularImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="115dp"
+                    android:layout_height="112dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:elevation="8dp"
+                    android:scaleType="centerCrop"
+                    app:civ_border_width="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.011"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/profile_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@{user.name}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="@color/md_white_1000"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.011"
+                    app:layout_constraintStart_toStartOf="@+id/guideline2"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="NAME" />
 
                 <Button
                     android:id="@+id/textButton"
@@ -85,219 +93,143 @@
                     app:layout_constraintTop_toBottomOf="@+id/profile_username"
                     tools:ignore="SmallSp" />
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center_vertical"
-                        android:clickable="true"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginTop="30dp"
-                        app:srcCompat="@drawable/ic_menu_abierto"
-                        app:tint="@color/md_white_1000"
-                        tools:ignore="MissingConstraints" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:layout_constraintEnd_toEndOf="@id/guideline4"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_menu_abierto"
+                    app:tint="@color/md_white_1000"
+                    tools:ignore="NotSibling" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/profile_description"
                     android:layout_width="270dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/user_description"
-                    android:textSize="12sp"
-                    android:textAlignment="center"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
                     android:fontFamily="@font/montserrat"
-                    android:textColor="@color/md_white_1000"
+                    android:text="@string/user_description"
+                    android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="@color/md_white_1000"
+                    android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@id/guideline3"
                     tools:text="Description descripcion descripcion ola que ase" />
 
 
+                <LinearLayout
+                    android:id="@+id/badge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="@id/guideline4"
+                    app:layout_constraintTop_toBottomOf="@+id/guideline3">
 
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/badge_icon"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_horizontal"
+                        android:contentDescription="@null"
+                        android:src="@drawable/badge_test" />
+                </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/badge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="?selectableItemBackgroundBorderless"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:orientation="vertical"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/guideline3">
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/badge_icon"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_gravity="center_horizontal"
-                            android:contentDescription="@null"
-                            android:src="@drawable/badge_test" />
-                    </LinearLayout>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/followers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="15 followers"
+                    android:textColor="@color/md_white_1000"
+                    app:layout_constraintEnd_toEndOf="@id/following"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/guideline5"
+                    tools:text="15 followers" />
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/following"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="15 following"
+                    android:textColor="@color/md_white_1000"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/followers"
+                    app:layout_constraintTop_toBottomOf="@+id/guideline5"
+                    tools:text="15 following" />
 
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="147dp" />
 
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/guideline2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_begin="124dp" />
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_begin="140dp" />
 
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/guideline3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        app:layout_constraintGuide_begin="120dp" />
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="404dp" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_begin="247dp" />
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             <LinearLayout
+                android:id="@+id/bottomSheet"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="8dp"
-                android:background="?selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:onClick="@{viewModel.navigateToHistoryOnClick}"
-                android:orientation="horizontal">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="16dp"
-                    android:contentDescription="@null"
-                    app:srcCompat="@drawable/ic_list" />
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/profile_light_background"
+                android:orientation="vertical"
+                app:layout_behavior="@string/bottom_sheet_behavior"
+                tools:context=".view.ui.map.BottomSheetsPocks">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="24dp"
-                    android:fontFamily="@font/montserrat"
-                    android:text="@string/pock_history_profile_button_text"
-                    android:textColor="@android:color/secondary_text_light"
-                    android:textSize="18sp" />
-            </LinearLayout>
+                    android:fontFamily="@font/montserrat_bold"
+                    android:padding="16dp"
+                    android:text="@string/nearby_pocks"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/md_black_1000" />
 
-            <LinearLayout
-                android:id="@+id/likeButton"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:background="?selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="16dp"
-                    android:contentDescription="@null"
-                    app:srcCompat="@drawable/ic_thumb_up_black_24dp" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/nearPockList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="85dp" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="24dp"
-                    android:fontFamily="@font/montserrat"
-                    android:text="@string/liked_pock_activity_title"
-                    android:textColor="@android:color/secondary_text_light"
-                    android:textSize="18sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/editProfileButton"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:background="?selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:orientation="horizontal">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="16dp"
-                    android:contentDescription="@null"
-                    app:srcCompat="@drawable/ic_edit" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="24dp"
-                    android:fontFamily="@font/montserrat"
-                    android:text="@string/edit_info_profile_button_text"
-                    android:textColor="@android:color/secondary_text_light"
-                    android:textSize="18sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/settingsButton"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:background="?selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:orientation="horizontal">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="16dp"
-                    android:contentDescription="@null"
-                    app:srcCompat="@drawable/ic_settings" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="24dp"
-                    android:fontFamily="@font/montserrat"
-                    android:text="@string/settings_profile_button_text"
-                    android:textColor="@android:color/secondary_text_light"
-                    android:textSize="18sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:background="?selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:onClick="@{viewModel.logout}"
-                android:orientation="horizontal">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="16dp"
-                    android:contentDescription="@null"
-                    app:srcCompat="@drawable/ic_logout"
-                    app:tint="@color/md_red_500" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="24dp"
-                    android:fontFamily="@font/montserrat"
-                    android:text="@string/close_session_profile_button_text"
-                    android:textColor="@color/md_red_500"
-                    android:textSize="18sp" />
             </LinearLayout>
 
             <!--            Fake view to have bottom padding-->
             <View
                 android:layout_width="match_parent"
-                android:layout_height="100dp"/>
+                android:layout_height="100dp" />
 
         </LinearLayout>
     </ScrollView>

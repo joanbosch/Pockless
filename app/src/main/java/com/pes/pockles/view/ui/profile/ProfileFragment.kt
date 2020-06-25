@@ -40,50 +40,49 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             }
         })
 
-        viewModel.navigateToHistory.observe(
-            this,
-            EventObserver(::navigateToHistory)
-        )
-
-        viewModel.navigateToLogin.observe(this, EventObserver(::navigateToLogin))
-
-        binding.settingsButton.setOnClickListener {
-            findNavController().navigate(R.id.action_userProfileFragment_to_settingsActivity)
-        }
-
-        binding.likeButton.setOnClickListener {
-            findNavController().navigate(R.id.action_userProfileFragment_to_likedPocksActivity)
-        }
-
-        binding.editProfileButton.setOnClickListener {
-            val intent = Intent(it.context, EditProfileActivity::class.java).apply {
-                putExtra("mail", viewModel.userdata.mail)
-                putExtra("birthDate", viewModel.userdata.birthDate)
-                putExtra(
-                    "editableContent",
-                    EditedUser(
-                        viewModel.userdata.name,
-                        viewModel.userdata.profileImage,
-                        viewModel.userdata.radiusVisibility,
-                        viewModel.userdata.accentColor
-                    ) as Serializable
+                viewModel.navigateToHistory.observe(
+                    this,
+                    EventObserver(::navigateToHistory)
                 )
+
+                viewModel.navigateToLogin.observe(this, EventObserver(::navigateToLogin))
+
+                /*binding.settingsButton.setOnClickListener {
+                    findNavController().navigate(R.id.action_userProfileFragment_to_settingsActivity)
+                }
+
+                binding.likeButton.setOnClickListener {
+                    findNavController().navigate(R.id.action_userProfileFragment_to_likedPocksActivity)
+                }
+
+                binding.editProfileButton.setOnClickListener {
+                    val intent = Intent(it.context, EditProfileActivity::class.java).apply {
+                        putExtra("mail", viewModel.userdata.mail)
+                        putExtra("birthDate", viewModel.userdata.birthDate)
+                        putExtra(
+                            "editableContent",
+                            EditedUser(
+                                viewModel.userdata.name,
+                                viewModel.userdata.profileImage,
+                                viewModel.userdata.radiusVisibility,
+                                viewModel.userdata.accentColor
+                            ) as Serializable
+                        )
+                    }
+                    it.context.startActivity(intent)
+                }
+
+                binding.cardView.setOnClickListener {
+                    findNavController().navigate(R.id.action_userProfileFragment_to_achievementsActivity)
+                }*/
+
             }
-            it.context.startActivity(intent)
-        }
 
-        /*binding.cardView.setOnClickListener {
-            findNavController().navigate(R.id.action_userProfileFragment_to_achievementsActivity)
-        }*/
-
-    }
-
-    private fun navigateToHistory(bool: Boolean) {
-        if (bool) {
-            findNavController().navigate(R.id.action_userProfileFragment_to_pocksHistoryActivity)
-        }
-    }
-
+            private fun navigateToHistory(bool: Boolean) {
+                if (bool) {
+                    findNavController().navigate(R.id.action_userProfileFragment_to_pocksHistoryActivity)
+                }
+            }
     private fun navigateToLogin(bool: Boolean) {
         if (bool) {
             startActivity(Intent(activity!!, LaunchActivity::class.java))
