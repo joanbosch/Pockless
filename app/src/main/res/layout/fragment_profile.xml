@@ -232,7 +232,7 @@
                         android:onClick="@{viewModel.navigateToHistoryOnClick}"
                         android:orientation="vertical"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/achievementsButton"
+                        app:layout_constraintEnd_toStartOf="@+id/achievementsButton"
                         app:layout_constraintTop_toBottomOf="@+id/profile_username"
                         tools:ignore="NotSibling">
 
@@ -267,8 +267,8 @@
                         android:focusable="true"
                         android:onClick="@{viewModel.navigateToHistoryOnClick}"
                         android:orientation="vertical"
-                        app:layout_constraintStart_toStartOf="@+id/allPocksButton"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/allPocksButton"
+                        app:layout_constraintEnd_toStartOf="@+id/likedButton"
                         app:layout_constraintTop_toBottomOf="@+id/profile_username"
                         tools:ignore="NotSibling">
 
@@ -292,6 +292,42 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/profile_image"
                             tools:text="22 Achievements" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/likedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{viewModel.navigateToHistoryOnClick}"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toEndOf="@+id/achievementsButton"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/profile_username"
+                        tools:ignore="NotSibling">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_horizontal"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_calidad" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="4dp"
+                            android:text="@{@string/pocks_created_length_profile(user.createdPocksNumber)}"
+                            android:textColor="@color/md_black_1000"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/profile_image"
+                            tools:text="97 likes" />
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
