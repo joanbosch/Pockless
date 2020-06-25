@@ -119,40 +119,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_bold"
                     android:padding="20dp">
-                    <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:background="?selectableItemBackgroundBorderless"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:onClick="@{viewModel.navigateToHistoryOnClick}"
-                    android:orientation="vertical"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/profile_username"
-                        tools:ignore="NotSibling">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_gravity="center_horizontal"
-                        android:contentDescription="@null"
-                        android:src="@drawable/ic_pock_icon" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="4dp"
-                        android:text="@{@string/pocks_created_length_profile(user.createdPocksNumber)}"
-                        android:textColor="@color/md_black_1000"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/profile_image"
-                        tools:text="1888 pocks" />
-                </LinearLayout></androidx.constraintlayout.widget.ConstraintLayout>
+                   </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

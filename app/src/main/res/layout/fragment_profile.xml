@@ -80,8 +80,8 @@
                 <Button
                     android:id="@+id/textButton"
                     style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="62dp"
-                    android:layout_height="32dp"
+                    android:layout_width="72dp"
+                    android:layout_height="33dp"
                     android:padding="-3dp"
                     android:text="@string/follow_button_text"
                     android:textColor="@color/md_white_1000"
@@ -94,16 +94,16 @@
                     tools:ignore="SmallSp" />
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginEnd="8dp"
                     android:clickable="true"
                     android:focusable="true"
                     app:layout_constraintEnd_toEndOf="@id/guideline4"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_menu_abierto"
-                    app:tint="@color/md_white_1000"
+                    app:srcCompat="@drawable/ic_baseline_more_vert_24"
+
+
                     tools:ignore="NotSibling" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -154,6 +154,7 @@
                     app:layout_constraintEnd_toEndOf="@id/following"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/guideline5"
+                    android:layout_marginBottom="5dp"
                     tools:text="15 followers" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -196,6 +197,13 @@
                     android:orientation="horizontal"
                     app:layout_constraintGuide_begin="247dp" />
 
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_begin="284dp" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -208,14 +216,84 @@
                 app:layout_behavior="@string/bottom_sheet_behavior"
                 tools:context=".view.ui.map.BottomSheetsPocks">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:padding="16dp"
-                    android:text="@string/nearby_pocks"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="@color/md_black_1000" />
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp">
+
+                    <LinearLayout
+                        android:id="@+id/allPocksButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{viewModel.navigateToHistoryOnClick}"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/achievementsButton"
+                        app:layout_constraintTop_toBottomOf="@+id/profile_username"
+                        tools:ignore="NotSibling">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_horizontal"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_pock_icon" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="4dp"
+                            android:text="@{@string/pocks_created_length_profile(user.createdPocksNumber)}"
+                            android:textColor="@color/md_black_1000"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/profile_image"
+                            tools:text="1888 Pocks" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/achievementsButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="@{viewModel.navigateToHistoryOnClick}"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="@+id/allPocksButton"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/profile_username"
+                        tools:ignore="NotSibling">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_horizontal"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_achievement" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="4dp"
+                            android:text="@{@string/pocks_created_length_profile(user.createdPocksNumber)}"
+                            android:textColor="@color/md_black_1000"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/profile_image"
+                            tools:text="22 Achievements" />
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
                 <androidx.recyclerview.widget.RecyclerView
